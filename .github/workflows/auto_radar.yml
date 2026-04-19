@@ -4,7 +4,7 @@ on:
   schedule:
     # 暫時改為每天台灣時間晚上 8:30 執行 (UTC 12:30)
     # 最後一個星號代表週一到週日全開
-    - cron: '30 12 * * *' 
+    - cron: '30 12 * * 1-5' 
   # 保留手動點擊功能
   workflow_dispatch:
 
@@ -16,11 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 1. 檢索倉庫代碼
-      uses: actions/checkout@v3
+- name: 1. 檢索倉庫代碼
+      uses: actions/checkout@v4
 
     - name: 2. 建立 Python 環境
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 

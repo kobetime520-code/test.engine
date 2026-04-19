@@ -123,7 +123,8 @@
         .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 25px; padding: 20px 0; }
 
         .industry-section-title { width: 100%; color: var(--neon-gold); font-size: 17px; font-weight: bold; margin-top: 25px; margin-bottom: 15px; border-bottom: 1px dashed var(--panel-border); padding-bottom: 8px; grid-column: 1 / -1; letter-spacing: 1px; }
-/* 🏷️ 產業分隔線與摺疊樣式 */
+         
+        /* 🏷️ 產業分隔線與摺疊樣式 */
         .industry-details { margin-top: 15px; border-bottom: 1px dashed var(--panel-border); padding-bottom: 10px; transition: 0.3s; }
         .industry-details summary { list-style: none; cursor: pointer; outline: none; display: flex; justify-content: space-between; align-items: center; }
         .industry-details summary::-webkit-details-marker { display: none; }
@@ -131,6 +132,7 @@
         .industry-section-title:hover { filter: brightness(1.2); }
         .ind-arrow { font-size: 12px; opacity: 0.6; transition: transform 0.3s; color: var(--neon-cyan); }
         .industry-details[open] .ind-arrow { transform: rotate(180deg); }
+        
         /* 🃏 卡片樣式 */
         .card { background: var(--panel-bg); backdrop-filter: blur(10px); border-radius: 15px; padding: 22px; border: 1px solid var(--panel-border); border-top: 4px solid var(--text-muted); box-shadow: 0 10px 30px var(--card-shadow); transition: 0.4s ease; position: relative; }
         .card.is-buy { border-top-color: var(--neon-green); }

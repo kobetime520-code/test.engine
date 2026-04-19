@@ -2,11 +2,11 @@ name: Daily Radar Auto-Run
 
 on:
   schedule:
-    # 設定每天台灣時間下午 8:30 執行 (UTC 時間早上 12:30)
-    # Cron 語法: 分 時 日 月 星期 (1-5 代表週一到週五)
-    - cron: '30 12 * * 1-5'
-  # 加入 workflow_dispatch 讓你可以隨時手動點擊測試
-  workflow_dispatch: 
+    # 暫時改為每天台灣時間晚上 8:30 執行 (UTC 12:30)
+    # 最後一個星號代表週一到週日全開
+    - cron: '30 12 * * *' 
+  # 保留手動點擊功能
+  workflow_dispatch:
 
 permissions:
   contents: write

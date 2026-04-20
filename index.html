@@ -352,7 +352,7 @@
                 document.getElementById('update-time').innerText = "⏱️ 雷達更新：" + json_data.last_updated + (json_data.api_cost_estimate ? " | 🔋 " + json_data.api_cost_estimate : "");
                 
                 const container = document.getElementById('main-container');
-                const displayOrder = ["🌟 彼神黃金魚池", "🐅 三日成猛虎水池", "🔥 姊夫爆發小魚池", "🍁 楓大永動魚池", "🔭 自選觀察水域", "🌊 汪洋大魚"];
+                const displayOrder = ["🌟 彼神黃金魚池", "🐅 三日成猛虎水池", "🔥 姊夫爆發小魚池", "🍁 楓大永動魚池", "🔭 測試員觀察水域", "🌊 汪洋大魚"];
 
                 displayOrder.forEach(poolName => {
                     if (json_data.pools[poolName] && json_data.pools[poolName].length > 0) {

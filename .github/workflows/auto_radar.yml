@@ -2,42 +2,45 @@ name: Daily Radar Auto-Run
 
 on:
   schedule:
-    # 正式排程：每天台灣時間晚上 8:30 執行 (UTC 12:30)
-    # 1-5 代表週一到週五執行 (若要週末也跑，請將 1-5 改成 *)
-    - cron: '30 12 * * 1-5' 
-  # 保留手動點擊功能
-  workflow_dispatch:
+    # 根據您的設定：台灣時間晚上 08:30 執行 (UTC 12:30)
+    # 最後一個星號代表週一至週日每天運行
+    - cron: '30 12 * * *'
+  workflow_dispatch: # 保留手動點擊功能
 
 permissions:
-  contents: write
+  contents: write # 確保 Action 有權限將資料推回倉庫
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-        # 🚨 這裡的縮排已經幫你修復並完美對齊了！
-        - name: 1. 檢索倉庫代碼
-          uses: actions/checkout@v4
+      - name: 1. 檢索倉庫代碼
+        uses: actions/checkout@v4
 
-        - name: 2. 建立 Python 環境
-          uses: actions/setup-python@v5
-          with:
-            python-version: '3.10'
+      - name: 2. 建立 Python 環境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip' # 優化點：開啟 pip 快取，加快後續運行速度
 
-        - name: 3. 安裝雷達必備套件
-          run: |
-            python -m pip install --upgrade pip
-            pip install yfinance pandas requests FinMind beautifulsoup4
+      - name: 3. 安裝雷達必備套件
+        run: |
+          python -m pip install --upgrade pip
+          pip install yfinance pandas requests FinMind beautifulsoup4
 
-        - name: 4. 啟動彼夫有擇戰情室核心引擎
-          run: python radar.py
+      - name: 4. 啟動彼夫有擇戰情室核心引擎
+        run: python radar.py
 
-        - name: 5. 自動上傳最新戰報 JSON
-          run: |
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action Bot"
-            git add plum_blossom_data.json ocean_history.json
-            # 如果資料有變動才 Commit，沒變動就忽略
-            git commit -m "🤖 自動更新：全域戰情室雷達掃描完成" || echo "No changes to commit"
+      - name: 5. 自動上傳最新戰報 JSON
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          # 檢查是否有檔案變動，避免無謂的提交報錯
+          git add plum_blossom_data.json ocean_history.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🎡 自動更新：全域戰情室雷達掃描完成"
             git push
+          fi

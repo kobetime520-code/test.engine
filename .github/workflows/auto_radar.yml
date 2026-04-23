@@ -2,9 +2,9 @@ name: Daily Radar Auto-Run
 
 on:
   schedule:
-    # 根據您的設定：台灣時間晚上 08:37 執行 (UTC 12:37)
+    # 根據您的設定：台灣時間晚上 04:37 執行 (UTC 08:37)
     # 最後一個星號代表週一至週日每天運行
-    - cron: '37 12 * * 1-5'
+    - cron: '37 04 * * 1-5'
   workflow_dispatch: # 保留手動點擊功能
 
 permissions:

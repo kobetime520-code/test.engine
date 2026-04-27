@@ -1,10 +1,6 @@
 name: Daily Radar Auto-Run
 
 on:
-  schedule:
-    # 正確排程：台灣時間晚上 8:37 執行 (UTC 中午 12:37)
-    # 這樣才能確保抓到台股完全收盤、且三大法人籌碼結算完畢的最終資料
-    - cron: '37 12 * * 1-5'
   workflow_dispatch: # 保留手動點擊功能
 
 permissions:

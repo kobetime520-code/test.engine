@@ -300,7 +300,7 @@
                         const section = document.createElement('details');
                         section.className = 'pool-section';
                         
-                        if (poolName === "🌟 彼神黃金魚池" || poolName === "🔭 測試員觀察水域") section.open = true;
+                        // 🟢 V7.4 變更：移除了「彼神」與「測試員」的預設展開條件，改為全數摺疊
                         
                         section.innerHTML = `<summary><div class="pool-title">${poolName}</div></summary>`;
                         

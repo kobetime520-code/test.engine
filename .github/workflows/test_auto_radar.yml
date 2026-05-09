@@ -25,7 +25,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install yfinance pandas requests FinMind beautifulsoup4
 
-      - name: 4. 啟動彼夫有擇戰情室核心引擎
+      - name: 4. 啟動 V9_Test 核心引擎
         run: python -u test_radar.py
 
       - name: 5. 自動上傳最新戰報 JSON
@@ -33,7 +33,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
           # 檢查是否有檔案變動，避免無謂的提交報錯
-          git add test_plum_blossom_data.json test_ocean_history.json
+          git add test_plum_blossom_data.json test_ocean_history.json log_report.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

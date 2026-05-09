@@ -33,7 +33,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
           # 檢查是否有檔案變動，避免無謂的提交報錯
-          git add test_plum_blossom_data.json test_ocean_history.json test_log_report.json
+          git add --ignore-unmatch test_plum_blossom_data.json test_ocean_history.json test_log_report.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

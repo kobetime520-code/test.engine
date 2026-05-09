@@ -13,6 +13,8 @@ import requests
 import time
 import json
 import os
+import sys
+import subprocess
 import logging
 from datetime import datetime, timedelta
 import warnings
@@ -28,13 +30,15 @@ HISTORY_FILE = "ocean_history.json"
 CACHE_FILE = "finmind_cache.json"
 INFO_CACHE_FILE = "finmind_info_cache.json"   # 🆕 V7.5：TaiwanStockInfo 獨立快取
 INFO_CACHE_EXPIRY_DAYS = 7                    # 🆕 V7.5：股票基本資料 7 天更新一次
+CACHE_TTL_HOURS = 30                          # 🆕 V7.8：FinMind 快取有效期（30 小時，確保昨日資料今日仍可命中）
+LOG_REPORT_FILE = "log_report.json"           # 🆕 V7.9：維運日誌輸出路徑（供 Zoey 儀表板讀取）
 
 # --- 2. 魚池設定區 ---
 POOL_SETTINGS = {
-    "🔥 姊夫爆發小魚池": ["6155", "3357", "2493", "1514", "4967"],
+    "🔥 姊夫爆發小魚池": ["6155", "2323"],  # V7.6 手動白名單，運行中動態注入猛虎前三強
     "🍁 楓大永動魚池": ["2308", "00923", "00910", "2327", "1785"],
     "🌟 彼神黃金魚池": ["3028", "2484", "3221", "8182", "8289"],
-    "🔭 測試員觀察水域": ["2330", "2317", "2454", "2383", "3673", "5289", "5292", "3042", "4749"],
+    "🔭 測試員觀察水域": ["5289", "5292", "3042", "4749", "6770", "1711"],
     "🐅 三日成猛虎水池": []
 }
 
@@ -42,27 +46,64 @@ POOL_SETTINGS = {
 # 🎯 V7.4 全域快取與 API 計數器
 # =====================================================================
 _finmind_cache: dict = {}
-_api_calls_count: int = 0
+_api_calls_count: int = 0      # FinMind API 實際呼叫次數（快取未命中）
+_cache_hits_count: int = 0     # 🆕 V7.9：快取命中次數
+_stocks_processed_count: int = 0  # 🆕 V7.9：成功處理的股票檔數
 
 
-def fetch_finmind(dataset, start_date, end_date, data_id, retries=1):
+def _save_cache_to_disk():
+    """🆕 V7.8：即時將記憶體快取寫入 finmind_cache.json（持久化）"""
+    try:
+        with open(CACHE_FILE, 'w', encoding='utf-8') as f:
+            json.dump(_finmind_cache, f, ensure_ascii=False)
+    except Exception:
+        pass  # 寫盤失敗不中斷主流程
+
+
+def _write_log_report(taiwan_time, stocks_processed=0, status="Success"):
+    """🆕 V7.9：產出維運日誌 log_report.json（供 Zoey 儀表板讀取）"""
+    try:
+        report = {
+            "last_update": taiwan_time.strftime("%Y-%m-%d %H:%M:%S"),
+            "api_usage_count": _api_calls_count,
+            "stocks_processed": stocks_processed,
+            "cache_hits": _cache_hits_count,
+            "status": status,
+        }
+        with open(LOG_REPORT_FILE, 'w', encoding='utf-8') as f:
+            json.dump(report, f, ensure_ascii=False, indent=2)
+        print(f"  - 📝 維運日誌已寫出：{LOG_REPORT_FILE}")
+    except Exception as e:
+        print(f"  - ⚠️ 維運日誌寫出失敗：{e}")
+
+
+def fetch_finmind(dataset, start_date, end_date, data_id, retries=2):
     """
     發送 FinMind API 請求，內建本地快取機制。
     快取命中時直接回傳資料，不消耗 API 額度。
     快取 Key：{dataset}_{data_id}_{start_date}_{end_date}
+    🆕 V7.7：重試邏輯完整封裝於函式內（retries=2），API 失敗或回傳非 success
+             時自動等待 1 秒後重試，外部呼叫端無需再重複呼叫。
     """
-    global _finmind_cache, _api_calls_count
+    global _finmind_cache, _api_calls_count, _cache_hits_count
 
     cache_key = f"{dataset}_{data_id}_{start_date}_{end_date}"
 
     # ── 快取命中：直接回傳，不計入 API 次數 ──
     if cache_key in _finmind_cache:
         try:
-            return pd.DataFrame(_finmind_cache[cache_key])
+            entry = _finmind_cache[cache_key]
+            # 🆕 V7.8：相容新格式 {ts, data} 與舊格式 list
+            if isinstance(entry, dict) and "data" in entry:
+                _cache_hits_count += 1  # 🆕 V7.9
+                return pd.DataFrame(entry["data"])
+            elif isinstance(entry, list):
+                _cache_hits_count += 1  # 🆕 V7.9
+                return pd.DataFrame(entry)
         except Exception:
             _finmind_cache.pop(cache_key, None)
 
-    # ── 快取未命中：呼叫 API ──
+    # ── 快取未命中：呼叫 API（含完整重試） ──
     url = "https://api.finmindtrade.com/api/v4/data"
     params = {
         "dataset": dataset,
@@ -74,20 +115,30 @@ def fetch_finmind(dataset, start_date, end_date, data_id, retries=1):
     _api_calls_count += 1
     for attempt in range(retries + 1):
         try:
-            res = requests.get(url, params=params, timeout=10)
+            res = requests.get(url, params=params, timeout=15)
+            res.raise_for_status()
             res_data = res.json()
             if res_data.get("msg") == "success":
                 data_list = res_data.get("data", [])
                 try:
-                    _finmind_cache[cache_key] = data_list
+                    # 🆕 V7.8：含時間戳的新格式，支援 TTL 清理
+                    _finmind_cache[cache_key] = {
+                        "ts": datetime.utcnow().isoformat(),
+                        "data": data_list
+                    }
+                    _save_cache_to_disk()  # 🆕 V7.8：即時寫盤，防止中途中斷遺失快取
                 except Exception:
                     pass
                 return pd.DataFrame(data_list)
             else:
-                break
-        except Exception:
+                # API 回傳非 success，等待後重試（不直接 break）
+                if attempt < retries:
+                    time.sleep(1)
+        except requests.exceptions.RequestException as e:
             if attempt < retries:
                 time.sleep(1)
+            else:
+                print(f"  ⚠️ [防禦機制觸發] {data_id} FinMind API 無回應，自動跳過（原因：{e}）")
     return pd.DataFrame()
 
 
@@ -218,16 +269,38 @@ def calculate_stock_data(sid, name, industry, df_prices, df_inst, force_show=Fal
 
 
 def main():
-    global _finmind_cache, _api_calls_count
+    global _finmind_cache, _api_calls_count, _cache_hits_count, _stocks_processed_count
 
-    print("🌊 啟動彼我還楓姊夫戰情室 (V7.5 API三劍客降載版：MA5預篩＋Yahoo替代股價＋Info七日快取)...")
+    # 🆕 V7.9：例假日檢查（台灣時間，週六=5、週日=6 自動跳出）
+    _check_time = datetime.utcnow() + timedelta(hours=8)
+    if _check_time.weekday() >= 5:
+        day_name = "週六" if _check_time.weekday() == 5 else "週日"
+        print(f"📅 今日為 {day_name}（{_check_time.strftime('%Y-%m-%d')}），例假日不執行，Radar 休息。")
+        _write_log_report(_check_time, status="Skipped-Holiday")
+        return
 
-    # ── 載入本地快取（籌碼資料） ──────────────────────────────────────
+    print("🌊 啟動彼我還楓姊夫戰情室 (V7.9 維運日誌版：例假日過濾＋log_report 自動產出)...")
+
+    # ── 載入本地快取（含 TTL 清理） ─────────────────────────────────────
+    # 🆕 V7.8：啟動時自動清除超過 CACHE_TTL_HOURS 的過期資料
     try:
         if os.path.exists(CACHE_FILE):
             with open(CACHE_FILE, 'r', encoding='utf-8') as f:
-                _finmind_cache = json.load(f)
-            print(f"  - 📦 快取載入成功，共 {len(_finmind_cache)} 筆已快取資料")
+                raw_cache = json.load(f)
+            cutoff = datetime.utcnow() - timedelta(hours=CACHE_TTL_HOURS)
+            cleaned = {}
+            for k, v in raw_cache.items():
+                if isinstance(v, dict) and "ts" in v:
+                    try:
+                        if datetime.fromisoformat(v["ts"]) >= cutoff:
+                            cleaned[k] = v
+                    except Exception:
+                        pass
+                elif isinstance(v, list):
+                    cleaned[k] = v  # 舊格式：保留，下次命中時自動升級格式
+            _finmind_cache = cleaned
+            expired = len(raw_cache) - len(cleaned)
+            print(f"  - 📦 快取載入：{len(cleaned)} 筆有效（清除 {expired} 筆過期 >24h）")
         else:
             print("  - 📦 無現有快取，本次將從零建立")
     except Exception:
@@ -397,10 +470,7 @@ def main():
 
             # 三關全過：呼叫 FinMind 籌碼（僅 1 call，Yahoo 取代股價）
             yf_passed_filter += 1
-            df_i = fetch_finmind("TaiwanStockInstitutionalInvestorsBuySell", start_30d, today_str, sid)
-            if df_i.empty:
-                time.sleep(1)
-                df_i = fetch_finmind("TaiwanStockInstitutionalInvestorsBuySell", start_30d, today_str, sid)
+            df_i = fetch_finmind("TaiwanStockInstitutionalInvestorsBuySell", start_30d, today_str, sid)  # V7.7：重試由 fetch_finmind 內部處理
             time.sleep(0.2)
 
             ind = industry_map.get(sid, "未知產業")
@@ -435,6 +505,13 @@ def main():
         if count >= 3 and sid not in POOL_SETTINGS["🐅 三日成猛虎水池"]:
             POOL_SETTINGS["🐅 三日成猛虎水池"].append(sid)
 
+    # 🆕 V7.6：自動將猛虎池前三強注入姊夫爆發小魚池（去重後）
+    tiger_top3 = POOL_SETTINGS["🐅 三日成猛虎水池"][:3]
+    for sid in tiger_top3:
+        if sid not in POOL_SETTINGS["🔥 姊夫爆發小魚池"]:
+            POOL_SETTINGS["🔥 姊夫爆發小魚池"].append(sid)
+    print(f"  - 🔥 姊夫魚池整編：手動白名單 + 猛虎前三 = {POOL_SETTINGS['🔥 姊夫爆發小魚池']}")
+
     with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
         json.dump(new_history, f, ensure_ascii=False, indent=2)
 
@@ -463,16 +540,10 @@ def main():
                 # 若 Yahoo 備援也失敗，才退回 FinMind 股價（最後防線）
                 if df_price_to_use is None or df_price_to_use.empty:
                     print(f"      - Yahoo 備援失敗，改用 FinMind 股價（{sid}）...")
-                    df_price_to_use = fetch_finmind("TaiwanStockPrice", start_60d, today_str, sid)
-                    if df_price_to_use.empty:
-                        time.sleep(1)
-                        df_price_to_use = fetch_finmind("TaiwanStockPrice", start_60d, today_str, sid)
+                    df_price_to_use = fetch_finmind("TaiwanStockPrice", start_60d, today_str, sid)  # V7.7：重試由函式內部處理
 
             # 只抓籌碼（1 call，Yahoo 已取代股價）
-            df_i = fetch_finmind("TaiwanStockInstitutionalInvestorsBuySell", start_30d, today_str, sid)
-            if df_i.empty:
-                time.sleep(1)
-                df_i = fetch_finmind("TaiwanStockInstitutionalInvestorsBuySell", start_30d, today_str, sid)
+            df_i = fetch_finmind("TaiwanStockInstitutionalInvestorsBuySell", start_30d, today_str, sid)  # V7.7：重試由函式內部處理
 
             ind = industry_map.get(sid, "未分類")
             s_data = calculate_stock_data(sid, name_map.get(sid, sid), ind, df_price_to_use, df_i, force_show=True)
@@ -484,24 +555,66 @@ def main():
 
     final_data_structure["🌊 汪洋大魚"] = market_pool
 
+    # =====================================================================
+    # 🎯 V7.6 前端儀表板數據預計算（供 index.html Chart.js 使用）
+    # =====================================================================
+    industry_counter = {}
+    for s in market_pool:
+        ind = s.get('industry', '未分類')
+        industry_counter[ind] = industry_counter.get(ind, 0) + 1
+    industry_dist = [{'industry': k, 'count': v}
+                     for k, v in sorted(industry_counter.items(), key=lambda x: -x[1])[:12]]
+
+    named_stocks = []
+    for pname, pstocks in final_data_structure.items():
+        if pname != "🌊 汪洋大魚":
+            named_stocks.extend(pstocks)
+    buy_n = sum(1 for s in named_stocks if s.get('action') == '買入加碼')
+    watch_n = len(named_stocks) - buy_n
+
+    pool_buy_stats = {}
+    for pname, pstocks in final_data_structure.items():
+        if pstocks and pname != "🌊 汪洋大魚":
+            buy_p = sum(1 for s in pstocks if s.get('action') == '買入加碼')
+            pool_buy_stats[pname] = {'total': len(pstocks), 'buy': buy_p}
+
+    dashboard_stats = {
+        'industry_distribution': industry_dist,
+        'action_ratio': {'buy': buy_n, 'watch': watch_n},
+        'pool_buy_stats': pool_buy_stats,
+        'ocean_total': len(market_pool),
+    }
+
     output = {
         "last_updated": taiwan_time.strftime("%Y/%m/%d %H:%M"),
         "api_cost_estimate": f"本次執行約消耗 {_api_calls_count} 次 FinMind API（快取節省不計入）",
+        "dashboard_stats": dashboard_stats,
         "pools": final_data_structure,
     }
     with open("plum_blossom_data.json", 'w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    # ── 儲存快取至本地 ────────────────────────────────────────────────
-    try:
-        with open(CACHE_FILE, 'w', encoding='utf-8') as f:
-            json.dump(_finmind_cache, f, ensure_ascii=False, indent=2)
-        print(f"  - 💾 快取已儲存，共 {len(_finmind_cache)} 筆（下次執行可直接命中）")
-    except Exception:
-        print("  - ⚠️ 快取儲存失敗，不影響本次結果")
+    # ── 結束前最終寫盤（安全備援，即時寫盤已在每次 API 後執行）────────
+    _save_cache_to_disk()
+    print(f"  - 💾 快取最終寫盤完成，共 {len(_finmind_cache)} 筆（下次執行可直接命中）")
 
-    print(f"\n🎉 掃描完成！本次共消耗 FinMind API {_api_calls_count} 次（快取命中不計入）")
-    print(f"   V7.5 節省摘要：MA5 預篩攔截 {yf_skipped_ma5} 支、魚池省略 FinMind 股價")
+    # 🆕 V7.9：統計成功處理股票檔數（魚池 + 汪洋大魚）
+    _stocks_processed_count = sum(len(v) for v in final_data_structure.values())
+
+    # 🆕 V7.9：產出維運日誌 log_report.json
+    _write_log_report(taiwan_time, stocks_processed=_stocks_processed_count, status="Success")
+
+    print(f"\n🎉 掃描完成！本次共消耗 FinMind API {_api_calls_count} 次（快取命中 {_cache_hits_count} 次）")
+    print(f"   V7.9 儀表板數據：產業 {len(industry_dist)} 類、魚池多空 {buy_n}/{watch_n}、處理 {_stocks_processed_count} 檔")
+
+    # 🆕 V7.9：本地執行時自動呼叫 git_sync.py 推送戰報
+    # GitHub Actions 環境由 auto_radar.yml Step 5 負責，不重複呼叫
+    if not os.environ.get("GITHUB_ACTIONS"):
+        try:
+            git_sync_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "git_sync.py")
+            subprocess.run([sys.executable, git_sync_path], check=False)
+        except Exception as e:
+            print(f"  ⚠️ git_sync.py 呼叫失敗（不影響本次結果）：{e}")
 
 
 if __name__ == "__main__":

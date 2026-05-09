@@ -26,14 +26,14 @@ jobs:
           pip install yfinance pandas requests FinMind beautifulsoup4
 
       - name: 4. 啟動彼夫有擇戰情室核心引擎
-        run: python -u radar.py
+        run: python -u test_radar.py
 
       - name: 5. 自動上傳最新戰報 JSON
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
           # 檢查是否有檔案變動，避免無謂的提交報錯
-          git add plum_blossom_data.json ocean_history.json
+          git add test_plum_blossom_data.json test_ocean_history.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

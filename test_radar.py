@@ -31,11 +31,11 @@ CACHE_FILE = "finmind_cache.json"
 INFO_CACHE_FILE = "finmind_info_cache.json"   # 🆕 V7.5：TaiwanStockInfo 獨立快取
 INFO_CACHE_EXPIRY_DAYS = 7                    # 🆕 V7.5：股票基本資料 7 天更新一次
 CACHE_TTL_HOURS = 30                          # 🆕 V7.8：FinMind 快取有效期（30 小時，確保昨日資料今日仍可命中）
-LOG_REPORT_FILE = "log_report.json"           # 🆕 V7.9：維運日誌輸出路徑（供 Zoey 儀表板讀取）
+LOG_REPORT_FILE = "test_log_report.json"       # 🆕 V7.9：維運日誌輸出路徑（供 Zoey 儀表板讀取）
 
 # --- 2. 魚池設定區 ---
 POOL_SETTINGS = {
-    "🔥 姊夫爆發小魚池": ["6155", "2323", "3243"],  # V9_test 手動白名單，運行中動態注入猛虎前三強
+    "🔥 姊夫爆發小魚池": ["6155", "2323", "3236"],  # V9_test 手動白名單，運行中動態注入猛虎前三強
     "🍁 楓大永動魚池": ["2308", "00923", "00910", "2327", "1785"],
     "🌟 彼神黃金魚池": ["3028", "2484", "3221", "8182", "8289"],
     "🔭 測試員觀察水域": ["5289", "5292", "3042", "4749", "6770", "1711"],

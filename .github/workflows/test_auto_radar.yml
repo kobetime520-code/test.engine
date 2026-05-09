@@ -32,8 +32,15 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
+
+          # 安全地將存在的戰報檔案加入暫存區
+          for file in test_plum_blossom_data.json test_ocean_history.json test_log_report.json; do
+            if [ -f "$file" ]; then
+              git add "$file"
+            fi
+          done
+
           # 檢查是否有檔案變動，避免無謂的提交報錯
-          git add --ignore-unmatch test_plum_blossom_data.json test_ocean_history.json test_log_report.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

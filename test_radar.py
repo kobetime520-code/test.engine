@@ -1,7 +1,7 @@
 # ==========================================
-# 靜水流深戰情室：核心監控與全域雷達 V7.5
+# 靜水流深戰情室：核心監控與全域雷達 V9_Test
 # ==========================================
-# V7.5 API 降載三劍客：
+# V9_Test 功能說明：
 #   ① Yahoo MA5 前置預篩  → 市場掃描省 ~40% 呼叫
 #   ② Yahoo 股價取代 FinMind（市場掃描 + 魚池）→ 每股節省 1 call
 #   ③ TaiwanStockInfo 7 日快取 → 每週省 6 次
@@ -24,9 +24,9 @@ logger = logging.getLogger('yfinance')
 logger.setLevel(logging.CRITICAL)
 
 # --- 1. 金鑰與設定區 ---
-# 🔐 V9 安全修正：Token 從環境變數讀取（不再硬碼）
+# 🔐 V7.5 安全修正：Token 從環境變數讀取（不再硬碼）
 FINMIND_TOKEN = os.environ.get("FINMIND_TOKEN", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiUGV0ZXJKZWZmMDIyNiIsImVtYWlsIjoia29iZXRpbWU1MjBAZ21haWwuY29tIiwidG9rZW5fdmVyc2lvbiI6MH0.uCpOr7owbUyKwPEtPccKl2LqArx_Jqj_A7hgNfb8xCg")
-HISTORY_FILE = "ocean_history.json"
+HISTORY_FILE = "test_ocean_history.json"
 CACHE_FILE = "finmind_cache.json"
 INFO_CACHE_FILE = "finmind_info_cache.json"   # 🆕 V7.5：TaiwanStockInfo 獨立快取
 INFO_CACHE_EXPIRY_DAYS = 7                    # 🆕 V7.5：股票基本資料 7 天更新一次
@@ -35,7 +35,7 @@ LOG_REPORT_FILE = "log_report.json"           # 🆕 V7.9：維運日誌輸出�
 
 # --- 2. 魚池設定區 ---
 POOL_SETTINGS = {
-    "🔥 姊夫爆發小魚池": ["6155", "2323", "3236"],  # V7.6 手動白名單，運行中動態注入猛虎前三強
+    "🔥 姊夫爆發小魚池": ["6155", "2323", "3243"],  # V9_test 手動白名單，運行中動態注入猛虎前三強
     "🍁 楓大永動魚池": ["2308", "00923", "00910", "2327", "1785"],
     "🌟 彼神黃金魚池": ["3028", "2484", "3221", "8182", "8289"],
     "🔭 測試員觀察水域": ["5289", "5292", "3042", "4749", "6770", "1711"],
@@ -271,15 +271,7 @@ def calculate_stock_data(sid, name, industry, df_prices, df_inst, force_show=Fal
 def main():
     global _finmind_cache, _api_calls_count, _cache_hits_count, _stocks_processed_count
 
-    # 🆕 V7.9：例假日檢查（台灣時間，週六=5、週日=6 自動跳出）
-    _check_time = datetime.utcnow() + timedelta(hours=8)
-    if _check_time.weekday() >= 5:
-        day_name = "週六" if _check_time.weekday() == 5 else "週日"
-        print(f"📅 今日為 {day_name}（{_check_time.strftime('%Y-%m-%d')}），例假日不執行，Radar 休息。")
-        _write_log_report(_check_time, status="Skipped-Holiday")
-        return
-
-    print("🌊 啟動彼我還楓姊夫戰情室 (V7.9 維運日誌版：例假日過濾＋log_report 自動產出)...")
+    print("🌊 啟動彼我還楓姊夫戰情室 (V9_Test：全週執行＋log_report 自動產出)...")
 
     # ── 載入本地快取（含 TTL 清理） ─────────────────────────────────────
     # 🆕 V7.8：啟動時自動清除超過 CACHE_TTL_HOURS 的過期資料
@@ -591,7 +583,7 @@ def main():
         "dashboard_stats": dashboard_stats,
         "pools": final_data_structure,
     }
-    with open("plum_blossom_data.json", 'w', encoding='utf-8') as f:
+    with open("test_plum_blossom_data.json", 'w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
     # ── 結束前最終寫盤（安全備援，即時寫盤已在每次 API 後執行）────────

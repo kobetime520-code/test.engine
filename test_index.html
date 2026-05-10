@@ -671,7 +671,7 @@
             });
 
         // 6. 維運日誌讀取（V7.9）
-        fetch('log_report.json?t=' + new Date().getTime())
+        fetch('test_log_report.json?t=' + new Date().getTime())
             .then(res => res.json())
             .then(log => {
                 const bar = document.getElementById('moly-status-bar');

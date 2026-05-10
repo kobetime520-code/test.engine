@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -30,26 +30,27 @@
             --ind-badge-bg: rgba(255, 255, 255, 0.1);
         }
 
+        /* 柔霧深洋 V8.1 — 降低亮度，保留海洋感 */
         [data-theme="light-ocean"] {
-            --ocean-bg: linear-gradient(135deg, #E0F2F1 0%, #B2EBF2 50%, #81D4FA 100%);
-            --panel-bg: rgba(255, 255, 255, 0.75);
-            --panel-border: rgba(0, 138, 162, 0.3);
-            --text-main: #003B46; 
-            --text-muted: #006064;
-            --neon-cyan: #00838F; 
-            --neon-green: #00897B; 
-            --neon-red: #D32F2F; 
-            --neon-gold: #F57F17; 
-            --title-bg: rgba(255, 255, 255, 0.6);
-            --badge-bg: rgba(0, 131, 143, 0.1);
-            --sim-bg: rgba(255, 255, 255, 0.5);
-            --input-bg: rgba(255, 255, 255, 0.8);
-            --watch-bg: rgba(0, 0, 0, 0.03);
-            --watch-border: rgba(0, 0, 0, 0.1);
-            --card-shadow: rgba(0, 96, 100, 0.15);
-            --log-bg: rgba(0, 131, 143, 0.05);
-            --note-bg: rgba(245, 127, 23, 0.05);
-            --ind-badge-bg: rgba(0, 131, 143, 0.1);
+            --ocean-bg: linear-gradient(160deg, #A8CCDA 0%, #6BAAC0 45%, #3D8BA8 100%);
+            --panel-bg: rgba(210, 236, 245, 0.84);
+            --panel-border: rgba(0, 110, 140, 0.28);
+            --text-main: #01232F;
+            --text-muted: #2E6070;
+            --neon-cyan: #006F82;
+            --neon-green: #007A68;
+            --neon-red: #B52828;
+            --neon-gold: #C06010;
+            --title-bg: rgba(190, 225, 240, 0.70);
+            --badge-bg: rgba(0, 110, 140, 0.12);
+            --sim-bg: rgba(200, 230, 242, 0.55);
+            --input-bg: rgba(225, 242, 250, 0.88);
+            --watch-bg: rgba(0, 0, 0, 0.05);
+            --watch-border: rgba(0, 0, 0, 0.12);
+            --card-shadow: rgba(10, 60, 85, 0.22);
+            --log-bg: rgba(0, 110, 140, 0.06);
+            --note-bg: rgba(192, 96, 16, 0.06);
+            --ind-badge-bg: rgba(0, 110, 140, 0.12);
         }
 
         body {
@@ -150,6 +151,55 @@
         .moly-status-badge.error { background: rgba(255,82,82,0.12); color: #FF5252; border: 1px solid #FF5252; }
         .moly-divider { width: 1px; height: 20px; background: var(--panel-border); flex-shrink: 0; }
         @media (max-width: 600px) { .moly-divider { display: none; } .moly-status-bar { gap: 10px 16px; } }
+
+        /* =========================================
+           魚池快速導航列 (V8.1)
+           ========================================= */
+        .pool-quick-nav {
+            position: sticky; top: 0; z-index: 200;
+            background: var(--panel-bg); backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--panel-border);
+            padding: 10px 16px; display: flex; gap: 8px;
+            overflow-x: auto; align-items: center;
+            box-shadow: 0 2px 12px var(--card-shadow);
+            scrollbar-width: none;
+        }
+        .pool-quick-nav::-webkit-scrollbar { display: none; }
+        .pool-nav-label { font-size: 11px; color: var(--text-muted); font-weight: bold; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; padding-right: 4px; border-right: 1px solid var(--panel-border); margin-right: 4px; }
+        .pool-nav-btn {
+            display: flex; align-items: center; gap: 5px; white-space: nowrap; flex-shrink: 0;
+            background: transparent; border: 1px solid var(--panel-border);
+            color: var(--text-muted); padding: 5px 12px; border-radius: 20px;
+            cursor: pointer; font-size: 13px; font-weight: bold;
+            transition: all 0.25s ease; font-family: inherit;
+        }
+        .pool-nav-btn:hover { background: var(--badge-bg); color: var(--neon-cyan); border-color: var(--neon-cyan); }
+        .pool-nav-btn.active { background: var(--badge-bg); color: var(--neon-cyan); border-color: var(--neon-cyan); box-shadow: 0 0 8px rgba(100,255,218,0.15); }
+        .pool-nav-count { font-size: 11px; background: var(--neon-cyan); color: #000; border-radius: 10px; padding: 1px 6px; font-weight: bold; opacity: 0.85; }
+        .pool-nav-btn.active .pool-nav-count { opacity: 1; }
+
+        /* =========================================
+           回頂端懸浮按鈕 (V8.1)
+           ========================================= */
+        .back-to-top-btn {
+            position: fixed; bottom: 28px; right: 24px; z-index: 500;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--panel-bg); border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan); font-size: 20px; cursor: pointer;
+            backdrop-filter: blur(8px); box-shadow: 0 4px 16px var(--card-shadow);
+            display: none; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .back-to-top-btn:hover { background: var(--badge-bg); transform: translateY(-2px); }
+
+        /* =========================================
+           版本歷程（移至頁尾，縮小存在感）
+           ========================================= */
+        .footer-log-section { max-width: 900px; margin: 0 auto 10px; }
+        .footer-log-toggle { background: transparent; border: 1px dashed var(--panel-border); border-radius: 8px; color: var(--text-muted); font-size: 12px; cursor: pointer; padding: 8px 18px; width: 100%; text-align: center; font-family: inherit; transition: 0.3s; letter-spacing: 0.5px; }
+        .footer-log-toggle:hover { color: var(--neon-gold); border-color: var(--neon-gold); }
+        .footer-log-content { display: none; }
+        .footer-log-content.open { display: block; }
     </style>
 </head>
 <body>
@@ -163,94 +213,19 @@
             <div class="system-alert">⚡ 核心引擎 V9 test 上線｜本地無菌主算 + 雲端靜態展示｜Path Immunity 跨硬碟免疫設計</div>
         </header>
 
-        <details class="info-section">
-            <summary>📜 改版歷程細節</summary>
-            <div class="log-content">
-                <b>🚀 V8.0 基地遷移＋本地自動化架構（2026-05-08）：</b>
-                <ul>
-                    <li><b>系統架構重大變革：</b>捨棄 GitHub Actions 線上運算，改採「本地無菌主算 + 雲端靜態展示」雙軌架構，本地端負責全部運算與 push，GitHub Pages 僅作靜態展示節點。</li>
-                    <li><b>極速偵測技術：</b>整合 FinMind Cache 快取機制，掃描全市場 API 消耗較舊架構降低 80%，單次完整掃描已可在 <b>1 分鐘內</b>完成。</li>
-                    <li><b>環境免疫設計（Path Immunity）：</b>實現動態路徑自動定位，支援跨硬碟基地遷移，路徑變動後程式不崩潰、不需手動修改設定。</li>
-                    <li><b>通訊模組預備：</b>底層程式碼重構完成 Line Notify 擴充介面，後續可一鍵接入訊號推播通知。</li>
-                </ul>
-                <hr style="border: 0; border-top: 1px dashed var(--panel-border); margin: 15px 0;">
-                <b>🆕 V8.0 互動排序 + 搜尋增強（2026-05-07）：</b>
-                <ul>
-                    <li><b>各魚池排序選擇器：</b>在每個魚池標題列右側新增下拉菜單，支援四種排序模式：預設（法人買超）、法人買超、現價高低、成交量大小，一鍵重排卡片。</li>
-                    <li><b>模糊搜尋 + 股名支援：</b>搜尋框從精確匹配改為 <code>includes()</code> 模糊搜尋，同時支援股號代碼與股名搜尋，輸入一個字元即可觸發。</li>
-                    <li><b>模擬倉折疊化：</b>將 Beta user 模擬倉改為 <code>&lt;details&gt;</code> 可折疊元件，預設收合，點擊標題展開，減少首屏視覺噪音。</li>
-                </ul>
-                <hr style="border: 0; border-top: 1px dashed var(--panel-border); margin: 15px 0;">
-                <b>✅ V7.9 維運日誌 + 自動推送（2026-05-02）：</b>
-                <ul>
-                    <li><b>維運日誌 log_report.json：</b>每次掃描結束後自動產出，記錄 API 消耗次數、快取命中數、處理檔數、執行狀態，供前端儀表板即時讀取。</li>
-                    <li><b>git_sync.py 自動推送：</b>本地執行時掃描完畢自動呼叫 git_sync.py，精準 add 三個戰報（plum_blossom_data.json、ocean_history.json、log_report.json）→ commit → push，無需手動操作。</li>
-                    <li><b>例假日智慧跳出：</b>偵測非交易日自動跳出，log_report.json 記錄 <code>status: "Skipped-Holiday"</code>，不消耗 API 額度。</li>
-                </ul>
-                <hr style="border: 0; border-top: 1px dashed var(--panel-border); margin: 15px 0;">
-                <b>✅ V7.8 持久化快取 30h TTL（2026-05-01）：</b>
-                <ul>
-                    <li><b>即時寫盤：</b>每次 FinMind 呼叫成功後立即寫入 finmind_cache.json，程式中斷不會遺失快取。</li>
-                    <li><b>TTL 調整 24h → 30h：</b>確保昨日盤後快取在今日仍可命中，跨日測試不重複消耗 API。</li>
-                    <li><b>自動清理：</b>啟動時自動清除逾期快取項目，避免快取無限膨脹。</li>
-                </ul>
-                <hr style="border: 0; border-top: 1px dashed var(--panel-border); margin: 15px 0;">
-                <b>✅ V7.7 FinMind 重試封裝（2026-05-01）：</b>
-                <ul>
-                    <li><b>fetch_finmind 重試邏輯封裝：</b>統一封裝 API 呼叫與重試機制，消除 Token 重複消耗問題，失敗時最多重試 2 次再回傳空值。</li>
-                </ul>
-                <hr style="border: 0; border-top: 1px dashed var(--panel-border); margin: 15px 0;">
-                <b>📊 V7.6 Dashboard 2.0版（2026-05-01）：</b>
-                <ul>
-                    <li><b>視覺化儀表板 Dashboard 2.0：</b>新增三大即時圖表區塊，資料來源為 <code>dashboard_stats</code> 欄位（由 radar.py 每日產出）。</li>
-                    <li><b>① 魚池多空佔比（Doughnut）：</b>統計全體命名魚池的「買入加碼 vs 靜候觀察」比例，快速掌握整體市場多空情緒。</li>
-                    <li><b>② 汪洋大魚產業熱力 TOP10（Horizontal Bar）：</b>顯示當日全市場掃描結果中強勢股最集中的前 10 大產業，一眼看出主流資金板塊。</li>
-                    <li><b>③ 各魚池健康指數（CSS Progress Bar）：</b>每個命名魚池的買入加碼佔比（%），搭配漸層色系呈現強弱分佈。</li>
-                </ul>
-                <b>🚀 V7.5 API 三劍客降載版（2026-05-01）：</b>
-                <ul>
-                    <li><b>① Yahoo MA5 前置預篩：</b>在呼叫 FinMind 籌碼 API 之前，先以 Yahoo 已下載的資料判斷 <code>收盤 &gt;= MA5</code>。若不符合，action 邏輯必為「靜候觀察」，直接跳過 FinMind 呼叫。本次實測攔截 <b>65 支</b>冗餘請求。</li>
-                    <li><b>② Yahoo 股價取代 FinMind 股價：</b>市場掃描與魚池監控全面改用 Yahoo 批量下載的股價資料計算，不再個別呼叫 FinMind 股價 API（每支節省 1 次）。Yahoo 未命中時才啟動備援，備援失敗才退回 FinMind 最後防線，確保資料完整性。</li>
-                    <li><b>③ TaiwanStockInfo 7 日快取：</b>股票名稱、產業、市場別等基本資料極少變動，改為獨立 <code>finmind_info_cache.json</code> 儲存，7 天內直接讀本地，不重複消耗 API。</li>
-                    <li><b>🔐 安全修復：</b>FinMind Token 重新修正為從 GitHub Secrets 環境變數讀取，排除硬碼風險。</li>
-                    <li><b>📊 實測效果：</b>FinMind API 消耗由 V7.4 的 <b>~430 次</b> 驟降至 <b>171 次</b>，實測降幅 <b>-60%</b>（超越預估目標）。</li>
-                </ul>
-                <hr style="border: 0; border-top: 1px dashed var(--panel-border); margin: 15px 0;">
-                <b>✅ V7.4 快取降載與戰術縮圈（2026-04-28）：</b>
-                <ul>
-                    <li><b>API 防呆快取：</b>導入本地 <code>finmind_cache.json</code> 機制，同日內重複測試執行不再重複消耗 API 額度。</li>
-                    <li><b>戰術性縮圈：</b>第一階段粗篩成交量門檻由 1,000 張提升至 <b>1,500 張</b>，過濾冷門股並大幅降低 API 負載。</li>
-                </ul>
-                <hr style="border: 0; border-top: 1px dashed var(--panel-border); margin: 15px 0;">
-                <b>✅ V7.3 混合引擎升級（2026-04-26）：</b>
-                <ul>
-                    <li><b>精準數據源：</b>導入 FinMind 精確數據。</li>
-                    <li><b>混合掃描架構：</b>Yahoo 快速粗篩 + FinMind 深度精濾。</li>
-                </ul>
-            </div>
-        </details>
-
-        <details class="info-section">
-            <summary>🌊 汪洋大魚 & 🐅 三日成虎 選股邏輯</summary>
-            <div class="log-content">
-                <b>🌊 汪洋大魚 (第一階段初選 — V7.6 三關篩選)：</b>
-                <ul>
-                    <li><b>1. 動能：</b>當日成交量 <b>>= 1,500 張</b>（V7.4 戰術縮圈）。</li>
-                    <li><b>2. 趨勢：</b>股價站穩 30 日均線（30MA）。</li>
-                    <li><b>3. 🆕 MA5 前置預判：</b>股價 >= 5 日均線（MA5），排除短線弱勢股，大幅降低無效 API 呼叫。</li>
-                    <li><b>4. 籌碼：</b>近 30 日三大法人合計呈現「淨買超」（通過前三關才呼叫 FinMind）。</li>
-                </ul>
-                <hr style="border: 0; border-top: 1px dashed var(--panel-border); margin: 15px 0;">
-                <b>🐅 三日成猛虎 (第二階段晉升)：</b>
-                <ul>
-                    <li><b>1. 持續力：</b>連續 3 個交易日皆符合「汪洋大魚」入池標準。</li>
-                    <li><b>2. 戰略意義：</b>代表籌碼與趨勢具備極強的延續性，為主力的波段進貨特徵。</li>
-                </ul>
-            </div>
-        </details>
-
-        <input type="text" id="global-search" class="search-box" placeholder="🛸 啟動聲納：輸入代碼開啟模擬探測...">
+        <input type="text" id="global-search" class="search-box" placeholder="🛸 啟動聲納：輸入代碼或股名搜尋...">
     </div>
+
+    <!-- ===== V8.1 魚池快速導航列 ===== -->
+    <nav class="pool-quick-nav" id="pool-quick-nav">
+        <span class="pool-nav-label">跳至魚池</span>
+        <button class="pool-nav-btn" data-target="pool-0">🌟 黃金 <span class="pool-nav-count" id="nav-count-0">-</span></button>
+        <button class="pool-nav-btn" data-target="pool-1">🐅 猛虎 <span class="pool-nav-count" id="nav-count-1">-</span></button>
+        <button class="pool-nav-btn" data-target="pool-2">🔥 爆發 <span class="pool-nav-count" id="nav-count-2">-</span></button>
+        <button class="pool-nav-btn" data-target="pool-3">🍁 永動 <span class="pool-nav-count" id="nav-count-3">-</span></button>
+        <button class="pool-nav-btn" data-target="pool-4">🔭 觀察 <span class="pool-nav-count" id="nav-count-4">-</span></button>
+        <button class="pool-nav-btn" data-target="pool-5">🌊 汪洋 <span class="pool-nav-count" id="nav-count-5">-</span></button>
+    </nav>
 
     <!-- ===== V7.9 維運狀態列 ===== -->
     <div class="moly-status-bar" id="moly-status-bar" style="display:none;">
@@ -299,9 +274,38 @@
 
     <main id="main-container"></main>
 
+    <!-- ===== 頁尾版本歷程 (V8.1 移至此處) ===== -->
+    <div class="footer-log-section" style="padding: 0 20px;">
+        <button class="footer-log-toggle" id="footer-log-toggle">📜 展開改版歷程 ▾</button>
+        <div class="footer-log-content info-section" id="footer-log-content" style="margin-top:8px; max-width:100%;">
+            <div class="log-content">
+                <b>🌊 汪洋大魚選股邏輯（四關篩選）：</b>
+                <ul>
+                    <li><b>1. 動能：</b>成交量 >= 1,500 張</li>
+                    <li><b>2. 趨勢：</b>股價站穩 30MA</li>
+                    <li><b>3. MA5 預判：</b>股價 >= MA5，排除短線弱勢股</li>
+                    <li><b>4. 籌碼：</b>近 30 日三大法人淨買超（通過前三關才呼叫 FinMind）</li>
+                </ul>
+                <b>🐅 三日成猛虎：</b>連續 3 個交易日符合汪洋大魚標準，自動晉升，代表籌碼與趨勢具高延續性。
+                <hr style="border: 0; border-top: 1px dashed var(--panel-border); margin: 15px 0;">
+                <b>🚀 V8.1 設計改版（2026-05-10）：</b>柔霧深洋主題、魚池快速導航列、版本歷程移至頁尾、回頂端按鈕。<br>
+                <b>🚀 V8.0（2026-05-08）：</b>本地無菌主算 + 雲端靜態展示雙軌架構、Path Immunity 設計、Line Notify 預備介面。<br>
+                <b>✅ V7.9（2026-05-02）：</b>log_report.json 維運日誌、git_sync.py 自動推送、例假日智慧跳出。<br>
+                <b>✅ V7.8（2026-05-01）：</b>快取 TTL 調整 30h、即時寫盤、自動清理逾期快取。<br>
+                <b>📊 V7.6（2026-05-01）：</b>Dashboard 2.0（多空佔比圓餅、產業熱力橫條、健康指數進度條）。<br>
+                <b>🚀 V7.5（2026-05-01）：</b>API 三劍客降載，消耗由 430 次降至 171 次（-60%）、Token 安全修復。<br>
+                <b>✅ V7.4（2026-04-28）：</b>finmind_cache.json 防呆快取、粗篩量能門檻提升至 1,500 張。<br>
+                <b>✅ V7.3（2026-04-26）：</b>導入 FinMind 精確數據、Yahoo 粗篩 + FinMind 深度精濾混合架構。
+            </div>
+        </div>
+    </div>
+
     <footer class="footer-copyright">
         <p>© <span id="current-year"></span> 彼夫有擇全域戰情室. All Rights Reserved.</p>
     </footer>
+
+    <!-- ===== V8.1 回頂端懸浮按鈕 ===== -->
+    <button class="back-to-top-btn" id="back-to-top" title="回到頂端">↑</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <script>
@@ -729,6 +733,79 @@
                 }
             });
         }
+
+        // =========================================
+        // V8.1 魚池快速導航列
+        // =========================================
+        const navPoolMap = [
+            "🌟 彼神黃金魚池",
+            "🐅 三日成猛虎水池",
+            "🔥 姊夫爆發小魚池",
+            "🍁 楓大永動魚池",
+            "🔭 測試員觀察水域",
+            "🌊 汪洋大魚"
+        ];
+
+        function initPoolNav(poolsData) {
+            document.querySelectorAll('.pool-section[data-pool-name]').forEach(sec => {
+                const pName = sec.getAttribute('data-pool-name');
+                const idx = navPoolMap.indexOf(pName);
+                if (idx >= 0) {
+                    sec.id = 'pool-nav-' + idx;
+                    const count = poolsData[pName] ? poolsData[pName].length : 0;
+                    const badge = document.getElementById('nav-count-' + idx);
+                    if (badge) badge.textContent = count;
+                }
+            });
+
+            document.querySelectorAll('.pool-nav-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = btn.getAttribute('data-target').replace('pool-', '');
+                    const sec = document.getElementById('pool-nav-' + idx);
+                    if (!sec) return;
+                    sec.setAttribute('open', '');
+                    setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+                    document.querySelectorAll('.pool-nav-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            let currentIdx = -1;
+            document.querySelectorAll('.pool-section[id^="pool-nav-"]').forEach(sec => {
+                if (sec.getBoundingClientRect().top <= 120) {
+                    currentIdx = parseInt(sec.id.replace('pool-nav-', ''));
+                }
+            });
+            document.querySelectorAll('.pool-nav-btn').forEach(btn => {
+                const idx = parseInt(btn.getAttribute('data-target').replace('pool-', ''));
+                btn.classList.toggle('active', idx === currentIdx);
+            });
+            const topBtn = document.getElementById('back-to-top');
+            if (topBtn) topBtn.style.display = window.scrollY > 400 ? 'flex' : 'none';
+        });
+
+        const topBtn = document.getElementById('back-to-top');
+        if (topBtn) topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // 頁尾版本歷程展開
+        const footerToggle = document.getElementById('footer-log-toggle');
+        const footerContent = document.getElementById('footer-log-content');
+        if (footerToggle && footerContent) {
+            footerToggle.addEventListener('click', () => {
+                const isOpen = footerContent.classList.toggle('open');
+                footerToggle.textContent = isOpen ? '📜 收合改版歷程 ▴' : '📜 展開改版歷程 ▾';
+            });
+        }
+
+        // 等待 main-container 渲染完畢後初始化導航列
+        new MutationObserver((_, obs) => {
+            if (fullData && document.querySelector('.pool-section[data-pool-name]')) {
+                obs.disconnect();
+                initPoolNav(fullData.pools);
+            }
+        }).observe(document.getElementById('main-container'), { childList: true });
     </script>
 </body>
 </html>

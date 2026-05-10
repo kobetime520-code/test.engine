@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌌Right and Left 模擬選股戰情室</title>
+    <title>Team Stock實驗室</title>
     <style>
         /* =========================================
            1. 核心主題設定
@@ -30,27 +30,27 @@
             --ind-badge-bg: rgba(255, 255, 255, 0.1);
         }
 
-        /* 柔霧深洋 V8.1 — 降低亮度，保留海洋感 */
+        /* 柔霧深洋 V8.1 — 降低亮度 + 強化文字對比 */
         [data-theme="light-ocean"] {
-            --ocean-bg: linear-gradient(160deg, #A8CCDA 0%, #6BAAC0 45%, #3D8BA8 100%);
-            --panel-bg: rgba(210, 236, 245, 0.84);
-            --panel-border: rgba(0, 110, 140, 0.28);
-            --text-main: #01232F;
-            --text-muted: #2E6070;
-            --neon-cyan: #006F82;
-            --neon-green: #007A68;
-            --neon-red: #B52828;
-            --neon-gold: #C06010;
-            --title-bg: rgba(190, 225, 240, 0.70);
-            --badge-bg: rgba(0, 110, 140, 0.12);
-            --sim-bg: rgba(200, 230, 242, 0.55);
-            --input-bg: rgba(225, 242, 250, 0.88);
-            --watch-bg: rgba(0, 0, 0, 0.05);
-            --watch-border: rgba(0, 0, 0, 0.12);
-            --card-shadow: rgba(10, 60, 85, 0.22);
-            --log-bg: rgba(0, 110, 140, 0.06);
-            --note-bg: rgba(192, 96, 16, 0.06);
-            --ind-badge-bg: rgba(0, 110, 140, 0.12);
+            --ocean-bg: linear-gradient(160deg, #B8D8E4 0%, #7EBAD0 45%, #4E9AB6 100%);
+            --panel-bg: rgba(220, 241, 250, 0.92);
+            --panel-border: rgba(0, 95, 125, 0.30);
+            --text-main: #010E18;
+            --text-muted: #123D50;
+            --neon-cyan: #004E65;
+            --neon-green: #005E50;
+            --neon-red: #A01E1E;
+            --neon-gold: #9A4500;
+            --title-bg: rgba(200, 232, 246, 0.94);
+            --badge-bg: rgba(0, 95, 125, 0.13);
+            --sim-bg: rgba(208, 237, 248, 0.65);
+            --input-bg: rgba(230, 246, 252, 0.94);
+            --watch-bg: rgba(0, 0, 0, 0.06);
+            --watch-border: rgba(0, 0, 0, 0.15);
+            --card-shadow: rgba(5, 50, 72, 0.22);
+            --log-bg: rgba(0, 95, 125, 0.07);
+            --note-bg: rgba(154, 69, 0, 0.07);
+            --ind-badge-bg: rgba(0, 95, 125, 0.13);
         }
 
         body {
@@ -200,6 +200,51 @@
         .footer-log-toggle:hover { color: var(--neon-gold); border-color: var(--neon-gold); }
         .footer-log-content { display: none; }
         .footer-log-content.open { display: block; }
+
+        /* =========================================
+           太空銀河海洋 新聞雙按鈕 (Zoey Design)
+           ========================================= */
+        .news-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .btn-news {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 13px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            font-family: inherit;
+            white-space: nowrap;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: box-shadow 0.25s ease, transform 0.15s ease;
+        }
+
+        .btn-news:active { transform: scale(0.97); }
+
+        .btn-yahoo {
+            background: linear-gradient(135deg, rgba(13,50,140,0.75) 0%, rgba(13,159,223,0.75) 100%);
+            color: #7DDFFF;
+            border-color: rgba(13,159,223,0.4);
+        }
+
+        .btn-yahoo:hover { box-shadow: 0 0 12px rgba(13,159,223,0.55), 0 0 4px rgba(13,159,223,0.3); }
+
+        .btn-fubon {
+            background: linear-gradient(135deg, rgba(58,21,120,0.75) 0%, rgba(139,63,212,0.75) 100%);
+            color: #D8A8FF;
+            border-color: rgba(139,63,212,0.4);
+        }
+
+        .btn-fubon:hover { box-shadow: 0 0 12px rgba(139,63,212,0.55), 0 0 4px rgba(139,63,212,0.3); }
     </style>
 </head>
 <body>
@@ -208,7 +253,7 @@
 
     <div class="top-nav">
         <header class="header">
-            <h1>🌌Right and Left 模擬選股戰情室 <span class="version-badge">V9 test</span></h1>
+            <h1>Team Stock實驗室 <span class="version-badge">V9 test</span></h1>
             <div id="update-time" class="update-time">衛星同步中...</div>
             <div class="system-alert">⚡ 核心引擎 V9 test 上線｜本地無菌主算 + 雲端靜態展示｜Path Immunity 跨硬碟免疫設計</div>
         </header>
@@ -378,9 +423,14 @@
                         <div class="action-box ${isBuy ? 'buy' : 'watch'}" style="flex: 1; margin-top: 0;">
                             ${isBuy ? '🚀 買入加碼' : '📡 靜候觀察'}
                         </div>
-                        <a href="https://tw.stock.yahoo.com/quote/${s.stock_id}/news" target="_blank" style="text-decoration: none; display: flex; align-items: center; justify-content: center; padding: 0 15px; background: rgba(100, 255, 218, 0.05); color: var(--neon-cyan); border: 1px solid var(--panel-border); border-radius: 6px; font-weight: bold; font-size: 14px; transition: 0.3s; white-space: nowrap;">
-                            📰 查新聞
-                        </a>
+                        <div class="news-cell">
+                            <a href="https://tw.finance.yahoo.com/quote/${s.stock_id}.TW/news" target="_blank" class="btn-news btn-yahoo">
+                                📰 Yahoo 新聞
+                            </a>
+                            <a href="https://www.moneylink.com.tw/Stocks/StockNewsInfo.aspx?id=${s.stock_id}" target="_blank" class="btn-news btn-fubon">
+                                📰 富聯網新聞
+                            </a>
+                        </div>
                     </div>
 
                     <details style="margin-top: 15px;">

@@ -35,7 +35,7 @@ LOG_REPORT_FILE = "test_log_report.json"       # 🆕 V7.9：維運日誌輸出�
 
 # --- 2. 魚池設定區 ---
 POOL_SETTINGS = {
-    "🔥 姊夫爆發小魚池": ["6155", "2323", "3236"],  # V9_test 手動白名單，運行中動態注入猛虎前三強
+    "🔥 姊夫爆發小魚池": ["6155", "2323", "3236", "1513", "1519"],  # V9_test 手動白名單，運行中動態注入猛虎最強
     "🍁 楓大永動魚池": ["2308", "00923", "00910", "2327", "1785"],
     "🌟 彼神黃金魚池": ["3028", "2484", "3221", "8182", "8289"],
     "🔭 測試員觀察水域": ["5289", "5292", "3042", "4749", "6770", "1711"],
@@ -497,12 +497,12 @@ def main():
         if count >= 3 and sid not in POOL_SETTINGS["🐅 三日成猛虎水池"]:
             POOL_SETTINGS["🐅 三日成猛虎水池"].append(sid)
 
-    # 🆕 V7.6：自動將猛虎池前三強注入姊夫爆發小魚池（去重後）
-    tiger_top3 = POOL_SETTINGS["🐅 三日成猛虎水池"][:3]
-    for sid in tiger_top3:
+    # 🆕 V7.6：自動將猛虎池最強一支注入姊夫爆發小魚池（去重後）
+    tiger_top1 = POOL_SETTINGS["🐅 三日成猛虎水池"][:1]
+    for sid in tiger_top1:
         if sid not in POOL_SETTINGS["🔥 姊夫爆發小魚池"]:
             POOL_SETTINGS["🔥 姊夫爆發小魚池"].append(sid)
-    print(f"  - 🔥 姊夫魚池整編：手動白名單 + 猛虎前三 = {POOL_SETTINGS['🔥 姊夫爆發小魚池']}")
+    print(f"  - 🔥 姊夫魚池整編：手動白名單 + 猛虎最強 = {POOL_SETTINGS['🔥 姊夫爆發小魚池']}")
 
     with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
         json.dump(new_history, f, ensure_ascii=False, indent=2)

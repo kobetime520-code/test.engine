@@ -1,5 +1,7 @@
-yfinance
-pandas
-requests
-FinMind
-beautifulsoup4
+IyBNYWdpYyBMYWIg5YWx55Sc5L2/6LOH5YiG
+# Wesley 負責維護此清單
+
+pytest>=7.0.0
+requests>=2.28.0
+pandas>=2.0.0
+openpyxl>=3.1.0

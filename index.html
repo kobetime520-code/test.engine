@@ -231,11 +231,11 @@ footer{position:relative;z-index:1;padding:40px 20px;text-align:center;border-to
       <div class="calc-inputs">
         <div class="input-group">
           <label>初始本金<span id="lbl-p">300,000 元</span></label>
-          <input type="range" id="sl-p" min="50000" max="2000000" step="50000" value="300000">
+          <input type="range" id="sl-p" min="10000" max="2000000" step="5000" value="300000">
         </div>
         <div class="input-group">
           <label>每月定投<span id="lbl-m">5,000 元</span></label>
-          <input type="range" id="sl-m" min="1000" max="50000" step="1000" value="5000">
+          <input type="range" id="sl-m" min="0" max="50000" step="1000" value="5000">
         </div>
         <div class="input-group">
           <label>年化報酬率<span id="lbl-r">8.0 %</span></label>
@@ -334,7 +334,6 @@ class Particle{
   }
   draw(){
     ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
-    ctx.fillStyle=this.c.replace(')',`,${this.a})`).replace('rgb','rgba').replace('#','');
     ctx.globalAlpha=this.a;ctx.fillStyle=this.c;ctx.fill();ctx.globalAlpha=1;
   }
 }

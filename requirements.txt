@@ -1,4 +1,4 @@
-IyBNYWdpYyBMYWIg5YWx55Sc5L2/6LOH5YiG
+# Magic Lab 必備套件清單
 # Wesley 負責維護此清單
 
 pytest>=7.0.0

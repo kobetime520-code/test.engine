@@ -31,22 +31,14 @@ jobs:
       - name: 4. 啟動 Magic_Lab 核心引擎
         run: |
           echo '🔬 Magic_Lab 核心引擎啟動...'
-          if [ -f "test_radar.py" ]; then
-            python -u test_radar.py
-          else
-            echo '⚠️ 核心引擎腳本尚未就位，Wesley 待命中...'
-          fi
+          python -u test_radar.py
 
       - name: 5. 自動上傳 Magic_Lab 最新戰報
+        continue-on-error: true
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "Magic_Lab Bot"
-          git add terry/ miles/ wayne/ wesley/ --all 2>/dev/null || true
-          for file in test_plum_blossom_data.json test_ocean_history.json test_log_report.json; do
-            if [ -f "$file" ]; then
-              git add "$file"
-            fi
-          done
+          git add --all
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
@@ -64,8 +56,8 @@ jobs:
 
       - name: 驗證四人工作區架構
         run: |
-          [ -d terry ] && echo '✅ Terry OK' || (echo '❌ Terry 缺失' && exit 1)
-          [ -d miles ] && echo '✅ Miles OK' || (echo '❌ Miles 缺失' && exit 1)
-          [ -d wayne ] && echo '✅ Wayne OK' || (echo '❌ Wayne 缺失' && exit 1)
+          [ -d terry ]  && echo '✅ Terry OK'  || (echo '❌ Terry 缺失'  && exit 1)
+          [ -d miles ]  && echo '✅ Miles OK'  || (echo '❌ Miles 缺失'  && exit 1)
+          [ -d wayne ]  && echo '✅ Wayne OK'  || (echo '❌ Wayne 缺失'  && exit 1)
           [ -d wesley ] && echo '✅ Wesley OK' || (echo '❌ Wesley 缺失' && exit 1)
           echo '🏆 Magic_Lab 四人就位！'

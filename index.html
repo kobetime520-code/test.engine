@@ -148,6 +148,11 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
 .footer-member{font-size:.82rem;color:var(--muted)}
 .footer-copy{font-size:.72rem;color:#3a4455;margin-top:12px;letter-spacing:.08em}
 
+/* ── WARROOM PAGE ── */
+#page-warroom{padding:0;margin-top:56px;min-height:calc(100vh - 56px)}
+#page-warroom.active{display:flex;flex-direction:column}
+#warroom-iframe{flex:1;width:100%;border:none;min-height:calc(100vh - 56px)}
+
 @media(max-width:600px){
   .nav-inner{padding:0 16px}
   .tab-btn{padding:0 10px;font-size:.75rem}
@@ -171,6 +176,7 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
       <button class="tab-btn" onclick="showTab('work')">⑤ 工作自由</button>
       <button class="tab-btn" onclick="showTab('life')">⑥ 生活儀表板</button>
       <button class="tab-btn" onclick="showTab('team')">⑦ 團隊</button>
+      <button class="tab-btn" onclick="showTab('warroom')">⑧ 戰情室</button>
     </div>
   </div>
 </nav>
@@ -432,7 +438,6 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
     <h2 class="sec-title">生活儀表板</h2>
     <p class="sec-sub">五大工具，每人只看到自己的記錄（localStorage 私人儲存）。</p>
     <div class="tool-grid">
-      <!-- 每日消費支出 -->
       <div class="tool-card" style="border-color:rgba(243,156,18,.25)">
         <div class="tc-head"><div class="tc-icon">💳</div><div><div class="tc-title">每日消費支出</div><div class="tc-sub">快速記帳 · 月統計 · 超預算警示</div></div></div>
         <div class="exp-cats" id="exp-cats">
@@ -452,7 +457,6 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
         <div id="exp-stats" style="margin-top:10px;font-size:.8rem"></div>
         <div style="margin-top:10px;text-align:right"><button class="btn btn-outline btn-sm" onclick="clearExp()">月底清零</button></div>
       </div>
-      <!-- 每日運動紀錄 -->
       <div class="tool-card" style="border-color:rgba(46,213,115,.25)">
         <div class="tc-head"><div class="tc-icon">🏃</div><div><div class="tc-title">每日運動紀錄</div><div class="tc-sub">記錄運動 · 卡路里 · 本週統計</div></div></div>
         <div class="exp-cats" id="sport-cats">
@@ -471,7 +475,6 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
         <div id="sport-stats" style="margin-top:10px;font-size:.8rem"></div>
         <div style="margin-top:10px;text-align:right"><button class="btn btn-outline btn-sm" onclick="clearSport()">清空紀錄</button></div>
       </div>
-      <!-- 旅遊規劃 -->
       <div class="tool-card">
         <div class="tc-head"><div class="tc-icon">✈️</div><div><div class="tc-title">旅遊規劃工具</div><div class="tc-sub">輸入參數 → 生成行程 + 預算分配</div></div></div>
         <input type="text" id="travel-dest" placeholder="目的地（如：日本東京）" style="margin-bottom:8px">
@@ -486,7 +489,6 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
         <div style="display:flex;gap:8px;margin:8px 0"><button class="btn btn-gold btn-sm" onclick="runTravel()">規劃行程</button><button class="btn btn-outline btn-sm" onclick="copyOut('travel-out')">複製</button></div>
         <div id="travel-out" class="out-box" style="min-height:100px"></div>
       </div>
-      <!-- 家庭財務規劃 -->
       <div class="tool-card">
         <div class="tc-head"><div class="tc-icon">💰</div><div><div class="tc-title">家庭財務規劃</div><div class="tc-sub">50/30/20 法則 · 保險缺口 · 里程碑</div></div></div>
         <input type="number" id="fin-income" placeholder="月收入（元）" style="margin-bottom:8px" value="80000">
@@ -496,7 +498,6 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
         <div style="display:flex;gap:8px;margin:8px 0"><button class="btn btn-gold btn-sm" onclick="runFinance()">產生規劃</button><button class="btn btn-outline btn-sm" onclick="copyOut('fin-out')">複製</button></div>
         <div id="fin-out" class="out-box" style="min-height:80px"></div>
       </div>
-      <!-- 育兒規劃 -->
       <div class="tool-card">
         <div class="tc-head"><div class="tc-icon">👶</div><div><div class="tc-title">育兒規劃工具</div><div class="tc-sub">教育費試算 · 基金複利計畫</div></div></div>
         <div style="display:flex;gap:8px;margin-bottom:8px">
@@ -536,6 +537,11 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
   </div>
 </div>
 
+<!-- ⑧ 戰情室報馬仔 -->
+<div id="page-warroom" class="page">
+  <iframe src="warroom.html" id="warroom-iframe" title="戰情室報馬仔"></iframe>
+</div>
+
 <footer>
   <div class="footer-logo">Magic<span>Lab</span></div>
   <div class="footer-team">
@@ -571,7 +577,7 @@ function showTab(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-  const idx={blueprint:0,monthly:1,compound:2,wealth:3,work:4,life:5,team:6};
+  const idx={blueprint:0,monthly:1,compound:2,wealth:3,work:4,life:5,team:6,warroom:7};
   document.querySelectorAll('.tab-btn')[idx[name]].classList.add('active');
   window.location.hash=name;
   if(name==='wealth')setTimeout(()=>{drawWChart();drawRadar();initDiscipline()},50);
@@ -746,23 +752,27 @@ function renderExp(){
   const catTotals={};records.forEach(r=>{catTotals[r.cat]=(catTotals[r.cat]||0)+r.amt});
   drawExpPie(catTotals);renderExpStats(catTotals,records);
 }
-function drawExpPie(catTotals){
-  const c=document.getElementById('exp-pie'),cx=c.getContext('2d');cx.clearRect(0,0,140,140);
-  const entries=Object.entries(catTotals);if(!entries.length){cx.fillStyle='rgba(255,255,255,.06)';cx.beginPath();cx.arc(70,70,55,0,Math.PI*2);cx.fill();return}
-  const total=entries.reduce((a,[,v])=>a+v,0);const colors=['#f39c12','#2980b9','#8e44ad','#e74c3c','#27ae60'];
-  let angle=-Math.PI/2;entries.forEach(([k,v],i)=>{const slice=v/total*Math.PI*2;cx.beginPath();cx.moveTo(70,70);cx.arc(70,70,55,angle,angle+slice);cx.fillStyle=colors[i%colors.length];cx.fill();angle+=slice});
+function drawExpPie(cats){
+  const c=document.getElementById('exp-pie'),cx=c.getContext('2d');
+  cx.clearRect(0,0,140,140);
+  const entries=Object.entries(cats);if(!entries.length)return;
+  const total=entries.reduce((a,[,v])=>a+v,0);
+  const colors=['#f39c12','#e74c3c','#2980b9','#27ae60','#8e44ad'];
+  let angle=-Math.PI/2;
+  entries.forEach(([cat,val],i)=>{const slice=val/total*Math.PI*2;cx.beginPath();cx.moveTo(70,70);cx.arc(70,70,55,angle,angle+slice);cx.closePath();cx.fillStyle=colors[i%colors.length];cx.fill();angle+=slice});
 }
-function renderExpStats(catTotals,records){
+function renderExpStats(cats,records){
   const el=document.getElementById('exp-stats');
   if(!records||!records.length){el.innerHTML='';return}
-  const total=Object.values(catTotals).reduce((a,b)=>a+b,0);
-  const cats=['餐飲','交通','娛樂','購物','其他'];const colors=['#f39c12','#2980b9','#8e44ad','#e74c3c','#27ae60'];
-  el.innerHTML='<div style="margin-top:8px">'+cats.map((cat,i)=>{const amt=catTotals[cat]||0;const pct=total?Math.round(amt/total*100):0;return`<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-bottom:3px"><span>${cat}</span><span style="color:${colors[i]}">${amt.toLocaleString('zh-TW')} 元 (${pct}%)</span></div><div class="budget-bar"><div class="budget-fill" style="width:${pct}%;background:${colors[i]}"></div></div></div>`}).join('')+'<div style="padding-top:8px;border-top:1px solid rgba(255,255,255,.08);font-size:.82rem;color:var(--muted);display:flex;justify-content:space-between"><span>本月合計</span><span style="color:var(--gold);font-weight:600">'+total.toLocaleString('zh-TW')+' 元</span></div></div>';
+  const total=Object.values(cats).reduce((a,b)=>a+b,0);
+  const budget=+localStorage.getItem('ml_budget')||10000;
+  const pct=Math.min(100,Math.round(total/budget*100));
+  const color=pct>=90?'var(--terry)':pct>=70?'var(--gold)':'var(--wayne)';
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">本月支出</span><span style="color:${color};font-weight:600">${total.toLocaleString('zh-TW')} 元</span></div><div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${color};border-radius:2px;transition:width .4s"></div></div><div style="font-size:.7rem;color:var(--muted);margin-top:3px">預算使用 ${pct}%</div>`;
 }
-function clearExp(){if(confirm('確定要清零本月記錄嗎？')){const records=JSON.parse(localStorage.getItem('ml_exp')||'[]');const hist=JSON.parse(localStorage.getItem('ml_exp_hist')||'[]');const now=new Date();hist.push({month:now.getFullYear()+'/'+(now.getMonth()+1),records});localStorage.setItem('ml_exp_hist',JSON.stringify(hist));localStorage.setItem('ml_exp','[]');renderExp()}}
-renderExp();
+function clearExp(){if(confirm('確定清零本月支出？')){localStorage.removeItem('ml_exp');renderExp()}}
 
-// ── 運動紀錄 ──
+// 運動
 const calMap={跑步:8,健身:6,游泳:7,瑜伽:3,其他:5};
 let sportCat='跑步';
 function selSport(btn,cat){sportCat=cat;document.querySelectorAll('#sport-cats .cat-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
@@ -781,48 +791,34 @@ function renderSport(){
   const records=JSON.parse(localStorage.getItem('ml_sport')||'[]');
   const el=document.getElementById('sport-list');
   if(!records.length){el.innerHTML='<div style="text-align:center;color:var(--muted);padding:16px;font-size:.82rem">尚無紀錄，開始運動吧！</div>';renderSportStats([]);return}
-  el.innerHTML=records.slice().reverse().slice(0,15).map(r=>`<div class="exp-item"><div><div>${r.cat}${r.note?' · '+r.note:''}</div><div class="ei-cat">${r.date}</div></div><div class="ei-amt">${r.min}分 · ${r.kcal}kcal</div></div>`).join('');
+  el.innerHTML=records.slice().reverse().slice(0,10).map(r=>`<div class="exp-item"><div><div>${r.cat}${r.note?' · '+r.note:''}</div><div class="ei-cat">${r.date}</div></div><div style="text-align:right"><div style="color:var(--wayne);font-weight:600">${r.min} 分鐘</div><div style="font-size:.7rem;color:var(--muted)">${r.kcal} kcal</div></div></div>`).join('');
   renderSportStats(records);
 }
 function renderSportStats(records){
-  const statsEl=document.getElementById('sport-stats');
-  if(!records.length){statsEl.innerHTML='';return}
-  const now=new Date();const monday=new Date(now);monday.setDate(now.getDate()-now.getDay()+1);monday.setHours(0,0,0,0);
-  const weekRecs=records.filter(r=>{const d=new Date(r.date.replace(/\//g,'-'));return d>=monday});
-  const totalMin=weekRecs.reduce((a,r)=>a+r.min,0);const totalKcal=weekRecs.reduce((a,r)=>a+r.kcal,0);
+  const el=document.getElementById('sport-stats');
+  if(!records.length){el.innerHTML='';return}
+  const now=new Date();const weekStart=new Date(now);weekStart.setDate(now.getDate()-now.getDay());
+  const weekRecs=records.filter(r=>{const d=new Date(r.date.replace(/\//g,'-'));return d>=weekStart});
+  const totalMin=weekRecs.reduce((a,r)=>a+r.min,0);
+  const totalKcal=weekRecs.reduce((a,r)=>a+r.kcal,0);
   const days=new Set(weekRecs.map(r=>r.date)).size;
-  const color=days>=5?'#2ed573':days>=3?'#ffa502':'#ff4757';
-  statsEl.innerHTML=`<div style="display:flex;gap:10px;flex-wrap:wrap">
-    <div style="flex:1;min-width:70px;background:rgba(46,213,115,.08);border-radius:8px;padding:8px;text-align:center"><div style="font-size:1.2rem;font-weight:600;color:#2ed573">${totalMin}</div><div style="color:var(--muted);font-size:.72rem">本週分鐘</div></div>
-    <div style="flex:1;min-width:70px;background:rgba(255,165,2,.08);border-radius:8px;padding:8px;text-align:center"><div style="font-size:1.2rem;font-weight:600;color:#ffa502">${totalKcal}</div><div style="color:var(--muted);font-size:.72rem">本週卡路里</div></div>
-    <div style="flex:1;min-width:70px;background:rgba(255,255,255,.05);border-radius:8px;padding:8px;text-align:center"><div style="font-size:1.2rem;font-weight:600;color:${color}">${days}/7</div><div style="color:var(--muted);font-size:.72rem">運動天數</div></div>
-  </div>`;
+  const color=days>=5?'var(--wayne)':days>=3?'var(--gold)':'var(--terry)';
+  el.innerHTML=`<div style="background:rgba(255,255,255,.03);border-radius:8px;padding:10px;border:1px solid var(--border)"><div style="font-size:.72rem;color:var(--muted);margin-bottom:6px;letter-spacing:.06em">本週統計</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center"><div><div style="font-size:1rem;font-weight:700;color:${color}">${days}</div><div style="font-size:.68rem;color:var(--muted)">天</div></div><div><div style="font-size:1rem;font-weight:700;color:var(--miles)">${totalMin}</div><div style="font-size:.68rem;color:var(--muted)">分鐘</div></div><div><div style="font-size:1rem;font-weight:700;color:var(--gold)">${totalKcal}</div><div style="font-size:.68rem;color:var(--muted)">kcal</div></div></div></div>`;
 }
-function clearSport(){if(confirm('確定要清空所有運動紀錄嗎？')){localStorage.setItem('ml_sport','[]');renderSport()}}
-renderSport();
+function clearSport(){if(confirm('確定清空所有運動紀錄？')){localStorage.removeItem('ml_sport');renderSport()}}
 
-function runTravel(){
-  const dest=document.getElementById('travel-dest').value.trim();const days=+document.getElementById('travel-days').value;const ppl=+document.getElementById('travel-ppl').value;const budget=+document.getElementById('travel-budget').value;const style=document.getElementById('travel-style').value;
-  if(!dest){document.getElementById('travel-out').textContent='請輸入目的地。';return}
-  const styles={culture:'文化探索',food:'美食之旅',nature:'自然風光',shopping:'購物血拼'};
-  const perDay=Math.round(budget/days),perPerson=Math.round(budget/ppl);
-  const hotel=Math.round(budget*0.35);const food=Math.round(budget*0.25);const transport=Math.round(budget*0.2);const activity=Math.round(budget*0.15);const misc=budget-hotel-food-transport-activity;
-  document.getElementById('travel-out').textContent=`✈️ ${dest} · ${days}天 · ${ppl}人 · ${styles[style]}\n\n【預算分配】\n住宿：${hotel.toLocaleString('zh-TW')} 元 (35%)\n餐飲：${food.toLocaleString('zh-TW')} 元 (25%)\n交通：${transport.toLocaleString('zh-TW')} 元 (20%)\n活動：${activity.toLocaleString('zh-TW')} 元 (15%)\n雜費：${misc.toLocaleString('zh-TW')} 元 (5%)\n每人均攤：${perPerson.toLocaleString('zh-TW')} 元\n每日平均：${perDay.toLocaleString('zh-TW')} 元\n\n【${styles[style]}行程架構】\n第1天：抵達、check-in、熟悉周邊\n第2~${days-1}天：主要景點 / 體驗安排\n最後一天：購物掃貨、整理行李、返程\n\n💡 建議：出發前 3 個月訂機票最划算，住宿選市中心交通方便處。`
-}
-function runFinance(){
-  const income=+document.getElementById('fin-income').value;const fixed=+document.getElementById('fin-fixed').value;const goal=+document.getElementById('fin-goal').value;const risk=document.getElementById('fin-risk').value;
-  const needs=Math.round(income*0.5);const wants=Math.round(income*0.3);const save=Math.round(income*0.2);const months=save>0?Math.ceil(goal/save):999;
-  const risks={low:'保守型：定存＋債券為主（預期年化 3-5%）',mid:'穩健型：股債各半（預期年化 6-9%）',high:'積極型：股票為主（預期年化 10%+）'};
-  document.getElementById('fin-out').textContent=`💰 家庭財務規劃\n月收入：${income.toLocaleString('zh-TW')} 元\n\n【50/30/20 預算分配】\n必要支出 50%：${needs.toLocaleString('zh-TW')} 元\n想要支出 30%：${wants.toLocaleString('zh-TW')} 元\n儲蓄投資 20%：${save.toLocaleString('zh-TW')} 元\n\n【緊急備用金建議】\n目標：${(fixed*6).toLocaleString('zh-TW')} 元（6個月固定支出）\n\n【達成儲蓄目標】\n目標：${goal.toLocaleString('zh-TW')} 元\n每月儲蓄：${save.toLocaleString('zh-TW')} 元\n預計：${months} 個月後達標\n\n【投資風格】\n${risks[risk]}`
-}
-function runKid(){
-  const age=+document.getElementById('kid-age').value;const edu=document.getElementById('kid-edu').value;const monthly=+document.getElementById('kid-budget').value;const goal=document.getElementById('kid-goal').value;
-  const yearsLeft=18-age;const eduCosts={local:{university:200,master:300,phd:400},abroad:{university:800,master:1000,phd:1400},both:{university:500,master:700,phd:1000}};
-  const cost=(eduCosts[edu][goal]||300)*10000;
-  let assets=0;const mr=Math.pow(1.08,1/12)-1;for(let i=0;i<yearsLeft*12;i++)assets=(assets+monthly)*(1+mr);
-  const goals={university:'大學學士',master:'碩士',phd:'博士'};const edus={local:'國內升學',abroad:'海外留學',both:'國內+海外'};
-  document.getElementById('kid-out').textContent=`👶 育兒教育規劃\n孩子目前 ${age} 歲，距就學 ${yearsLeft} 年\n目標：${edus[edu]} · ${goals[goal]}\n\n【教育費用試算】\n預估總費用：${cost.toLocaleString('zh-TW')} 元\n\n【教育基金複利計畫】\n每月投入：${monthly.toLocaleString('zh-TW')} 元\n年化報酬：8%（穩健型）\n${yearsLeft} 年後累積：${Math.round(assets).toLocaleString('zh-TW')} 元\n${assets>=cost?'✅ 預計足夠支付教育費用！':'⚠️ 缺口約 '+(cost-Math.round(assets)).toLocaleString('zh-TW')+' 元，建議增加月投入'}\n\n【各階段備忘】\n學齡前（0-6歲）：語言啟蒙、閱讀習慣\n國小（6-12歲）：才藝探索、運動習慣\n國高中（12-18歲）：升學準備、自主學習\n大學+：視野拓展、職涯規劃`
-}
+// 旅遊
+function runTravel(){const dest=document.getElementById('travel-dest').value.trim();const days=+document.getElementById('travel-days').value;const ppl=+document.getElementById('travel-ppl').value;const budget=+document.getElementById('travel-budget').value;const style=document.getElementById('travel-style').value;if(!dest){document.getElementById('travel-out').textContent='請輸入目的地。';return}const styleMap={culture:'文化探索',food:'美食之旅',nature:'自然風光',shopping:'購物血拼'};const bPerDay=Math.round(budget/days);const bFlight=Math.round(budget*0.3);const bHotel=Math.round(budget*0.3);const bFood=Math.round(budget*0.2);const bAct=Math.round(budget*0.2);document.getElementById('travel-out').textContent=`✈️ ${dest} ${days}天${ppl}人 ${styleMap[style]}行程\n\n預算分配（總 ${budget.toLocaleString('zh-TW')} 元）\n• 機票：${bFlight.toLocaleString('zh-TW')} 元（${Math.round(bFlight/ppl).toLocaleString('zh-TW')}/人）\n• 住宿：${bHotel.toLocaleString('zh-TW')} 元（${days}晚）\n• 餐飲：${bFood.toLocaleString('zh-TW')} 元\n• 活動門票：${bAct.toLocaleString('zh-TW')} 元\n每日可用：${bPerDay.toLocaleString('zh-TW')} 元\n\n行程建議：第一天適應時差，第二至${days-1}天深度探索，最後一天輕鬆購物。\n\n複利提示：旅遊是最佳投資，回憶的複利永不止息。`}
+
+// 家庭財務
+function runFinance(){const income=+document.getElementById('fin-income').value;const fixed=+document.getElementById('fin-fixed').value;const goal=+document.getElementById('fin-goal').value;const risk=document.getElementById('fin-risk').value;const free=income-fixed;const s50=Math.round(income*0.5);const s30=Math.round(income*0.3);const s20=Math.round(income*0.2);const rateMap={low:0.04,mid:0.07,high:0.10};const rate=rateMap[risk];const months=Math.ceil(Math.log(goal/(free||1)+1)/Math.log(1+rate/12));document.getElementById('fin-out').textContent=`💰 家庭財務規劃報告\n\n50/30/20 建議分配\n• 必要支出：${s50.toLocaleString('zh-TW')} 元\n• 想要支出：${s30.toLocaleString('zh-TW')} 元\n• 儲蓄投資：${s20.toLocaleString('zh-TW')} 元\n\n目前可投資金額：${free.toLocaleString('zh-TW')} 元/月\n達標 ${goal.toLocaleString('zh-TW')} 元預計：${months} 個月\n\n保險缺口建議：\n• 壽險保額 = 年收入 × 10 = ${(income*120).toLocaleString('zh-TW')} 元\n• 醫療險：建議雜費實支實付型\n• 意外險：$300萬以上\n\n下一步：每月自動轉帳投資，複利效應自動運作。`}
+
+// 育兒
+function runKid(){const age=+document.getElementById('kid-age').value;const edu=document.getElementById('kid-edu').value;const budget=+document.getElementById('kid-budget').value;const goal=document.getElementById('kid-goal').value;const yearsLeft=22-age;const eduMap={local:'國內',abroad:'海外',both:'國內+海外'};const goalMap={university:'大學',master:'碩士',phd:'博士'};const costMap={local:{university:120,master:180,phd:250},abroad:{university:600,master:800,phd:1000},both:{university:360,master:500,phd:700}};const cost=(costMap[edu][goal]||200)*10000;const r=Math.pow(1.07,yearsLeft);const future=budget*12*((r-1)/0.07);document.getElementById('kid-out').textContent=`👶 育兒規劃報告\n\n目標：${eduMap[edu]}${goalMap[goal]}\n預估教育總費：${cost.toLocaleString('zh-TW')} 元\n距離入學：${yearsLeft} 年\n\n每月投入 ${budget.toLocaleString('zh-TW')} 元（年化 7%）\n${yearsLeft} 年後累積：${Math.round(future).toLocaleString('zh-TW')} 元\n\n${future>=cost?'✅ 目前投入計畫可達標！':'⚠️ 缺口：'+(cost-Math.round(future)).toLocaleString('zh-TW')+' 元，建議增加每月投入'}\n\n複利提示：孩子的教育是報酬率最高的投資，越早開始複利越大。`}
+
+// 初始化
+renderExp();renderSport();
+(function(){const h=window.location.hash.slice(1);if(h&&document.getElementById('page-'+h)){showTab(h);}else{showTab('blueprint');}})();
 </script>
 </body>
 </html>

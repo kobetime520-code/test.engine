@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⑧ 戰情室報馬仔 — 辰與希</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ocean:#0d5fa0;--sky:#4db8e8;--dawn:#e8f6fd;--deep:#0d2d44;
+  --card:#ffffff;--border:#b8d9f0;--text:#0d2d44;--muted:#4a7fa0;
+  --gold:#f39c12;--green:#1a9e5c;--red:#e74c3c;--bg:#eaf6fd;
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+.wr-header{
+  background:linear-gradient(135deg,var(--ocean) 0%,var(--sky) 100%);
+  padding:24px 24px 20px;color:#fff;
+}
+.wr-header-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px}
+.wr-title{font-size:1.5rem;font-weight:800;letter-spacing:.06em}
+.wr-title small{font-size:.78rem;font-weight:400;opacity:.85;display:block;margin-top:2px;letter-spacing:.12em}
+.wr-meta{text-align:right;font-size:.78rem;opacity:.85;line-height:1.7}
+.wr-updated{font-size:.72rem;opacity:.7;margin-top:4px}
+.wr-tagline{margin-top:12px;font-size:.88rem;opacity:.9;letter-spacing:.08em}
+
+/* LOADING */
+#wr-loading{padding:60px 24px;text-align:center;color:var(--muted)}
+#wr-loading .spin{font-size:2rem;animation:spin 1s linear infinite;display:inline-block;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+#wr-body{display:none}
+
+/* SECTION */
+.wr-section{padding:20px 24px 0}
+.wr-sec-title{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ocean);font-weight:700;margin-bottom:12px;border-left:3px solid var(--sky);padding-left:8px}
+
+/* STAT ROW */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:4px}
+.stat-box{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 12px;text-align:center}
+.stat-box .sv{font-size:1.5rem;font-weight:800;color:var(--ocean)}
+.stat-box .sl{font-size:.7rem;color:var(--muted);margin-top:3px}
+
+/* ANALYST GRID */
+.analyst-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:4px}
+.analyst-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;border-top:4px solid var(--sky)}
+.analyst-card.eric{border-top-color:#e74c3c}
+.analyst-card.grace{border-top-color:#27ae60}
+.analyst-card.joe{border-top-color:#8e44ad}
+.analyst-card.tim{border-top-color:#f39c12}
+.ac-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.ac-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:#fff;flex-shrink:0}
+.eric .ac-avatar{background:#e74c3c}
+.grace .ac-avatar{background:#27ae60}
+.joe .ac-avatar{background:#8e44ad}
+.tim .ac-avatar{background:#f39c12}
+.ac-name{font-weight:700;color:var(--deep);font-size:.95rem}
+.ac-role{font-size:.72rem;color:var(--muted)}
+.ac-verdict{font-size:.88rem;color:var(--deep);line-height:1.6;margin-bottom:10px}
+.ac-chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{padding:3px 9px;border-radius:10px;font-size:.7rem;font-weight:600;background:var(--dawn);color:var(--ocean);border:1px solid var(--border)}
+.chip.hot{background:rgba(231,76,60,.1);color:#c0392b;border-color:rgba(231,76,60,.3)}
+.chip.good{background:rgba(26,158,92,.1);color:#1a9e5c;border-color:rgba(26,158,92,.3)}
+.chip.warn{background:rgba(243,156,18,.1);color:#d68910;border-color:rgba(243,156,18,.3)}
+
+/* TOP 3 */
+.top3-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:4px}
+.top3-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;position:relative;overflow:hidden}
+.top3-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.top3-card.rank1::before{background:linear-gradient(90deg,#f39c12,#e67e22)}
+.top3-card.rank2::before{background:linear-gradient(90deg,#95a5a6,#7f8c8d)}
+.top3-card.rank3::before{background:linear-gradient(90deg,#cd7f32,#a0522d)}
+.top3-rank{font-size:.7rem;color:var(--muted);margin-bottom:6px;font-weight:700;letter-spacing:.1em}
+.top3-name{font-size:1.1rem;font-weight:800;color:var(--deep)}
+.top3-id{font-size:.78rem;color:var(--muted);margin-bottom:10px}
+.top3-score-bar{height:6px;background:var(--dawn);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.top3-score-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sky),var(--ocean));transition:width .6s ease}
+.top3-meta{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.top3-meta-item .tmi-l{font-size:.68rem;color:var(--muted)}
+.top3-meta-item .tmi-v{font-size:.88rem;font-weight:700;color:var(--deep)}
+.top3-action{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:10px;font-size:.7rem;font-weight:700;background:rgba(13,95,160,.1);color:var(--ocean);border:1px solid rgba(13,95,160,.25)}
+.top3-tag{font-size:.7rem;color:var(--muted);margin-top:6px}
+
+/* POOL TABLE */
+.pool-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:4px}
+.pool-table th{background:linear-gradient(90deg,var(--ocean),var(--sky));color:#fff;font-size:.75rem;padding:10px 12px;text-align:left;font-weight:600;letter-spacing:.06em}
+.pool-table td{font-size:.82rem;padding:9px 12px;border-bottom:1px solid var(--dawn);color:var(--deep)}
+.pool-table tr:last-child td{border-bottom:none}
+.pool-table tr:hover td{background:var(--dawn)}
+.pool-bar{height:5px;background:var(--dawn);border-radius:3px;overflow:hidden;min-width:60px}
+.pool-bar-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--ocean));border-radius:3px}
+
+/* SIGNAL TABLE */
+.signal-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:4px;font-size:.8rem}
+.signal-table th{background:linear-gradient(90deg,var(--ocean),var(--sky));color:#fff;padding:9px 10px;text-align:left;font-weight:600;letter-spacing:.04em}
+.signal-table td{padding:8px 10px;border-bottom:1px solid var(--dawn);color:var(--deep)}
+.signal-table tr:last-child td{border-bottom:none}
+.signal-table tr:hover td{background:var(--dawn)}
+.grade-a{color:#fff;background:#e74c3c;border-radius:4px;padding:1px 6px;font-weight:700;font-size:.7rem}
+.grade-b{color:#fff;background:#e67e22;border-radius:4px;padding:1px 6px;font-weight:700;font-size:.7rem}
+.grade-c{color:#fff;background:#27ae60;border-radius:4px;padding:1px 6px;font-weight:700;font-size:.7rem}
+.grade-x{color:#fff;background:#95a5a6;border-radius:4px;padding:1px 6px;font-weight:700;font-size:.7rem}
+.action-buy{color:#1a9e5c;font-weight:700}
+.action-watch{color:#d68910}
+.action-exit{color:#e74c3c}
+
+/* INDUSTRY HEATMAP */
+.heat-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+.heat-item{border-radius:10px;padding:8px 12px;font-size:.78rem;font-weight:600;text-align:center;min-width:80px;border:1px solid rgba(13,95,160,.2)}
+.heat-item .hi-name{font-size:.7rem;color:inherit;opacity:.85;margin-bottom:2px}
+.heat-item .hi-count{font-size:1.1rem;font-weight:800}
+
+/* FOOTER NOTE */
+.wr-footer{padding:20px 24px 28px;font-size:.72rem;color:var(--muted);line-height:1.8;border-top:1px solid var(--border);margin-top:20px}
+
+/* ERROR */
+.wr-error{padding:40px 24px;text-align:center;color:var(--red)}
+
+@media(max-width:600px){
+  .wr-header{padding:18px 16px 16px}
+  .wr-section{padding:16px 16px 0}
+  .wr-title{font-size:1.2rem}
+}
+</style>
+</head>
+<body>
+
+<div class="wr-header">
+  <div class="wr-header-top">
+    <div class="wr-title">
+      🌅 戰情室報馬仔
+      <small>辰與希 · 每日早晨情報 · 測試員專用</small>
+    </div>
+    <div class="wr-meta">
+      <div>Magic Lab × Team Stock</div>
+      <div id="wr-updated" class="wr-updated">載入中…</div>
+    </div>
+  </div>
+  <div class="wr-tagline">✦ 辰：早晨出發的勇氣　希：永不熄滅的希望 ✦</div>
+</div>
+
+<!-- LOADING -->
+<div id="wr-loading">
+  <div class="spin">🌊</div>
+  <div>正在從彼得梅花鹿載入最新戰情資料…</div>
+</div>
+
+<!-- BODY -->
+<div id="wr-body">
+
+  <!-- 總覽統計 -->
+  <div class="wr-section">
+    <div class="wr-sec-title">📊 今日大海總覽</div>
+    <div class="stat-row" id="wr-stats"></div>
+  </div>
+
+  <!-- 四維分析師論點 -->
+  <div class="wr-section" style="padding-top:18px">
+    <div class="wr-sec-title">🧠 四維論點 — Eric · Grace · Joe · Tim</div>
+    <div class="analyst-grid" id="wr-analysts"></div>
+  </div>
+
+  <!-- Top 3 強勢股 -->
+  <div class="wr-section" style="padding-top:18px">
+    <div class="wr-sec-title">🏆 今日 Top 3 強勢股（strength_score 排行）</div>
+    <div class="top3-grid" id="wr-top3"></div>
+  </div>
+
+  <!-- 魚池分布 -->
+  <div class="wr-section" style="padding-top:18px">
+    <div class="wr-sec-title">🐟 各魚池買入狀況</div>
+    <table class="pool-table" id="wr-pools">
+      <thead><tr><th>魚池</th><th>總數</th><th>買入</th><th>比例</th><th>進度</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- 訊號明細 -->
+  <div class="wr-section" style="padding-top:18px">
+    <div class="wr-sec-title">📋 買入訊號明細（action = 買入加碼）</div>
+    <div style="overflow-x:auto">
+    <table class="signal-table" id="wr-signals">
+      <thead><tr><th>代號</th><th>名稱</th><th>收盤</th><th>評級</th><th>強度</th><th>籌碼</th><th>題材</th><th>操作</th><th>目標</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- 產業熱力圖 -->
+  <div class="wr-section" style="padding-top:18px">
+    <div class="wr-sec-title">🌡️ 產業分布熱力圖</div>
+    <div class="heat-grid" id="wr-heat"></div>
+  </div>
+
+  <div class="wr-footer" id="wr-footer"></div>
+</div>
+
+<script>
+const PLUM_URL = 'https://kobetime520-code.github.io/Peter-plum-blossom-quant/plum_blossom_data.json';
+
+async function loadWarroom() {
+  try {
+    const res = await fetch(PLUM_URL + '?t=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const d = await res.json();
+    document.getElementById('wr-loading').style.display = 'none';
+    document.getElementById('wr-body').style.display = 'block';
+    renderWarroom(d);
+  } catch(e) {
+    document.getElementById('wr-loading').innerHTML =
+      '<div class="wr-error">⚠ 資料載入失敗：' + e.message + '<br><small>請確認 Peter Plum 網站已完成今日排程</small></div>';
+  }
+}
+
+function renderWarroom(d) {
+  const stats = d.dashboard_stats || {};
+  const pools = d.pools || {};
+  const updated = d.last_updated || '—';
+
+  document.getElementById('wr-updated').textContent = '📅 資料更新：' + updated;
+
+  // 彙整所有股票
+  const allStocks = [];
+  for (const [poolName, arr] of Object.entries(pools)) {
+    if (Array.isArray(arr)) arr.forEach(s => allStocks.push({...s, _pool: poolName}));
+  }
+  const buyStocks = allStocks.filter(s => s.action && s.action.includes('買入'));
+
+  // ── 總覽統計 ──
+  const totalBuy = stats.action_ratio?.buy || buyStocks.length;
+  const totalWatch = stats.action_ratio?.watch || 0;
+  const oceanTotal = stats.ocean_total || allStocks.length;
+  const avgScore = allStocks.length
+    ? Math.round(allStocks.reduce((a,s) => a + (s.strength_score||0), 0) / allStocks.length)
+    : 0;
+  const bullCount = allStocks.filter(s => s.bull_align).length;
+  document.getElementById('wr-stats').innerHTML = [
+    ['🌊', oceanTotal, '大海總股數'],
+    ['🟢', totalBuy, '買入加碼'],
+    ['👁', totalWatch, '靜候觀察'],
+    ['⚡', avgScore, '平均強度分'],
+    ['🐂', bullCount, '多頭排列'],
+  ].map(([icon,v,l]) =>
+    `<div class="stat-box"><div class="sv">${icon} ${v}</div><div class="sl">${l}</div></div>`
+  ).join('');
+
+  // ── Eric（籌碼分析師）──
+  const gradeA = allStocks.filter(s => s.inst_grade === 'A');
+  const gradeB = allStocks.filter(s => s.inst_grade === 'B');
+  const foreignBuyTop = [...allStocks].filter(s => (s.foreign_buy||0) > 0)
+    .sort((a,b) => (b.foreign_buy||0) - (a.foreign_buy||0)).slice(0,3);
+  const ericChips = foreignBuyTop.map(s =>
+    `<span class="chip hot">${s.stock_name} 外資+${s.foreign_buy}</span>`).join('');
+  document.getElementById('wr-analysts').innerHTML = '';
+  appendAnalyst('eric', 'E', 'Eric', '籌碼分析師',
+    `今日法人評級 A 級共 <strong>${gradeA.length}</strong> 檔，B 級 <strong>${gradeB.length}</strong> 檔。外資積極買超前三名：`,
+    ericChips);
+
+  // ── Grace（題材分析師）──
+  const themeMap = {};
+  allStocks.forEach(s => {
+    if (!s.theme_tag) return;
+    themeMap[s.theme_tag] = (themeMap[s.theme_tag]||0) + 1;
+  });
+  const topThemes = Object.entries(themeMap).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  const graceChips = topThemes.map(([t,n]) =>
+    `<span class="chip good">${t} ×${n}</span>`).join('');
+  appendAnalyst('grace', 'G', 'Grace', '題材分析師',
+    `今日熱門題材分布，科技類為主力。重點佈局方向：`,
+    graceChips);
+
+  // ── Joe（技術分析師）──
+  const bullAlignBuy = buyStocks.filter(s => s.bull_align).length;
+  const rsiHigh = allStocks.filter(s => s.rsi14 >= 70);
+  const breakoutNew = allStocks.filter(s => s.ma5_breakout_day && s.ma5_breakout_day <= 3);
+  const joeChips = [
+    `<span class="chip">多頭排列買入 ${bullAlignBuy} 檔</span>`,
+    `<span class="chip warn">RSI≥70 強勢 ${rsiHigh.length} 檔</span>`,
+    `<span class="chip good">新突破≤3日 ${breakoutNew.length} 檔</span>`,
+  ].join('');
+  appendAnalyst('joe', 'J', 'Joe', '技術分析師',
+    `今日技術面：買入且多頭排列 <strong>${bullAlignBuy}</strong> 檔，均線結構健康。新鮮突破（3日內）標的：`,
+    joeChips);
+
+  // ── Tim（基本面分析師）──
+  const poolStats = stats.pool_buy_stats || {};
+  const poolHealth = Object.entries(poolStats).map(([name, ps]) => {
+    const pct = ps.total > 0 ? Math.round(ps.buy / ps.total * 100) : 0;
+    return {name, pct, buy: ps.buy, total: ps.total};
+  });
+  const best = poolHealth.sort((a,b) => b.pct - a.pct)[0];
+  const timChips = poolHealth.slice(0,3).map(p =>
+    `<span class="chip ${p.pct>=80?'hot':p.pct>=50?'good':'warn'}">${p.name.split(' ')[1]||p.name} ${p.pct}%</span>`
+  ).join('');
+  appendAnalyst('tim', 'T', 'Tim', '基本面分析師',
+    `魚池整體健康度佳。${best ? `最活躍魚池：<strong>${best.name}</strong>（買入率 ${best.pct}%）` : ''}。各池進場比率：`,
+    timChips);
+
+  // ── Top 3 ──
+  const top3 = [...allStocks].filter(s => s.strength_score != null)
+    .sort((a,b) => b.strength_score - a.strength_score).slice(0,3);
+  const rankLabel = ['🥇 第一名','🥈 第二名','🥉 第三名'];
+  const rankClass = ['rank1','rank2','rank3'];
+  document.getElementById('wr-top3').innerHTML = top3.map((s,i) => `
+    <div class="top3-card ${rankClass[i]}">
+      <div class="top3-rank">${rankLabel[i]}</div>
+      <div class="top3-name">${s.stock_name}</div>
+      <div class="top3-id">${s.stock_id} · ${s.industry||''}</div>
+      <div class="top3-score-bar"><div class="top3-score-fill" style="width:${s.strength_score}%"></div></div>
+      <div class="top3-meta">
+        <div class="top3-meta-item"><div class="tmi-l">強度分</div><div class="tmi-v">${s.strength_score}</div></div>
+        <div class="top3-meta-item"><div class="tmi-l">收盤價</div><div class="tmi-v">$${s.close}</div></div>
+        <div class="top3-meta-item"><div class="tmi-l">目標價</div><div class="tmi-v">$${s.target_price||'—'}</div></div>
+        <div class="top3-meta-item"><div class="tmi-l">RSI14</div><div class="tmi-v">${s.rsi14||'—'}</div></div>
+      </div>
+      <span class="top3-action">${s.action||'—'}</span>
+      <div class="top3-tag">${s.theme_tag||''} ${s.breakout_label||''}</div>
+    </div>
+  `).join('');
+
+  // ── 魚池表格 ──
+  const poolTbody = document.querySelector('#wr-pools tbody');
+  poolTbody.innerHTML = Object.entries(poolStats).map(([name, ps]) => {
+    const pct = ps.total > 0 ? Math.round(ps.buy / ps.total * 100) : 0;
+    return `<tr>
+      <td>${name}</td>
+      <td>${ps.total}</td>
+      <td><strong>${ps.buy}</strong></td>
+      <td>${pct}%</td>
+      <td><div class="pool-bar"><div class="pool-bar-fill" style="width:${pct}%"></div></div></td>
+    </tr>`;
+  }).join('');
+
+  // ── 訊號明細 ──
+  const sigTbody = document.querySelector('#wr-signals tbody');
+  const sorted = [...buyStocks].sort((a,b) => (b.strength_score||0) - (a.strength_score||0));
+  sigTbody.innerHTML = sorted.map(s => {
+    const gradeClass = s.inst_grade === 'A' ? 'grade-a' : s.inst_grade === 'B' ? 'grade-b' : s.inst_grade === 'C' ? 'grade-c' : 'grade-x';
+    const actionClass = s.action && s.action.includes('買入') ? 'action-buy' : s.action && s.action.includes('停損') ? 'action-exit' : 'action-watch';
+    return `<tr>
+      <td>${s.stock_id}</td>
+      <td><strong>${s.stock_name}</strong></td>
+      <td>$${s.close}</td>
+      <td><span class="${gradeClass}">${s.inst_grade||'—'}</span></td>
+      <td>${s.strength_score||'—'}</td>
+      <td>${s.chip_signal||'—'}</td>
+      <td>${s.theme_tag||'—'}</td>
+      <td class="${actionClass}">${s.action||'—'}</td>
+      <td>$${s.target_price||'—'}</td>
+    </tr>`;
+  }).join('');
+  if (!sorted.length) sigTbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:16px">今日暫無買入加碼訊號</td></tr>';
+
+  // ── 產業熱力 ──
+  const indDist = stats.industry_distribution || [];
+  const maxCount = indDist[0]?.count || 1;
+  const heatColors = [
+    'rgba(13,95,160,.9)','rgba(13,95,160,.75)','rgba(77,184,232,.8)',
+    'rgba(77,184,232,.65)','rgba(77,184,232,.5)','rgba(13,95,160,.4)',
+  ];
+  document.getElementById('wr-heat').innerHTML = indDist.map((item, i) => {
+    const bg = heatColors[Math.min(i, heatColors.length-1)];
+    const textColor = i < 3 ? '#fff' : 'var(--deep)';
+    return `<div class="heat-item" style="background:${bg};color:${textColor};border-color:transparent">
+      <div class="hi-name">${item.industry}</div>
+      <div class="hi-count">${item.count}</div>
+    </div>`;
+  }).join('');
+
+  // ── Footer ──
+  document.getElementById('wr-footer').innerHTML =
+    `📌 資料來源：彼得梅花鹿量化系統 Peter Plum · 更新時間：${updated}<br>
+    🧠 分析師：Eric（籌碼）· Grace（題材）· Joe（技術）· Tim（基本面）<br>
+    ⚠ 本報告僅供 Magic Lab 內部測試員參考，不構成投資建議。`;
+}
+
+function appendAnalyst(cls, initial, name, role, verdict, chips) {
+  const el = document.createElement('div');
+  el.className = 'analyst-card ' + cls;
+  el.innerHTML = `
+    <div class="ac-head">
+      <div class="ac-avatar">${initial}</div>
+      <div><div class="ac-name">${name}</div><div class="ac-role">${role}</div></div>
+    </div>
+    <div class="ac-verdict">${verdict}</div>
+    <div class="ac-chips">${chips}</div>`;
+  document.getElementById('wr-analysts').appendChild(el);
+}
+
+// 啟動
+loadWarroom();
+</script>
+</body>
+</html>

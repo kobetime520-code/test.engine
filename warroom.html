@@ -381,7 +381,7 @@ function exportWarroom(mode) {
     lines.push('');
     lines.push('📋 買入訊號（共 '+buy.length+' 檔）');
     buy.slice(0,10).forEach(s => {
-      lines.push('• '+s.stock_name+'('+s.stock_id+') '+（s.inst_grade||'—')+' | 強:'+s.strength_score+' | '+(s.theme_tag||'')+' | 目標:$'+(s.target_price||'—'));
+      lines.push('• '+s.stock_name+'('+s.stock_id+') '+(s.inst_grade||'—')+' | 強:'+s.strength_score+' | '+(s.theme_tag||'')+' | 目標:$'+(s.target_price||'—'));
     });
     if (buy.length > 10) lines.push('  …另 '+(buy.length-10)+' 檔');
     lines.push('');
@@ -711,7 +711,7 @@ function renderWarroom(d) {
   const best=ph.slice().sort((a,b)=>b.pct-a.pct)[0];
   appendAnalyst('tim','T','Tim','基本面分析師',
     '魚池整體健康度佳。'+(best?'最活躍魚池：<strong>'+best.name+'</strong>（買入率 '+best.pct+'%）':'')+'。各池進場比率：',
-    ph.slice(0,3).map(p=>'<span class="chip '+(p.pct>=80?'hot':p.pct>=50?'good':'warn')+'">'+（p.name.split(' ')[1]||p.name)+' '+p.pct+'%</span>').join(''));
+    ph.slice(0,3).map(p=>'<span class="chip '+(p.pct>=80?'hot':p.pct>=50?'good':'warn')+'">'+(p.name.split(' ')[1]||p.name)+' '+p.pct+'%</span>').join(''));
 
   const t3=allStocks.filter(s=>s.strength_score!=null).sort((a,b)=>b.strength_score-a.strength_score).slice(0,3);
   const rl=['🥇 第一名','🥈 第二名','🥉 第三名'],rc=['rank1','rank2','rank3'];

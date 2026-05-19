@@ -6,11 +6,7 @@
 <title>⑧ 戰情室報馬仔 — 辰與希</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --ocean:#0d5fa0;--sky:#4db8e8;--dawn:#e8f6fd;--deep:#0d2d44;
-  --card:#ffffff;--border:#b8d9f0;--text:#0d2d44;--muted:#4a7fa0;
-  --gold:#f39c12;--green:#1a9e5c;--red:#e74c3c;--bg:#eaf6fd;
-}
+:root{--ocean:#0d5fa0;--sky:#4db8e8;--dawn:#e8f6fd;--deep:#0d2d44;--card:#ffffff;--border:#b8d9f0;--text:#0d2d44;--muted:#4a7fa0;--gold:#f39c12;--green:#1a9e5c;--red:#e74c3c;--bg:#eaf6fd}
 body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .wr-header{background:linear-gradient(135deg,var(--ocean) 0%,var(--sky) 100%);padding:24px 24px 20px;color:#fff}
 .wr-header-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px}
@@ -31,16 +27,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .stat-box .sl{font-size:.7rem;color:var(--muted);margin-top:3px}
 .analyst-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:4px}
 .analyst-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;border-top:4px solid var(--sky)}
-.analyst-card.eric{border-top-color:#e74c3c}
-.analyst-card.grace{border-top-color:#27ae60}
-.analyst-card.joe{border-top-color:#8e44ad}
-.analyst-card.tim{border-top-color:#f39c12}
+.analyst-card.eric{border-top-color:#e74c3c}.analyst-card.grace{border-top-color:#27ae60}
+.analyst-card.joe{border-top-color:#8e44ad}.analyst-card.tim{border-top-color:#f39c12}
 .ac-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .ac-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:#fff;flex-shrink:0}
-.eric .ac-avatar{background:#e74c3c}
-.grace .ac-avatar{background:#27ae60}
-.joe .ac-avatar{background:#8e44ad}
-.tim .ac-avatar{background:#f39c12}
+.eric .ac-avatar{background:#e74c3c}.grace .ac-avatar{background:#27ae60}
+.joe .ac-avatar{background:#8e44ad}.tim .ac-avatar{background:#f39c12}
 .ac-name{font-weight:700;color:var(--deep);font-size:.95rem}
 .ac-role{font-size:.72rem;color:var(--muted)}
 .ac-verdict{font-size:.88rem;color:var(--deep);line-height:1.6;margin-bottom:10px}
@@ -81,9 +73,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .grade-b{color:#fff;background:#e67e22;border-radius:4px;padding:1px 6px;font-weight:700;font-size:.7rem}
 .grade-c{color:#fff;background:#27ae60;border-radius:4px;padding:1px 6px;font-weight:700;font-size:.7rem}
 .grade-x{color:#fff;background:#95a5a6;border-radius:4px;padding:1px 6px;font-weight:700;font-size:.7rem}
-.action-buy{color:#1a9e5c;font-weight:700}
-.action-watch{color:#d68910}
-.action-exit{color:#e74c3c}
+.action-buy{color:#1a9e5c;font-weight:700}.action-watch{color:#d68910}.action-exit{color:#e74c3c}
 .heat-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
 .heat-item{border-radius:10px;padding:8px 12px;font-size:.78rem;font-weight:600;text-align:center;min-width:80px;border:1px solid rgba(13,95,160,.2)}
 .heat-item .hi-name{font-size:.7rem;color:inherit;opacity:.85;margin-bottom:2px}
@@ -134,11 +124,9 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 [data-theme="dark"] .ac-toggle{background:#0d2d44;border-color:var(--border);color:var(--muted)}
 [data-theme="dark"] .filter-select{background:#1a3a4a;color:var(--deep);border-color:var(--border)}
 [data-theme="dark"] #morning-overlay{background:linear-gradient(135deg,#0a1e2e 0%,#0d2d44 60%,#0d5fa0 100%)}
-
 .theme-btn{position:fixed;top:12px;right:16px;z-index:999;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:5px 12px;color:#fff;font-size:.78rem;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
 .theme-btn:hover{background:rgba(255,255,255,.25)}
 [data-theme="dark"] .theme-btn{background:rgba(13,95,160,.4);border-color:rgba(77,184,232,.4)}
-
 #morning-overlay{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0d5fa0 0%,#0d2d44 60%,#1a6090 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;text-align:center;cursor:pointer;animation:fadeInOverlay .6s ease}
 @keyframes fadeInOverlay{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
 #morning-overlay.hide{animation:fadeOutOverlay .4s ease forwards}
@@ -153,7 +141,6 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .mo-quote{font-size:1rem;opacity:.7;font-style:italic;margin-bottom:24px;max-width:360px;line-height:1.8}
 .mo-hint{font-size:.72rem;opacity:.45;letter-spacing:.1em;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:.45}50%{opacity:.7}}
-
 .gauge-section{padding:20px 24px 0}
 .gauge-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
 [data-theme="dark"] .gauge-wrap{background:var(--card)}
@@ -164,11 +151,31 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .gauge-desc{font-size:.82rem;color:var(--muted);margin-top:8px;line-height:1.6}
 .gauge-factors{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .gauge-factor{font-size:.72rem;padding:3px 9px;border-radius:8px;background:var(--dawn);color:var(--ocean);border:1px solid var(--border)}
+
+/* Phase 3 */
+.export-bar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 24px 0}
+.export-btn{padding:6px 16px;border-radius:10px;border:1px solid var(--border);background:white;color:var(--ocean);font-size:.78rem;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:5px}
+.export-btn:hover{background:var(--dawn)}
+.export-btn.copied{background:#eafaf2;color:#1a9e5c;border-color:#a8dfc0}
+[data-theme="dark"] .export-btn{background:var(--card);color:var(--ocean);border-color:var(--border)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#0d2d44;color:#fff;padding:10px 20px;border-radius:12px;font-size:.82rem;opacity:0;transition:all .3s;z-index:8888;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.dist-section{padding:20px 24px 0}
+.dist-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+[data-theme="dark"] .dist-wrap{background:var(--card)}
+.dist-bars{display:flex;align-items:flex-end;gap:4px;height:80px;margin-bottom:6px}
+.dist-bar-col{display:flex;flex-direction:column;align-items:center;flex:1}
+.dist-bar{width:100%;border-radius:4px 4px 0 0;transition:height .5s ease;min-height:2px;position:relative}
+.dist-bar:hover::after{content:attr(data-tip);position:absolute;top:-28px;left:50%;transform:translateX(-50%);background:#0d2d44;color:#fff;font-size:.66rem;padding:2px 7px;border-radius:6px;white-space:nowrap;z-index:10}
+.dist-labels{display:flex;gap:4px}
+.dist-label{flex:1;text-align:center;font-size:.62rem;color:var(--muted)}
+.dist-legend{font-size:.7rem;color:var(--muted);margin-top:8px;display:flex;gap:12px;flex-wrap:wrap}
+.dist-leg-item{display:flex;align-items:center;gap:4px}
+.dist-leg-dot{width:8px;height:8px;border-radius:2px}
 </style>
 </head>
 <body>
 
-<!-- MORNING OVERLAY -->
 <div id="morning-overlay" onclick="closeMorning()">
   <div class="mo-date" id="mo-date"></div>
   <div class="mo-title">🌅 辰與希</div>
@@ -198,10 +205,16 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
   <button class="refresh-btn" onclick="doRefresh()">🔄 重新整理</button>
 </div>
 
+<div class="export-bar" id="export-bar" style="display:none">
+  <button class="export-btn" id="copy-btn" onclick="exportWarroom('copy')">📋 複製今日戰情</button>
+  <button class="export-btn" onclick="exportWarroom('csv')">📥 下載 CSV</button>
+  <button class="export-btn" onclick="exportWarroom('line')">💬 LINE 格式複製</button>
+</div>
+<div class="toast" id="toast"></div>
+
 <div id="wr-loading"><div class="spin">🌊</div><div>正在從彼得梅花鹿載入最新戰情資料…</div></div>
 
 <div id="wr-body">
-
   <div class="wr-section">
     <div class="wr-sec-title">📊 今日大海總覽</div>
     <div class="stat-row" id="wr-stats"></div>
@@ -297,39 +310,195 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
     <div class="heat-grid" id="wr-heat"></div>
   </div>
 
+  <div class="dist-section" id="dist-section" style="display:none">
+    <div class="wr-sec-title">📊 strength_score 強度分布</div>
+    <div class="dist-wrap">
+      <div class="dist-bars" id="dist-bars"></div>
+      <div class="dist-labels" id="dist-labels"></div>
+      <div class="dist-legend">
+        <div class="dist-leg-item"><div class="dist-leg-dot" style="background:#e74c3c"></div><span>強勢區(≥70)</span></div>
+        <div class="dist-leg-item"><div class="dist-leg-dot" style="background:#f39c12"></div><span>中強(50–69)</span></div>
+        <div class="dist-leg-item"><div class="dist-leg-dot" style="background:#4db8e8"></div><span>一般(30–49)</span></div>
+        <div class="dist-leg-item"><div class="dist-leg-dot" style="background:#b8d9f0"></div><span>偏弱(&lt;30)</span></div>
+      </div>
+    </div>
+  </div>
+
   <div class="wr-footer" id="wr-footer"></div>
 </div>
 
 <script>
-// ── Phase 2 JS ──
+// ── Phase 3 JS ──
+let _lastData = null;
 
-function toggleTheme() {
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const t = isDark ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', t);
-  document.getElementById('theme-btn').textContent = t === 'dark' ? '☀️ 淺色' : '🌙 深色';
-  try { localStorage.setItem('wr_theme', t); } catch(e) {}
+function showToast(msg, dur) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur || 2200);
 }
 
+function exportWarroom(mode) {
+  if (!_lastData) { showToast('⚠ 資料尚未載入'); return; }
+  const d = _lastData;
+  const updated = d.last_updated || '—';
+  const allStocks = [];
+  for (const pn in (d.pools||{})) {
+    const arr = d.pools[pn];
+    if (Array.isArray(arr)) arr.forEach(s => allStocks.push(Object.assign({}, s, {_pool: pn})));
+  }
+  const buy = allStocks.filter(s => s.action && s.action.includes('買入'))
+    .sort((a,b) => (b.strength_score||0)-(a.strength_score||0));
+  const top3 = allStocks.filter(s=>s.strength_score!=null)
+    .sort((a,b)=>b.strength_score-a.strength_score).slice(0,3);
+
+  if (mode === 'csv') {
+    const header = 'stock_id,stock_name,close,inst_grade,strength_score,chip_signal,theme_tag,action,target_price,pool\n';
+    const rows = buy.map(s =>
+      [s.stock_id, s.stock_name, s.close, s.inst_grade, s.strength_score,
+       (s.chip_signal||'').replace(/,/g,'，'), (s.theme_tag||'').replace(/,/g,'，'),
+       (s.action||'').replace(/,/g,'，'), s.target_price, s._pool].join(',')
+    ).join('\n');
+    const blob = new Blob(['﻿'+header+rows], {type:'text/csv;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '戰情室_' + updated.replace(/[/ :]/g,'').slice(0,8) + '.csv';
+    a.click();
+    showToast('✅ CSV 下載中…');
+    return;
+  }
+
+  if (mode === 'line') {
+    const lines = [
+      '🌅 辰與希戰情室 · ' + updated,
+      '──────────────────',
+      '🏆 今日 Top 3',
+    ];
+    top3.forEach((s,i) => {
+      const medals = ['🥇','🥈','🥉'];
+      lines.push(medals[i]+' '+s.stock_name+'('+s.stock_id+') 強度:'+s.strength_score+' 目標:$'+(s.target_price||'—'));
+    });
+    lines.push('');
+    lines.push('📋 買入訊號（共 '+buy.length+' 檔）');
+    buy.slice(0,10).forEach(s => {
+      lines.push('• '+s.stock_name+'('+s.stock_id+') '+（s.inst_grade||'—')+' | 強:'+s.strength_score+' | '+(s.theme_tag||'')+' | 目標:$'+(s.target_price||'—'));
+    });
+    if (buy.length > 10) lines.push('  …另 '+(buy.length-10)+' 檔');
+    lines.push('');
+    lines.push('⚠ 僅供 Magic Lab 內部參考，非投資建議');
+    copyText(lines.join('\n'));
+    showToast('✅ LINE 格式已複製！');
+    return;
+  }
+
+  // 純文字
+  const lines = [
+    '═══ 辰與希戰情室 ' + updated + ' ═══',
+    '',
+    '【今日 Top 3 強勢股】',
+  ];
+  top3.forEach((s,i) => {
+    const r = ['第一名','第二名','第三名'];
+    lines.push((i+1)+'. '+r[i]+' '+s.stock_name+'('+s.stock_id+') 強度:'+s.strength_score+' 收盤:$'+s.close+' 目標:$'+(s.target_price||'—'));
+  });
+  lines.push('');
+  lines.push('【買入訊號明細 共 '+buy.length+' 檔】');
+  lines.push('代號\t名稱\t收盤\t評級\t強度\t題材\t目標');
+  buy.forEach(s => {
+    lines.push([s.stock_id,s.stock_name,'$'+s.close,s.inst_grade||'—',s.strength_score||'—',s.theme_tag||'—','$'+(s.target_price||'—')].join('\t'));
+  });
+  lines.push('');
+  lines.push('資料來源：彼得梅花鹿量化系統 · 更新：'+updated);
+  lines.push('⚠ 僅供 Magic Lab 內部參考，非投資建議');
+  copyText(lines.join('\n'));
+  const btn = document.getElementById('copy-btn');
+  btn.classList.add('copied');
+  btn.textContent = '✅ 已複製！';
+  setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '📋 複製今日戰情'; }, 2500);
+  showToast('✅ 今日戰情已複製到剪貼板！');
+}
+
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+  } else { fallbackCopy(text); }
+}
+function fallbackCopy(text) {
+  const el = document.createElement('textarea');
+  el.value = text;
+  el.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+  document.body.appendChild(el);
+  el.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(el);
+}
+
+let _notifSent = false;
+function checkAndNotify(allStocks) {
+  if (_notifSent) return;
+  const strongCount = allStocks.filter(s => (s.strength_score||0) >= 85).length;
+  if (strongCount < 3) return;
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'denied') return;
+  const top = allStocks.filter(s=>(s.strength_score||0)>=85)
+    .sort((a,b)=>b.strength_score-a.strength_score)[0];
+  const send = () => {
+    _notifSent = true;
+    try {
+      new Notification('⚡ 辰與希戰情室 — 強勢訊號！', {
+        body: '今日有 '+strongCount+' 支強勢股（≥85分）！領頭：'+(top?top.stock_name:'')+' ('+(top?top.strength_score:'')+')',
+        tag: 'warroom-alert'
+      });
+    } catch(e) {}
+  };
+  if (Notification.permission === 'granted') { send(); }
+  else { Notification.requestPermission().then(p => { if (p==='granted') send(); }); }
+}
+
+function renderDistChart(allStocks) {
+  const el = document.getElementById('dist-section');
+  if (!el) return;
+  el.style.display = 'block';
+  const buckets = Array(10).fill(0);
+  allStocks.forEach(s => {
+    const sc = Math.min(99, Math.max(0, s.strength_score || 0));
+    buckets[Math.floor(sc/10)]++;
+  });
+  const maxCount = Math.max(...buckets, 1);
+  const colors = ['#b8d9f0','#b8d9f0','#b8d9f0','#4db8e8','#4db8e8','#f39c12','#f39c12','#e74c3c','#e74c3c','#e74c3c'];
+  document.getElementById('dist-bars').innerHTML = buckets.map((cnt,i) => {
+    const pct = Math.round(cnt/maxCount*100);
+    const lbl = (i*10)+'–'+(i===9?'100':(i*10+9));
+    return '<div class="dist-bar-col"><div class="dist-bar" style="height:'+Math.max(pct,2)+'%;background:'+colors[i]+'" data-tip="'+lbl+': '+cnt+'檔"></div></div>';
+  }).join('');
+  document.getElementById('dist-labels').innerHTML = buckets.map((_,i) =>
+    '<div class="dist-label">'+(i*10)+'</div>'
+  ).join('');
+}
+
+// ── Phase 2 JS ──
+function toggleTheme() {
+  const t = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('theme-btn').textContent = t==='dark' ? '☀️ 淺色' : '🌙 深色';
+  try { localStorage.setItem('wr_theme', t); } catch(e) {}
+}
 function restoreTheme() {
   try {
     const t = localStorage.getItem('wr_theme') || 'light';
     document.documentElement.setAttribute('data-theme', t);
-    document.getElementById('theme-btn').textContent = t === 'dark' ? '☀️ 淺色' : '🌙 深色';
+    document.getElementById('theme-btn').textContent = t==='dark' ? '☀️ 淺色' : '🌙 深色';
   } catch(e) {}
 }
-
 function initMorning() {
   try {
-    const today = new Date().toDateString();
-    if (localStorage.getItem('wr_morning_shown') === today) { closeMorning(true); return; }
+    if (localStorage.getItem('wr_morning_shown') === new Date().toDateString()) { closeMorning(true); return; }
   } catch(e) {}
   const now = new Date();
   const wd = ['日','一','二','三','四','五','六'];
   document.getElementById('mo-date').textContent =
-    now.getFullYear() + ' 年 ' + (now.getMonth()+1) + ' 月 ' + now.getDate() + ' 日（週' + wd[now.getDay()] + '）';
+    now.getFullYear()+' 年 '+(now.getMonth()+1)+' 月 '+now.getDate()+' 日（週'+wd[now.getDay()]+'）';
 }
-
 function updateMorningData(buyCount, topName, tempScore) {
   document.getElementById('mo-buy').textContent = buyCount;
   document.getElementById('mo-top').textContent = topName || '—';
@@ -343,109 +512,89 @@ function updateMorningData(buyCount, topName, tempScore) {
     '今日的紀律，是明日自由的基礎。',
     '市場永遠對，調整的是自己的判斷。'
   ];
-  document.getElementById('mo-quote').textContent =
-    '「' + quotes[new Date().getDay() % quotes.length] + '」';
+  document.getElementById('mo-quote').textContent = '「'+quotes[new Date().getDay()%quotes.length]+'」';
 }
-
 function closeMorning(instant) {
   const el = document.getElementById('morning-overlay');
   if (!el) return;
-  if (instant) { el.style.display = 'none'; return; }
+  if (instant) { el.style.display='none'; return; }
   el.classList.add('hide');
-  setTimeout(() => { el.style.display = 'none'; }, 420);
+  setTimeout(() => { el.style.display='none'; }, 420);
   try { localStorage.setItem('wr_morning_shown', new Date().toDateString()); } catch(e) {}
 }
-
 function calcMarketTemp(allStocks, buyStocks) {
-  const total = allStocks.length || 1;
-  const buyRatio = buyStocks.length / total;
-  const avgScore = allStocks.reduce((a,s) => a + (s.strength_score||0), 0) / total;
-  const bullRatio = allStocks.filter(s => s.bull_align).length / total;
-  const gradeARatio = allStocks.filter(s => s.inst_grade === 'A').length / total;
+  const n = allStocks.length || 1;
   return Math.min(100, Math.max(0, Math.round(
-    buyRatio * 35 + (avgScore/100) * 30 + bullRatio * 20 + gradeARatio * 15
+    (buyStocks.length/n)*35 +
+    (allStocks.reduce((a,s)=>a+(s.strength_score||0),0)/n/100)*30 +
+    (allStocks.filter(s=>s.bull_align).length/n)*20 +
+    (allStocks.filter(s=>s.inst_grade==='A').length/n)*15
   )));
 }
-
 function renderGauge(temp, allStocks, buyStocks) {
   document.getElementById('gauge-section').style.display = 'block';
-  const offset = 235 - (235 * temp / 100);
-  const arc = document.getElementById('gauge-arc');
   setTimeout(() => {
+    const arc = document.getElementById('gauge-arc');
     arc.style.transition = 'stroke-dashoffset 1s ease';
-    arc.setAttribute('stroke-dashoffset', offset);
-    const deg = -90 + (temp / 100) * 180;
+    arc.setAttribute('stroke-dashoffset', 235-(235*temp/100));
     const needle = document.getElementById('gauge-needle');
     needle.style.transition = 'transform 1s ease';
-    needle.setAttribute('transform', 'rotate(' + deg + ',90,90)');
+    needle.setAttribute('transform', 'rotate('+(-90+(temp/100)*180)+',90,90)');
   }, 200);
-
   document.getElementById('gauge-score').textContent = temp;
-  const info = temp < 25
-    ? ['❄️ 極度冷靜', '市場觀望氣氛濃厚，買入訊號稀少，建議保守等待。']
-    : temp < 45 ? ['🌤 偏冷觀望', '市場溫度偏低，可選擇性布局強勢個股。']
-    : temp < 60 ? ['☀️ 中性均衡', '市場溫度適中，個股分化明顯，精選標的為主。']
-    : temp < 78 ? ['🔥 偏熱積極', '市場多頭氛圍較強，買入訊號活躍，可積極布局。']
-    : ['🌋 極度熱絡', '市場情緒極度樂觀，強勢股集中，注意追高風險。'];
+  const info = temp<25?['❄️ 極度冷靜','市場觀望氣氛濃厚，買入訊號稀少，建議保守等待。']
+    :temp<45?['🌤 偏冷觀望','市場溫度偏低，可選擇性布局強勢個股。']
+    :temp<60?['☀️ 中性均衡','市場溫度適中，個股分化明顯，精選標的為主。']
+    :temp<78?['🔥 偏熱積極','市場多頭氛圍較強，買入訊號活躍，可積極布局。']
+    :['🌋 極度熱絡','市場情緒極度樂觀，強勢股集中，注意追高風險。'];
   document.getElementById('gauge-label').textContent = info[0];
   document.getElementById('gauge-desc').textContent = info[1];
-
-  const total = allStocks.length || 1;
+  const n = allStocks.length || 1;
   document.getElementById('gauge-factors').innerHTML = [
-    '買入率 ' + Math.round(buyStocks.length/total*100) + '%',
-    '平均強度 ' + Math.round(allStocks.reduce((a,s)=>a+(s.strength_score||0),0)/total),
-    '多頭排列 ' + Math.round(allStocks.filter(s=>s.bull_align).length/total*100) + '%',
-    'A級法人 ' + allStocks.filter(s=>s.inst_grade==='A').length + ' 檔',
-  ].map(f => '<span class="gauge-factor">' + f + '</span>').join('');
+    '買入率 '+Math.round(buyStocks.length/n*100)+'%',
+    '平均強度 '+Math.round(allStocks.reduce((a,s)=>a+(s.strength_score||0),0)/n),
+    '多頭排列 '+Math.round(allStocks.filter(s=>s.bull_align).length/n*100)+'%',
+    'A級法人 '+allStocks.filter(s=>s.inst_grade==='A').length+' 檔',
+  ].map(f=>'<span class="gauge-factor">'+f+'</span>').join('');
 }
 
 // ── Phase 1 JS ──
-let _allBuyStocks = [];
-let _sortCol = 'strength_score';
-let _sortDir = -1;
+let _allBuyStocks = [], _sortCol = 'strength_score', _sortDir = -1;
 
 function doRefresh() {
-  document.getElementById('wr-loading').style.display = 'block';
-  document.getElementById('wr-body').style.display = 'none';
+  document.getElementById('wr-loading').style.display='block';
+  document.getElementById('wr-body').style.display='none';
   loadWarroom();
 }
-
-function updateAge(updatedStr) {
+function updateAge(s) {
   try {
-    const parts = updatedStr.trim().split(' ');
-    const t = new Date(parts[0].replace(/\//g,'-') + 'T' + (parts[1]||'00:00'));
-    const diff = Math.round((Date.now() - t.getTime()) / 3600000);
-    document.getElementById('rb-age').textContent =
-      diff < 1 ? '剛更新' : diff < 24 ? diff + ' 小時前更新' : Math.round(diff/24) + ' 天前更新';
+    const p=s.trim().split(' ');
+    const t=new Date(p[0].replace(/\//g,'-')+'T'+(p[1]||'00:00'));
+    const d=Math.round((Date.now()-t.getTime())/3600000);
+    document.getElementById('rb-age').textContent=d<1?'剛更新':d<24?d+' 小時前更新':Math.round(d/24)+' 天前更新';
   } catch(e) {}
 }
-
 function initFilters(stocks) {
-  const pools = [...new Set(stocks.map(s=>s._pool).filter(Boolean))];
-  document.getElementById('f-pool').innerHTML = '<option value="">全部</option>' +
-    pools.map(p=>'<option value="'+p+'">'+p+'</option>').join('');
-  const inds = [...new Set(stocks.map(s=>s.industry).filter(Boolean))].sort();
-  document.getElementById('f-industry').innerHTML = '<option value="">全部</option>' +
-    inds.map(i=>'<option value="'+i+'">'+i+'</option>').join('');
+  const pools=[...new Set(stocks.map(s=>s._pool).filter(Boolean))];
+  document.getElementById('f-pool').innerHTML='<option value="">全部</option>'+pools.map(p=>'<option value="'+p+'">'+p+'</option>').join('');
+  const inds=[...new Set(stocks.map(s=>s.industry).filter(Boolean))].sort();
+  document.getElementById('f-industry').innerHTML='<option value="">全部</option>'+inds.map(i=>'<option value="'+i+'">'+i+'</option>').join('');
 }
-
 function applyFilter() {
-  const pool = document.getElementById('f-pool').value;
-  const ind = document.getElementById('f-industry').value;
-  const grade = document.getElementById('f-grade').value;
-  const score = parseInt(document.getElementById('f-score').value)||0;
-  const filtered = _allBuyStocks.filter(s => {
-    if (pool && s._pool !== pool) return false;
-    if (ind && s.industry !== ind) return false;
-    if (grade && s.inst_grade !== grade) return false;
-    if ((s.strength_score||0) < score) return false;
+  const pool=document.getElementById('f-pool').value;
+  const ind=document.getElementById('f-industry').value;
+  const grade=document.getElementById('f-grade').value;
+  const score=parseInt(document.getElementById('f-score').value)||0;
+  const filtered=_allBuyStocks.filter(s=>{
+    if(pool&&s._pool!==pool)return false;
+    if(ind&&s.industry!==ind)return false;
+    if(grade&&s.inst_grade!==grade)return false;
+    if((s.strength_score||0)<score)return false;
     return true;
   });
   renderSignalTable(filtered);
-  document.getElementById('f-count').textContent =
-    '顯示 ' + filtered.length + ' / ' + _allBuyStocks.length + ' 筆買入訊號';
+  document.getElementById('f-count').textContent='顯示 '+filtered.length+' / '+_allBuyStocks.length+' 筆買入訊號';
 }
-
 function clearFilter() {
   document.getElementById('f-pool').value='';
   document.getElementById('f-industry').value='';
@@ -454,24 +603,21 @@ function clearFilter() {
   document.getElementById('f-score-val').textContent='0';
   applyFilter();
 }
-
 function sortSignal(th) {
-  const col = th.dataset.col;
-  _sortDir = _sortCol === col ? _sortDir * -1 : (col==='strength_score'||col==='close'||col==='target_price' ? -1 : 1);
-  _sortCol = col;
+  const col=th.dataset.col;
+  _sortDir=_sortCol===col?_sortDir*-1:(col==='strength_score'||col==='close'||col==='target_price'?-1:1);
+  _sortCol=col;
   document.querySelectorAll('.signal-table th.sortable').forEach(h=>h.classList.remove('sort-asc','sort-desc'));
   th.classList.add(_sortDir===1?'sort-asc':'sort-desc');
   applyFilter();
 }
-
 function renderSignalTable(stocks) {
-  const sorted = [...stocks].sort((a,b) => {
-    const av=a[_sortCol], bv=b[_sortCol];
-    if (typeof av==='string') return _sortDir*(av||'').localeCompare(bv||'');
+  const sorted=[...stocks].sort((a,b)=>{
+    const av=a[_sortCol],bv=b[_sortCol];
+    if(typeof av==='string')return _sortDir*(av||'').localeCompare(bv||'');
     return _sortDir*((bv||0)-(av||0));
   });
-  const tbody = document.querySelector('#wr-signals tbody');
-  tbody.innerHTML = sorted.map(s => {
+  document.querySelector('#wr-signals tbody').innerHTML=sorted.map(s=>{
     const gc=s.inst_grade==='A'?'grade-a':s.inst_grade==='B'?'grade-b':s.inst_grade==='C'?'grade-c':'grade-x';
     const ac=s.action&&s.action.includes('買入')?'action-buy':s.action&&s.action.includes('停損')?'action-exit':'action-watch';
     return '<tr><td>'+s.stock_id+'</td><td><strong>'+s.stock_name+'</strong></td><td>$'+s.close+'</td>'+
@@ -479,118 +625,97 @@ function renderSignalTable(stocks) {
       '<td>'+(s.strength_score||'—')+'</td><td>'+(s.chip_signal||'—')+'</td>'+
       '<td>'+(s.theme_tag||'—')+'</td><td class="'+ac+'">'+(s.action||'—')+'</td>'+
       '<td>$'+(s.target_price||'—')+'</td></tr>';
-  }).join('');
-  if (!sorted.length) tbody.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:16px">無符合條件的買入訊號</td></tr>';
+  }).join('')||'<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:16px">無符合條件的買入訊號</td></tr>';
 }
-
 function toggleAnalyst(cls) {
-  const card = document.querySelector('.analyst-card.'+cls);
-  if (!card) return;
+  const card=document.querySelector('.analyst-card.'+cls);
+  if(!card)return;
   card.classList.toggle('collapsed');
-  card.querySelector('.ac-toggle').textContent = card.classList.contains('collapsed') ? '▶ 展開' : '▼ 收合';
-  try {
-    const p = JSON.parse(localStorage.getItem('wr_analyst_prefs')||'{}');
-    p[cls] = card.classList.contains('collapsed');
-    localStorage.setItem('wr_analyst_prefs', JSON.stringify(p));
-  } catch(e) {}
+  card.querySelector('.ac-toggle').textContent=card.classList.contains('collapsed')?'▶ 展開':'▼ 收合';
+  try{const p=JSON.parse(localStorage.getItem('wr_analyst_prefs')||'{}');p[cls]=card.classList.contains('collapsed');localStorage.setItem('wr_analyst_prefs',JSON.stringify(p));}catch(e){}
 }
-
 function restoreAnalystPrefs() {
-  try {
-    const p = JSON.parse(localStorage.getItem('wr_analyst_prefs')||'{}');
-    for (const cls in p) {
-      if (p[cls]) {
-        const card = document.querySelector('.analyst-card.'+cls);
-        if (card) { card.classList.add('collapsed'); const b=card.querySelector('.ac-toggle'); if(b) b.textContent='▶ 展開'; }
-      }
-    }
-  } catch(e) {}
+  try{const p=JSON.parse(localStorage.getItem('wr_analyst_prefs')||'{}');for(const cls in p){if(p[cls]){const card=document.querySelector('.analyst-card.'+cls);if(card){card.classList.add('collapsed');const b=card.querySelector('.ac-toggle');if(b)b.textContent='▶ 展開';}}}}catch(e){}
 }
 
-const PLUM_URL = 'https://kobetime520-code.github.io/Peter-plum-blossom-quant/plum_blossom_data.json';
+const PLUM_URL='https://kobetime520-code.github.io/Peter-plum-blossom-quant/plum_blossom_data.json';
 
 async function loadWarroom() {
   try {
-    const res = await fetch(PLUM_URL + '?t=' + Date.now());
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const d = await res.json();
-    document.getElementById('wr-loading').style.display = 'none';
-    document.getElementById('wr-body').style.display = 'block';
+    const res=await fetch(PLUM_URL+'?t='+Date.now());
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const d=await res.json();
+    document.getElementById('wr-loading').style.display='none';
+    document.getElementById('wr-body').style.display='block';
     renderWarroom(d);
     restoreAnalystPrefs();
   } catch(e) {
-    document.getElementById('wr-loading').innerHTML =
-      '<div class="wr-error">⚠ 資料載入失敗：'+e.message+'<br><small>請確認 Peter Plum 網站已完成今日排程</small></div>';
+    document.getElementById('wr-loading').innerHTML='<div class="wr-error">⚠ 資料載入失敗：'+e.message+'<br><small>請確認 Peter Plum 網站已完成今日排程</small></div>';
   }
 }
 
 function renderWarroom(d) {
-  const stats = d.dashboard_stats || {};
-  const pools = d.pools || {};
-  const updated = d.last_updated || '—';
-
-  document.getElementById('wr-updated').textContent = '📅 資料更新：' + updated;
-  document.getElementById('rb-time').textContent = '📅 資料更新：' + updated;
+  _lastData = d;
+  const stats=d.dashboard_stats||{}, pools=d.pools||{}, updated=d.last_updated||'—';
+  document.getElementById('wr-updated').textContent='📅 資料更新：'+updated;
+  document.getElementById('rb-time').textContent='📅 資料更新：'+updated;
   updateAge(updated);
 
-  const allStocks = [];
-  for (const pn in pools) {
-    const arr = pools[pn];
-    if (Array.isArray(arr)) arr.forEach(s => allStocks.push(Object.assign({}, s, {_pool: pn})));
-  }
-  const buyStocks = allStocks.filter(s => s.action && s.action.includes('買入'));
-  _allBuyStocks = buyStocks;
+  const allStocks=[];
+  for(const pn in pools){const arr=pools[pn];if(Array.isArray(arr))arr.forEach(s=>allStocks.push(Object.assign({},s,{_pool:pn})));}
+  const buyStocks=allStocks.filter(s=>s.action&&s.action.includes('買入'));
+  _allBuyStocks=buyStocks;
   initFilters(buyStocks);
 
-  // 溫度計
-  const tempScore = calcMarketTemp(allStocks, buyStocks);
-  renderGauge(tempScore, allStocks, buyStocks);
+  const tempScore=calcMarketTemp(allStocks,buyStocks);
+  renderGauge(tempScore,allStocks,buyStocks);
+  const topStock=allStocks.filter(s=>s.strength_score!=null).sort((a,b)=>b.strength_score-a.strength_score)[0];
+  updateMorningData(buyStocks.length,topStock?topStock.stock_name:'—',tempScore);
 
-  // 晨間數據
-  const topStock = allStocks.filter(s=>s.strength_score!=null).sort((a,b)=>b.strength_score-a.strength_score)[0];
-  updateMorningData(buyStocks.length, topStock ? topStock.stock_name : '—', tempScore);
+  // Phase 3
+  document.getElementById('export-bar').style.display='flex';
+  renderDistChart(allStocks);
+  checkAndNotify(allStocks);
 
-  const totalBuy = (stats.action_ratio&&stats.action_ratio.buy) || buyStocks.length;
-  const totalWatch = (stats.action_ratio&&stats.action_ratio.watch) || 0;
-  const oceanTotal = stats.ocean_total || allStocks.length;
-  const avgScore = allStocks.length ? Math.round(allStocks.reduce((a,s)=>a+(s.strength_score||0),0)/allStocks.length) : 0;
-  const bullCount = allStocks.filter(s=>s.bull_align).length;
-  document.getElementById('wr-stats').innerHTML = [
+  const totalBuy=(stats.action_ratio&&stats.action_ratio.buy)||buyStocks.length;
+  const totalWatch=(stats.action_ratio&&stats.action_ratio.watch)||0;
+  const oceanTotal=stats.ocean_total||allStocks.length;
+  const avgScore=allStocks.length?Math.round(allStocks.reduce((a,s)=>a+(s.strength_score||0),0)/allStocks.length):0;
+  const bullCount=allStocks.filter(s=>s.bull_align).length;
+  document.getElementById('wr-stats').innerHTML=[
     ['🌊',oceanTotal,'大海總股數'],['🟢',totalBuy,'買入加碼'],
     ['👁',totalWatch,'靜候觀察'],['⚡',avgScore,'平均強度分'],['🐂',bullCount,'多頭排列'],
   ].map(x=>'<div class="stat-box"><div class="sv">'+x[0]+' '+x[1]+'</div><div class="sl">'+x[2]+'</div></div>').join('');
 
-  const gradeA=allStocks.filter(s=>s.inst_grade==='A');
-  const gradeB=allStocks.filter(s=>s.inst_grade==='B');
-  const foreignTop=[...allStocks].filter(s=>(s.foreign_buy||0)>0).sort((a,b)=>(b.foreign_buy||0)-(a.foreign_buy||0)).slice(0,3);
-  const ericChips=foreignTop.map(s=>'<span class="chip hot">'+s.stock_name+' 外資+'+s.foreign_buy+'</span>').join('');
+  const gA=allStocks.filter(s=>s.inst_grade==='A'),gB=allStocks.filter(s=>s.inst_grade==='B');
+  const fTop=[...allStocks].filter(s=>(s.foreign_buy||0)>0).sort((a,b)=>(b.foreign_buy||0)-(a.foreign_buy||0)).slice(0,3);
   document.getElementById('wr-analysts').innerHTML='';
   appendAnalyst('eric','E','Eric','籌碼分析師',
-    '今日法人評級 A 級共 <strong>'+gradeA.length+'</strong> 檔，B 級 <strong>'+gradeB.length+'</strong> 檔。外資積極買超前三名：',ericChips);
+    '今日法人評級 A 級共 <strong>'+gA.length+'</strong> 檔，B 級 <strong>'+gB.length+'</strong> 檔。外資積極買超前三名：',
+    fTop.map(s=>'<span class="chip hot">'+s.stock_name+' 外資+'+s.foreign_buy+'</span>').join(''));
 
-  const themeMap={};
-  allStocks.forEach(s=>{if(s.theme_tag) themeMap[s.theme_tag]=(themeMap[s.theme_tag]||0)+1;});
-  const topThemes=Object.entries(themeMap).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  const tm={};
+  allStocks.forEach(s=>{if(s.theme_tag)tm[s.theme_tag]=(tm[s.theme_tag]||0)+1;});
   appendAnalyst('grace','G','Grace','題材分析師','今日熱門題材分布，科技類為主力。重點佈局方向：',
-    topThemes.map(x=>'<span class="chip good">'+x[0]+' ×'+x[1]+'</span>').join(''));
+    Object.entries(tm).sort((a,b)=>b[1]-a[1]).slice(0,4).map(x=>'<span class="chip good">'+x[0]+' ×'+x[1]+'</span>').join(''));
 
-  const bullBuy=buyStocks.filter(s=>s.bull_align).length;
-  const rsiH=allStocks.filter(s=>s.rsi14>=70).length;
-  const brkNew=allStocks.filter(s=>s.ma5_breakout_day&&s.ma5_breakout_day<=3).length;
+  const bB=buyStocks.filter(s=>s.bull_align).length;
+  const rH=allStocks.filter(s=>s.rsi14>=70).length;
+  const bN=allStocks.filter(s=>s.ma5_breakout_day&&s.ma5_breakout_day<=3).length;
   appendAnalyst('joe','J','Joe','技術分析師',
-    '今日技術面：買入且多頭排列 <strong>'+bullBuy+'</strong> 檔，均線結構健康。新鮮突破（3日內）標的：',
-    '<span class="chip">多頭排列買入 '+bullBuy+' 檔</span><span class="chip warn">RSI≥70 強勢 '+rsiH+' 檔</span><span class="chip good">新突破≤3日 '+brkNew+' 檔</span>');
+    '今日技術面：買入且多頭排列 <strong>'+bB+'</strong> 檔，均線結構健康。新鮮突破（3日內）標的：',
+    '<span class="chip">多頭排列買入 '+bB+' 檔</span><span class="chip warn">RSI≥70 強勢 '+rH+' 檔</span><span class="chip good">新突破≤3日 '+bN+' 檔</span>');
 
-  const poolStats=stats.pool_buy_stats||{};
-  const ph=Object.entries(poolStats).map(x=>({name:x[0],pct:x[1].total>0?Math.round(x[1].buy/x[1].total*100):0,buy:x[1].buy,total:x[1].total}));
+  const ps=stats.pool_buy_stats||{};
+  const ph=Object.entries(ps).map(x=>({name:x[0],pct:x[1].total>0?Math.round(x[1].buy/x[1].total*100):0,buy:x[1].buy,total:x[1].total}));
   const best=ph.slice().sort((a,b)=>b.pct-a.pct)[0];
   appendAnalyst('tim','T','Tim','基本面分析師',
     '魚池整體健康度佳。'+(best?'最活躍魚池：<strong>'+best.name+'</strong>（買入率 '+best.pct+'%）':'')+'。各池進場比率：',
-    ph.slice(0,3).map(p=>'<span class="chip '+(p.pct>=80?'hot':p.pct>=50?'good':'warn')+'">'+(p.name.split(' ')[1]||p.name)+' '+p.pct+'%</span>').join(''));
+    ph.slice(0,3).map(p=>'<span class="chip '+(p.pct>=80?'hot':p.pct>=50?'good':'warn')+'">'+（p.name.split(' ')[1]||p.name)+' '+p.pct+'%</span>').join(''));
 
-  const top3=allStocks.filter(s=>s.strength_score!=null).sort((a,b)=>b.strength_score-a.strength_score).slice(0,3);
+  const t3=allStocks.filter(s=>s.strength_score!=null).sort((a,b)=>b.strength_score-a.strength_score).slice(0,3);
   const rl=['🥇 第一名','🥈 第二名','🥉 第三名'],rc=['rank1','rank2','rank3'];
-  document.getElementById('wr-top3').innerHTML=top3.map((s,i)=>
+  document.getElementById('wr-top3').innerHTML=t3.map((s,i)=>
     '<div class="top3-card '+rc[i]+'"><div class="top3-rank">'+rl[i]+'</div>'+
     '<div class="top3-name">'+s.stock_name+'</div><div class="top3-id">'+s.stock_id+' · '+(s.industry||'')+'</div>'+
     '<div class="top3-score-bar"><div class="top3-score-fill" style="width:'+s.strength_score+'%"></div></div>'+
@@ -603,7 +728,7 @@ function renderWarroom(d) {
     '<div class="top3-tag">'+(s.theme_tag||'')+' '+(s.breakout_label||'')+'</div></div>'
   ).join('');
 
-  document.querySelector('#wr-pools tbody').innerHTML=Object.entries(poolStats).map(x=>{
+  document.querySelector('#wr-pools tbody').innerHTML=Object.entries(ps).map(x=>{
     const pct=x[1].total>0?Math.round(x[1].buy/x[1].total*100):0;
     return '<tr><td>'+x[0]+'</td><td>'+x[1].total+'</td><td><strong>'+x[1].buy+'</strong></td><td>'+pct+'%</td>'+
       '<td><div class="pool-bar"><div class="pool-bar-fill" style="width:'+pct+'%"></div></div></td></tr>';
@@ -613,10 +738,10 @@ function renderWarroom(d) {
   document.getElementById('f-count').textContent='顯示 '+buyStocks.length+' / '+buyStocks.length+' 筆買入訊號';
 
   const hc=['rgba(13,95,160,.9)','rgba(13,95,160,.75)','rgba(77,184,232,.8)','rgba(77,184,232,.65)','rgba(77,184,232,.5)','rgba(13,95,160,.4)'];
-  document.getElementById('wr-heat').innerHTML=(stats.industry_distribution||[]).map((item,i)=>{
-    return '<div class="heat-item" style="background:'+hc[Math.min(i,hc.length-1)]+';color:'+(i<3?'#fff':'var(--deep)')+';border-color:transparent">'+
-      '<div class="hi-name">'+item.industry+'</div><div class="hi-count">'+item.count+'</div></div>';
-  }).join('');
+  document.getElementById('wr-heat').innerHTML=(stats.industry_distribution||[]).map((item,i)=>
+    '<div class="heat-item" style="background:'+hc[Math.min(i,hc.length-1)]+';color:'+(i<3?'#fff':'var(--deep)')+';border-color:transparent">'+
+    '<div class="hi-name">'+item.industry+'</div><div class="hi-count">'+item.count+'</div></div>'
+  ).join('');
 
   document.getElementById('wr-footer').innerHTML=
     '📌 資料來源：彼得梅花鹿量化系統 Peter Plum · 更新時間：'+updated+'<br>'+
@@ -625,22 +750,15 @@ function renderWarroom(d) {
 }
 
 function appendAnalyst(cls, initial, name, role, verdict, chips) {
-  const el = document.createElement('div');
-  el.className = 'analyst-card ' + cls;
-  el.innerHTML =
-    '<div class="ac-head">'+
-      '<div class="ac-avatar">'+initial+'</div>'+
-      '<div><div class="ac-name">'+name+'</div><div class="ac-role">'+role+'</div></div>'+
-      '<button class="ac-toggle" onclick="toggleAnalyst(\''+cls+'\')">▼ 收合</button>'+
-    '</div>'+
-    '<div class="ac-body">'+
-      '<div class="ac-verdict">'+verdict+'</div>'+
-      '<div class="ac-chips">'+chips+'</div>'+
-    '</div>';
+  const el=document.createElement('div');
+  el.className='analyst-card '+cls;
+  el.innerHTML='<div class="ac-head"><div class="ac-avatar">'+initial+'</div>'+
+    '<div><div class="ac-name">'+name+'</div><div class="ac-role">'+role+'</div></div>'+
+    '<button class="ac-toggle" onclick="toggleAnalyst(\''+cls+'\')">▼ 收合</button></div>'+
+    '<div class="ac-body"><div class="ac-verdict">'+verdict+'</div><div class="ac-chips">'+chips+'</div></div>';
   document.getElementById('wr-analysts').appendChild(el);
 }
 
-// 初始化
 restoreTheme();
 initMorning();
 loadWarroom();

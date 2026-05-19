@@ -1,6 +1,8 @@
 name: 🔬 Magic_Lab CI
 
 on:
+  schedule:
+    - cron: '0 22 * * *'  # 每日台灣時間 06:00（UTC 22:00）自動執行
   workflow_dispatch:
   push:
     branches: [ main ]

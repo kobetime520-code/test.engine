@@ -121,6 +121,52 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
   .wr-section{padding:16px 16px 0}
   .wr-title{font-size:1.2rem}
 }
+
+/* ── PHASE 1 ADDITIONS ── */
+
+/* 折疊按鈕 */
+.ac-toggle{float:right;background:none;border:1px solid var(--border);border-radius:8px;
+  padding:2px 8px;font-size:.72rem;color:var(--muted);cursor:pointer;line-height:1.6}
+.ac-toggle:hover{background:var(--dawn)}
+.analyst-card .ac-body{transition:all .25s ease;overflow:hidden}
+.analyst-card.collapsed .ac-body{display:none}
+.analyst-card.collapsed .ac-toggle{background:var(--dawn)}
+
+/* 刷新列 */
+.refresh-bar{display:flex;align-items:center;gap:10px;padding:8px 24px;
+  background:rgba(13,95,160,.06);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.refresh-bar .rb-time{font-size:.78rem;color:var(--muted);flex:1}
+.refresh-bar .rb-age{font-size:.72rem;color:var(--ocean);font-weight:600}
+.refresh-btn{padding:4px 14px;border-radius:10px;border:1px solid var(--border);
+  background:white;color:var(--ocean);font-size:.78rem;cursor:pointer;font-weight:600}
+.refresh-btn:hover{background:var(--dawn)}
+
+/* 篩選器 */
+.filter-bar{background:white;border:1px solid var(--border);border-radius:12px;
+  padding:12px 14px;margin-bottom:12px}
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filter-label{font-size:.72rem;color:var(--muted);font-weight:700;min-width:52px}
+.filter-select{padding:4px 8px;border-radius:8px;border:1px solid var(--border);
+  font-size:.78rem;color:var(--deep);background:var(--dawn);cursor:pointer}
+.filter-select:focus{outline:none;border-color:var(--sky)}
+.filter-range{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted)}
+.filter-range input[type=range]{width:90px;accent-color:var(--ocean)}
+.filter-range .rv{font-weight:700;color:var(--ocean);min-width:24px}
+.filter-clear{padding:4px 12px;border-radius:8px;border:1px solid var(--border);
+  background:white;color:var(--muted);font-size:.72rem;cursor:pointer;margin-left:auto}
+.filter-clear:hover{background:#fdecea;color:#c0392b;border-color:#fbb}
+.filter-count{font-size:.72rem;color:var(--muted);padding-top:6px;border-top:1px solid var(--dawn);margin-top:6px}
+
+/* 排序標題 */
+.signal-table th.sortable{cursor:pointer;user-select:none;white-space:nowrap}
+.signal-table th.sortable:hover{background:rgba(255,255,255,.2)}
+.signal-table th .sort-arrow{font-size:.65rem;margin-left:3px;opacity:.6}
+.signal-table th.sort-asc .sort-arrow::after{content:'▲'}
+.signal-table th.sort-desc .sort-arrow::after{content:'▼'}
+.signal-table th:not(.sort-asc):not(.sort-desc) .sort-arrow::after{content:'⇅'}
+
+/* 搜尋高亮 */
+.signal-table tr.hl-match td{background:rgba(77,184,232,.15)!important}
 </style>
 </head>
 <body>
@@ -137,6 +183,13 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
     </div>
   </div>
   <div class="wr-tagline">✦ 辰：早晨出發的勇氣　希：永不熄滅的希望 ✦</div>
+</div>
+
+<!-- REFRESH BAR -->
+<div class="refresh-bar">
+  <span class="rb-time" id="rb-time">📅 資料更新：載入中…</span>
+  <span class="rb-age" id="rb-age"></span>
+  <button class="refresh-btn" onclick="doRefresh()">🔄 重新整理</button>
 </div>
 
 <!-- LOADING -->
@@ -178,9 +231,39 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
   <!-- 訊號明細 -->
   <div class="wr-section" style="padding-top:18px">
     <div class="wr-sec-title">📋 買入訊號明細（action = 買入加碼）</div>
+    <div class="filter-bar" id="filter-bar">
+      <div class="filter-row">
+        <span class="filter-label">🐟 魚池</span>
+        <select class="filter-select" id="f-pool" onchange="applyFilter()"><option value="">全部</option></select>
+        <span class="filter-label">🏭 產業</span>
+        <select class="filter-select" id="f-industry" onchange="applyFilter()"><option value="">全部</option></select>
+        <span class="filter-label">📊 評級</span>
+        <select class="filter-select" id="f-grade" onchange="applyFilter()">
+          <option value="">全部</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+        </select>
+        <span class="filter-range">
+          <span class="filter-label">⚡ 強度≥</span>
+          <input type="range" id="f-score" min="0" max="100" value="0" oninput="document.getElementById('f-score-val').textContent=this.value;applyFilter()">
+          <span class="rv" id="f-score-val">0</span>
+        </span>
+        <button class="filter-clear" onclick="clearFilter()">✕ 清除</button>
+      </div>
+      <div class="filter-count" id="f-count"></div>
+    </div>
     <div style="overflow-x:auto">
     <table class="signal-table" id="wr-signals">
-      <thead><tr><th>代號</th><th>名稱</th><th>收盤</th><th>評級</th><th>強度</th><th>籌碼</th><th>題材</th><th>操作</th><th>目標</th></tr></thead>
+      <thead><tr>
+        <th class="sortable" data-col="stock_id" onclick="sortSignal(this)">代號<span class="sort-arrow"></span></th>
+        <th class="sortable" data-col="stock_name" onclick="sortSignal(this)">名稱<span class="sort-arrow"></span></th>
+        <th class="sortable" data-col="close" onclick="sortSignal(this)">收盤<span class="sort-arrow"></span></th>
+        <th class="sortable" data-col="inst_grade" onclick="sortSignal(this)">評級<span class="sort-arrow"></span></th>
+        <th class="sortable sort-desc" data-col="strength_score" onclick="sortSignal(this)">強度<span class="sort-arrow"></span></th>
+        <th>籌碼</th><th>題材</th><th>操作</th>
+        <th class="sortable" data-col="target_price" onclick="sortSignal(this)">目標<span class="sort-arrow"></span></th>
+      </tr></thead>
       <tbody></tbody>
     </table>
     </div>
@@ -196,6 +279,143 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 </div>
 
 <script>
+
+// ── Phase 1 JS ──
+let _allBuyStocks = [];
+let _sortCol = 'strength_score';
+let _sortDir = -1;
+
+function doRefresh() {
+  document.getElementById('wr-loading').style.display = 'block';
+  document.getElementById('wr-body').style.display = 'none';
+  loadWarroom();
+}
+
+function updateAge(updatedStr) {
+  try {
+    const parts = updatedStr.trim().split(' ');
+    const datePart = parts[0].replace(/\//g, '-');
+    const timePart = parts[1] || '00:00';
+    const t = new Date(datePart + 'T' + timePart);
+    const diff = Math.round((Date.now() - t.getTime()) / 3600000);
+    const ageText = diff < 1 ? '剛更新' : diff < 24 ? diff + ' 小時前更新' : Math.round(diff/24) + ' 天前更新';
+    document.getElementById('rb-age').textContent = ageText;
+  } catch(e) {}
+}
+
+function initFilters(stocks) {
+  const pools = [...new Set(stocks.map(s => s._pool).filter(Boolean))];
+  const fPool = document.getElementById('f-pool');
+  fPool.innerHTML = '<option value="">全部</option>' +
+    pools.map(p => '<option value="' + p + '">' + p + '</option>').join('');
+
+  const inds = [...new Set(stocks.map(s => s.industry).filter(Boolean))].sort();
+  const fInd = document.getElementById('f-industry');
+  fInd.innerHTML = '<option value="">全部</option>' +
+    inds.map(i => '<option value="' + i + '">' + i + '</option>').join('');
+}
+
+function applyFilter() {
+  const pool = document.getElementById('f-pool').value;
+  const ind = document.getElementById('f-industry').value;
+  const grade = document.getElementById('f-grade').value;
+  const score = parseInt(document.getElementById('f-score').value) || 0;
+
+  const filtered = _allBuyStocks.filter(s => {
+    if (pool && s._pool !== pool) return false;
+    if (ind && s.industry !== ind) return false;
+    if (grade && s.inst_grade !== grade) return false;
+    if ((s.strength_score || 0) < score) return false;
+    return true;
+  });
+
+  renderSignalTable(filtered);
+  document.getElementById('f-count').textContent =
+    '顯示 ' + filtered.length + ' / ' + _allBuyStocks.length + ' 筆買入訊號';
+}
+
+function clearFilter() {
+  document.getElementById('f-pool').value = '';
+  document.getElementById('f-industry').value = '';
+  document.getElementById('f-grade').value = '';
+  document.getElementById('f-score').value = 0;
+  document.getElementById('f-score-val').textContent = '0';
+  applyFilter();
+}
+
+function sortSignal(th) {
+  const col = th.dataset.col;
+  if (_sortCol === col) {
+    _sortDir *= -1;
+  } else {
+    _sortCol = col;
+    _sortDir = (col === 'strength_score' || col === 'close' || col === 'target_price') ? -1 : 1;
+  }
+  document.querySelectorAll('.signal-table th.sortable').forEach(h => {
+    h.classList.remove('sort-asc', 'sort-desc');
+  });
+  th.classList.add(_sortDir === 1 ? 'sort-asc' : 'sort-desc');
+  applyFilter();
+}
+
+function renderSignalTable(stocks) {
+  const col = _sortCol;
+  const dir = _sortDir;
+  const sorted = [...stocks].sort((a, b) => {
+    const av = a[col], bv = b[col];
+    if (typeof av === 'string') return dir * (av || '').localeCompare(bv || '');
+    return dir * ((bv || 0) - (av || 0));
+  });
+
+  const tbody = document.querySelector('#wr-signals tbody');
+  tbody.innerHTML = sorted.map(s => {
+    const gc = s.inst_grade==='A'?'grade-a':s.inst_grade==='B'?'grade-b':s.inst_grade==='C'?'grade-c':'grade-x';
+    const ac = s.action&&s.action.includes('買入')?'action-buy':s.action&&s.action.includes('停損')?'action-exit':'action-watch';
+    return '<tr>' +
+      '<td>' + s.stock_id + '</td>' +
+      '<td><strong>' + s.stock_name + '</strong></td>' +
+      '<td>$' + s.close + '</td>' +
+      '<td><span class="' + gc + '">' + (s.inst_grade||'—') + '</span></td>' +
+      '<td>' + (s.strength_score||'—') + '</td>' +
+      '<td>' + (s.chip_signal||'—') + '</td>' +
+      '<td>' + (s.theme_tag||'—') + '</td>' +
+      '<td class="' + ac + '">' + (s.action||'—') + '</td>' +
+      '<td>$' + (s.target_price||'—') + '</td>' +
+      '</tr>';
+  }).join('');
+  if (!sorted.length) tbody.innerHTML =
+    '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:16px">無符合條件的買入訊號</td></tr>';
+}
+
+function toggleAnalyst(cls) {
+  const card = document.querySelector('.analyst-card.' + cls);
+  if (!card) return;
+  card.classList.toggle('collapsed');
+  const btn = card.querySelector('.ac-toggle');
+  btn.textContent = card.classList.contains('collapsed') ? '▶ 展開' : '▼ 收合';
+  try {
+    const prefs = JSON.parse(localStorage.getItem('wr_analyst_prefs') || '{}');
+    prefs[cls] = card.classList.contains('collapsed');
+    localStorage.setItem('wr_analyst_prefs', JSON.stringify(prefs));
+  } catch(e) {}
+}
+
+function restoreAnalystPrefs() {
+  try {
+    const prefs = JSON.parse(localStorage.getItem('wr_analyst_prefs') || '{}');
+    for (const cls in prefs) {
+      if (prefs[cls]) {
+        const card = document.querySelector('.analyst-card.' + cls);
+        if (card) {
+          card.classList.add('collapsed');
+          const btn = card.querySelector('.ac-toggle');
+          if (btn) btn.textContent = '▶ 展開';
+        }
+      }
+    }
+  } catch(e) {}
+}
+
 const PLUM_URL = 'https://kobetime520-code.github.io/Peter-plum-blossom-quant/plum_blossom_data.json';
 
 async function loadWarroom() {
@@ -206,6 +426,7 @@ async function loadWarroom() {
     document.getElementById('wr-loading').style.display = 'none';
     document.getElementById('wr-body').style.display = 'block';
     renderWarroom(d);
+    restoreAnalystPrefs();
   } catch(e) {
     document.getElementById('wr-loading').innerHTML =
       '<div class="wr-error">⚠ 資料載入失敗：' + e.message + '<br><small>請確認 Peter Plum 網站已完成今日排程</small></div>';
@@ -218,21 +439,23 @@ function renderWarroom(d) {
   const updated = d.last_updated || '—';
 
   document.getElementById('wr-updated').textContent = '📅 資料更新：' + updated;
+  document.getElementById('rb-time').textContent = '📅 資料更新：' + updated;
+  updateAge(updated);
 
-  // 彙整所有股票
   const allStocks = [];
-  for (const [poolName, arr] of Object.entries(pools)) {
-    if (Array.isArray(arr)) arr.forEach(s => allStocks.push({...s, _pool: poolName}));
+  for (const poolName in pools) {
+    const arr = pools[poolName];
+    if (Array.isArray(arr)) arr.forEach(s => allStocks.push(Object.assign({}, s, {_pool: poolName})));
   }
   const buyStocks = allStocks.filter(s => s.action && s.action.includes('買入'));
+  _allBuyStocks = buyStocks;
+  initFilters(buyStocks);
 
-  // ── 總覽統計 ──
-  const totalBuy = stats.action_ratio?.buy || buyStocks.length;
-  const totalWatch = stats.action_ratio?.watch || 0;
+  const totalBuy = (stats.action_ratio && stats.action_ratio.buy) || buyStocks.length;
+  const totalWatch = (stats.action_ratio && stats.action_ratio.watch) || 0;
   const oceanTotal = stats.ocean_total || allStocks.length;
   const avgScore = allStocks.length
-    ? Math.round(allStocks.reduce((a,s) => a + (s.strength_score||0), 0) / allStocks.length)
-    : 0;
+    ? Math.round(allStocks.reduce((a,s) => a + (s.strength_score||0), 0) / allStocks.length) : 0;
   const bullCount = allStocks.filter(s => s.bull_align).length;
   document.getElementById('wr-stats').innerHTML = [
     ['🌊', oceanTotal, '大海總股數'],
@@ -240,154 +463,119 @@ function renderWarroom(d) {
     ['👁', totalWatch, '靜候觀察'],
     ['⚡', avgScore, '平均強度分'],
     ['🐂', bullCount, '多頭排列'],
-  ].map(([icon,v,l]) =>
-    `<div class="stat-box"><div class="sv">${icon} ${v}</div><div class="sl">${l}</div></div>`
-  ).join('');
+  ].map(function(x){
+    return '<div class="stat-box"><div class="sv">' + x[0] + ' ' + x[1] + '</div><div class="sl">' + x[2] + '</div></div>';
+  }).join('');
 
-  // ── Eric（籌碼分析師）──
   const gradeA = allStocks.filter(s => s.inst_grade === 'A');
   const gradeB = allStocks.filter(s => s.inst_grade === 'B');
-  const foreignBuyTop = [...allStocks].filter(s => (s.foreign_buy||0) > 0)
+  const foreignBuyTop = allStocks.filter(s => (s.foreign_buy||0) > 0)
     .sort((a,b) => (b.foreign_buy||0) - (a.foreign_buy||0)).slice(0,3);
   const ericChips = foreignBuyTop.map(s =>
-    `<span class="chip hot">${s.stock_name} 外資+${s.foreign_buy}</span>`).join('');
+    '<span class="chip hot">' + s.stock_name + ' 外資+' + s.foreign_buy + '</span>').join('');
   document.getElementById('wr-analysts').innerHTML = '';
   appendAnalyst('eric', 'E', 'Eric', '籌碼分析師',
-    `今日法人評級 A 級共 <strong>${gradeA.length}</strong> 檔，B 級 <strong>${gradeB.length}</strong> 檔。外資積極買超前三名：`,
+    '今日法人評級 A 級共 <strong>' + gradeA.length + '</strong> 檔，B 級 <strong>' + gradeB.length + '</strong> 檔。外資積極買超前三名：',
     ericChips);
 
-  // ── Grace（題材分析師）──
   const themeMap = {};
-  allStocks.forEach(s => {
-    if (!s.theme_tag) return;
-    themeMap[s.theme_tag] = (themeMap[s.theme_tag]||0) + 1;
-  });
+  allStocks.forEach(s => { if (s.theme_tag) themeMap[s.theme_tag] = (themeMap[s.theme_tag]||0) + 1; });
   const topThemes = Object.entries(themeMap).sort((a,b)=>b[1]-a[1]).slice(0,4);
-  const graceChips = topThemes.map(([t,n]) =>
-    `<span class="chip good">${t} ×${n}</span>`).join('');
-  appendAnalyst('grace', 'G', 'Grace', '題材分析師',
-    `今日熱門題材分布，科技類為主力。重點佈局方向：`,
-    graceChips);
+  const graceChips = topThemes.map(function(x){ return '<span class="chip good">' + x[0] + ' ×' + x[1] + '</span>'; }).join('');
+  appendAnalyst('grace', 'G', 'Grace', '題材分析師', '今日熱門題材分布，科技類為主力。重點佈局方向：', graceChips);
 
-  // ── Joe（技術分析師）──
   const bullAlignBuy = buyStocks.filter(s => s.bull_align).length;
   const rsiHigh = allStocks.filter(s => s.rsi14 >= 70);
   const breakoutNew = allStocks.filter(s => s.ma5_breakout_day && s.ma5_breakout_day <= 3);
-  const joeChips = [
-    `<span class="chip">多頭排列買入 ${bullAlignBuy} 檔</span>`,
-    `<span class="chip warn">RSI≥70 強勢 ${rsiHigh.length} 檔</span>`,
-    `<span class="chip good">新突破≤3日 ${breakoutNew.length} 檔</span>`,
-  ].join('');
+  const joeChips =
+    '<span class="chip">多頭排列買入 ' + bullAlignBuy + ' 檔</span>' +
+    '<span class="chip warn">RSI≥70 強勢 ' + rsiHigh.length + ' 檔</span>' +
+    '<span class="chip good">新突破≤3日 ' + breakoutNew.length + ' 檔</span>';
   appendAnalyst('joe', 'J', 'Joe', '技術分析師',
-    `今日技術面：買入且多頭排列 <strong>${bullAlignBuy}</strong> 檔，均線結構健康。新鮮突破（3日內）標的：`,
-    joeChips);
+    '今日技術面：買入且多頭排列 <strong>' + bullAlignBuy + '</strong> 檔，均線結構健康。新鮮突破（3日內）標的：', joeChips);
 
-  // ── Tim（基本面分析師）──
   const poolStats = stats.pool_buy_stats || {};
-  const poolHealth = Object.entries(poolStats).map(([name, ps]) => {
+  const poolHealth = Object.entries(poolStats).map(function(x){
+    const name = x[0], ps = x[1];
     const pct = ps.total > 0 ? Math.round(ps.buy / ps.total * 100) : 0;
-    return {name, pct, buy: ps.buy, total: ps.total};
+    return {name: name, pct: pct, buy: ps.buy, total: ps.total};
   });
-  const best = poolHealth.sort((a,b) => b.pct - a.pct)[0];
+  const best = poolHealth.slice().sort((a,b) => b.pct - a.pct)[0];
   const timChips = poolHealth.slice(0,3).map(p =>
-    `<span class="chip ${p.pct>=80?'hot':p.pct>=50?'good':'warn'}">${p.name.split(' ')[1]||p.name} ${p.pct}%</span>`
-  ).join('');
+    '<span class="chip ' + (p.pct>=80?'hot':p.pct>=50?'good':'warn') + '">' +
+    (p.name.split(' ')[1]||p.name) + ' ' + p.pct + '%</span>').join('');
   appendAnalyst('tim', 'T', 'Tim', '基本面分析師',
-    `魚池整體健康度佳。${best ? `最活躍魚池：<strong>${best.name}</strong>（買入率 ${best.pct}%）` : ''}。各池進場比率：`,
+    '魚池整體健康度佳。' + (best ? '最活躍魚池：<strong>' + best.name + '</strong>（買入率 ' + best.pct + '%）' : '') + '。各池進場比率：',
     timChips);
 
-  // ── Top 3 ──
-  const top3 = [...allStocks].filter(s => s.strength_score != null)
+  const top3 = allStocks.filter(s => s.strength_score != null)
     .sort((a,b) => b.strength_score - a.strength_score).slice(0,3);
   const rankLabel = ['🥇 第一名','🥈 第二名','🥉 第三名'];
   const rankClass = ['rank1','rank2','rank3'];
-  document.getElementById('wr-top3').innerHTML = top3.map((s,i) => `
-    <div class="top3-card ${rankClass[i]}">
-      <div class="top3-rank">${rankLabel[i]}</div>
-      <div class="top3-name">${s.stock_name}</div>
-      <div class="top3-id">${s.stock_id} · ${s.industry||''}</div>
-      <div class="top3-score-bar"><div class="top3-score-fill" style="width:${s.strength_score}%"></div></div>
-      <div class="top3-meta">
-        <div class="top3-meta-item"><div class="tmi-l">強度分</div><div class="tmi-v">${s.strength_score}</div></div>
-        <div class="top3-meta-item"><div class="tmi-l">收盤價</div><div class="tmi-v">$${s.close}</div></div>
-        <div class="top3-meta-item"><div class="tmi-l">目標價</div><div class="tmi-v">$${s.target_price||'—'}</div></div>
-        <div class="top3-meta-item"><div class="tmi-l">RSI14</div><div class="tmi-v">${s.rsi14||'—'}</div></div>
-      </div>
-      <span class="top3-action">${s.action||'—'}</span>
-      <div class="top3-tag">${s.theme_tag||''} ${s.breakout_label||''}</div>
-    </div>
-  `).join('');
+  document.getElementById('wr-top3').innerHTML = top3.map(function(s,i){
+    return '<div class="top3-card ' + rankClass[i] + '">' +
+      '<div class="top3-rank">' + rankLabel[i] + '</div>' +
+      '<div class="top3-name">' + s.stock_name + '</div>' +
+      '<div class="top3-id">' + s.stock_id + ' · ' + (s.industry||'') + '</div>' +
+      '<div class="top3-score-bar"><div class="top3-score-fill" style="width:' + s.strength_score + '%"></div></div>' +
+      '<div class="top3-meta">' +
+        '<div class="top3-meta-item"><div class="tmi-l">強度分</div><div class="tmi-v">' + s.strength_score + '</div></div>' +
+        '<div class="top3-meta-item"><div class="tmi-l">收盤價</div><div class="tmi-v">$' + s.close + '</div></div>' +
+        '<div class="top3-meta-item"><div class="tmi-l">目標價</div><div class="tmi-v">$' + (s.target_price||'—') + '</div></div>' +
+        '<div class="top3-meta-item"><div class="tmi-l">RSI14</div><div class="tmi-v">' + (s.rsi14||'—') + '</div></div>' +
+      '</div>' +
+      '<span class="top3-action">' + (s.action||'—') + '</span>' +
+      '<div class="top3-tag">' + (s.theme_tag||'') + ' ' + (s.breakout_label||'') + '</div>' +
+    '</div>';
+  }).join('');
 
-  // ── 魚池表格 ──
   const poolTbody = document.querySelector('#wr-pools tbody');
-  poolTbody.innerHTML = Object.entries(poolStats).map(([name, ps]) => {
+  poolTbody.innerHTML = Object.entries(poolStats).map(function(x){
+    const name = x[0], ps = x[1];
     const pct = ps.total > 0 ? Math.round(ps.buy / ps.total * 100) : 0;
-    return `<tr>
-      <td>${name}</td>
-      <td>${ps.total}</td>
-      <td><strong>${ps.buy}</strong></td>
-      <td>${pct}%</td>
-      <td><div class="pool-bar"><div class="pool-bar-fill" style="width:${pct}%"></div></div></td>
-    </tr>`;
+    return '<tr><td>' + name + '</td><td>' + ps.total + '</td><td><strong>' + ps.buy + '</strong></td><td>' + pct + '%</td>' +
+      '<td><div class="pool-bar"><div class="pool-bar-fill" style="width:' + pct + '%"></div></div></td></tr>';
   }).join('');
 
-  // ── 訊號明細 ──
-  const sigTbody = document.querySelector('#wr-signals tbody');
-  const sorted = [...buyStocks].sort((a,b) => (b.strength_score||0) - (a.strength_score||0));
-  sigTbody.innerHTML = sorted.map(s => {
-    const gradeClass = s.inst_grade === 'A' ? 'grade-a' : s.inst_grade === 'B' ? 'grade-b' : s.inst_grade === 'C' ? 'grade-c' : 'grade-x';
-    const actionClass = s.action && s.action.includes('買入') ? 'action-buy' : s.action && s.action.includes('停損') ? 'action-exit' : 'action-watch';
-    return `<tr>
-      <td>${s.stock_id}</td>
-      <td><strong>${s.stock_name}</strong></td>
-      <td>$${s.close}</td>
-      <td><span class="${gradeClass}">${s.inst_grade||'—'}</span></td>
-      <td>${s.strength_score||'—'}</td>
-      <td>${s.chip_signal||'—'}</td>
-      <td>${s.theme_tag||'—'}</td>
-      <td class="${actionClass}">${s.action||'—'}</td>
-      <td>$${s.target_price||'—'}</td>
-    </tr>`;
-  }).join('');
-  if (!sorted.length) sigTbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:16px">今日暫無買入加碼訊號</td></tr>';
+  renderSignalTable(buyStocks);
+  document.getElementById('f-count').textContent =
+    '顯示 ' + buyStocks.length + ' / ' + buyStocks.length + ' 筆買入訊號';
 
-  // ── 產業熱力 ──
   const indDist = stats.industry_distribution || [];
-  const maxCount = indDist[0]?.count || 1;
   const heatColors = [
     'rgba(13,95,160,.9)','rgba(13,95,160,.75)','rgba(77,184,232,.8)',
     'rgba(77,184,232,.65)','rgba(77,184,232,.5)','rgba(13,95,160,.4)',
   ];
-  document.getElementById('wr-heat').innerHTML = indDist.map((item, i) => {
+  document.getElementById('wr-heat').innerHTML = indDist.map(function(item, i){
     const bg = heatColors[Math.min(i, heatColors.length-1)];
     const textColor = i < 3 ? '#fff' : 'var(--deep)';
-    return `<div class="heat-item" style="background:${bg};color:${textColor};border-color:transparent">
-      <div class="hi-name">${item.industry}</div>
-      <div class="hi-count">${item.count}</div>
-    </div>`;
+    return '<div class="heat-item" style="background:' + bg + ';color:' + textColor + ';border-color:transparent">' +
+      '<div class="hi-name">' + item.industry + '</div>' +
+      '<div class="hi-count">' + item.count + '</div></div>';
   }).join('');
 
-  // ── Footer ──
   document.getElementById('wr-footer').innerHTML =
-    `📌 資料來源：彼得梅花鹿量化系統 Peter Plum · 更新時間：${updated}<br>
-    🧠 分析師：Eric（籌碼）· Grace（題材）· Joe（技術）· Tim（基本面）<br>
-    ⚠ 本報告僅供 Magic Lab 內部測試員參考，不構成投資建議。`;
+    '📌 資料來源：彼得梅花鹿量化系統 Peter Plum · 更新時間：' + updated + '<br>' +
+    '🧠 分析師：Eric（籌碼）· Grace（題材）· Joe（技術）· Tim（基本面）<br>' +
+    '⚠ 本報告僅供 Magic Lab 內部測試員參考，不構成投資建議。';
 }
 
 function appendAnalyst(cls, initial, name, role, verdict, chips) {
   const el = document.createElement('div');
   el.className = 'analyst-card ' + cls;
-  el.innerHTML = `
-    <div class="ac-head">
-      <div class="ac-avatar">${initial}</div>
-      <div><div class="ac-name">${name}</div><div class="ac-role">${role}</div></div>
-    </div>
-    <div class="ac-verdict">${verdict}</div>
-    <div class="ac-chips">${chips}</div>`;
+  el.innerHTML =
+    '<div class="ac-head">' +
+      '<div class="ac-avatar">' + initial + '</div>' +
+      '<div><div class="ac-name">' + name + '</div><div class="ac-role">' + role + '</div></div>' +
+      '<button class="ac-toggle" onclick="toggleAnalyst(\'' + cls + '\')">▼ 收合</button>' +
+    '</div>' +
+    '<div class="ac-body">' +
+      '<div class="ac-verdict">' + verdict + '</div>' +
+      '<div class="ac-chips">' + chips + '</div>' +
+    '</div>';
   document.getElementById('wr-analysts').appendChild(el);
 }
 
-// 啟動
 loadWarroom();
 </script>
 </body>

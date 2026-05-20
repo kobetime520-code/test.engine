@@ -364,12 +364,13 @@ function exportWarroom(mode) {
   if (!_lastData) { showToast('⚠ 資料尚未載入'); return; }
   const d = _lastData;
   const updated = d.last_updated || '—';
-  const allStocks = [];
+  const _rawExport=[];
   for (const pn in (d.pools||{})) {
     const arr = d.pools[pn];
-    if (Array.isArray(arr)) arr.forEach(s => allStocks.push(Object.assign({}, s, {_pool: pn})));
+    if (Array.isArray(arr)) arr.forEach(s => _rawExport.push(Object.assign({}, s, {_pool: pn})));
   }
-  const buy = deduplicateBuyStocks(allStocks.filter(s => s.action && s.action.includes('買入')))
+  const allStocks = deduplicateStocks(_rawExport);
+  const buy = allStocks.filter(s => s.action && s.action.includes('買入'))
     .sort((a,b) => (b.strength_score||0)-(a.strength_score||0));
   const top3 = allStocks.filter(s=>s.strength_score!=null)
     .sort((a,b)=>b.strength_score-a.strength_score).slice(0,3);
@@ -666,7 +667,7 @@ function restoreAnalystPrefs() {
   try{const p=JSON.parse(localStorage.getItem('wr_analyst_prefs')||'{}');for(const cls in p){if(p[cls]){const card=document.querySelector('.analyst-card.'+cls);if(card){card.classList.add('collapsed');const b=card.querySelector('.ac-toggle');if(b)b.textContent='▶ 展開';}}}}catch(e){}
 }
 
-function deduplicateBuyStocks(stocks) {
+function deduplicateStocks(stocks) {
   const map = {};
   stocks.forEach(s => {
     const id = s.stock_id;
@@ -707,10 +708,10 @@ function renderWarroom(d) {
   document.getElementById('rb-time').textContent='📅 資料更新：'+updated;
   updateAge(updated);
 
-  const allStocks=[];
-  for(const pn in pools){const arr=pools[pn];if(Array.isArray(arr))arr.forEach(s=>allStocks.push(Object.assign({},s,{_pool:pn})));}
-  const rawBuyStocks=allStocks.filter(s=>s.action&&s.action.includes('買入'));
-  const buyStocks=deduplicateBuyStocks(rawBuyStocks);
+  const _rawAllStocks=[];
+  for(const pn in pools){const arr=pools[pn];if(Array.isArray(arr))arr.forEach(s=>_rawAllStocks.push(Object.assign({},s,{_pool:pn})));}
+  const allStocks=deduplicateStocks(_rawAllStocks);
+  const buyStocks=allStocks.filter(s=>s.action&&s.action.includes('買入'));
   _allBuyStocks=buyStocks;
   initFilters(buyStocks);
 

@@ -148,6 +148,168 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
 .footer-member{font-size:.82rem;color:var(--muted)}
 .footer-copy{font-size:.72rem;color:#3a4455;margin-top:12px;letter-spacing:.08em}
 
+/* ══════════════════════════════════════════════
+   ⑨ 世足賽 WORLDCUP PAGE — Ocean Blue Theme
+══════════════════════════════════════════════ */
+:root{
+  --wc-cyan:#38bdf8;--wc-sky:#7dd3fc;--wc-foam:#bfe6ff;
+  --wc-card:#060f1d;--wc-border:rgba(56,189,248,.18);--wc-muted:#5a8aa8;
+  --wc-amber:#fbbf24;--wc-red:#f87171;--wc-green:#4ade80;
+  --wc-messi:#60a5fa;--wc-ronaldo:#f87171;--wc-neymar:#4ade80;--wc-modric:#fcd34d;
+}
+#page-worldcup{padding:0;margin-top:56px;min-height:calc(100vh - 56px);background:var(--dark)}
+/* Hero */
+#wc-hero{background:linear-gradient(180deg,rgba(3,15,40,.98) 0%,rgba(2,8,20,.95) 100%);padding:28px 24px 20px;text-align:center;border-bottom:1px solid var(--wc-border);position:relative;overflow:hidden}
+#wc-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 100% at 50% 0%,rgba(56,189,248,.07) 0%,transparent 65%);pointer-events:none}
+.wc-eyebrow{display:inline-flex;align-items:center;gap:7px;padding:4px 16px;border:1px solid rgba(56,189,248,.3);border-radius:20px;color:var(--wc-cyan);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;background:rgba(56,189,248,.05)}
+.wc-h1{font-size:clamp(1.6rem,4.5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:6px;letter-spacing:-.01em}
+.wc-h1 .wg{background:linear-gradient(135deg,var(--wc-amber) 0%,var(--wc-cyan) 60%,var(--wc-foam) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.wc-sub{color:var(--wc-muted);font-size:.82rem;margin-bottom:16px}
+/* Countdown */
+.wc-cd{display:flex;gap:8px;justify-content:center;margin-bottom:18px}
+.wcd-box{background:rgba(56,189,248,.07);border:1px solid var(--wc-border);border-radius:10px;padding:9px 14px;text-align:center;min-width:58px}
+.wcd-n{font-size:1.5rem;font-weight:900;color:var(--wc-amber);line-height:1}
+.wcd-l{font-size:.6rem;color:var(--wc-muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.wcd-c{font-size:1.5rem;font-weight:900;color:rgba(56,189,248,.3);align-self:center;margin-top:-4px;line-height:1}
+/* Streaming Links Bar */
+.wc-stream-bar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.wcs-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 18px;border-radius:22px;font-size:.8rem;font-weight:700;text-decoration:none;border:1px solid;transition:all .2s;cursor:pointer}
+.wcs-elta{background:rgba(0,100,200,.15);border-color:rgba(0,150,255,.4);color:#60b8ff}
+.wcs-elta:hover{background:rgba(0,100,200,.3);color:#fff}
+.wcs-hami{background:rgba(0,160,120,.12);border-color:rgba(0,200,150,.35);color:#2dd4b8}
+.wcs-hami:hover{background:rgba(0,160,120,.28);color:#fff}
+.wcs-lottery{background:rgba(220,50,50,.12);border-color:rgba(240,80,80,.35);color:#fca5a5}
+.wcs-lottery:hover{background:rgba(220,50,50,.28);color:#fff}
+/* Legend Cards */
+.wc-legend-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:860px;margin:0 auto}
+@media(max-width:720px){.wc-legend-grid{grid-template-columns:repeat(2,1fr)}}
+.wc-lcard{background:rgba(56,189,248,.05);border:1px solid var(--wc-border);border-radius:12px;padding:12px 10px;text-align:center;cursor:pointer;transition:all .25s;position:relative}
+.wc-lcard::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:12px 12px 0 0;transition:height .2s}
+.wc-lcard[data-l="messi"]::after{background:linear-gradient(90deg,var(--wc-messi),#fff,var(--wc-messi))}
+.wc-lcard[data-l="ronaldo"]::after{background:linear-gradient(90deg,var(--wc-ronaldo),#009246,var(--wc-ronaldo))}
+.wc-lcard[data-l="neymar"]::after{background:linear-gradient(90deg,var(--wc-neymar),#FEDF00,var(--wc-neymar))}
+.wc-lcard[data-l="modric"]::after{background:repeating-linear-gradient(90deg,var(--wc-ronaldo) 0,var(--wc-ronaldo) 8px,#fff 8px,#fff 16px)}
+.wc-lcard:hover,.wc-lcard.active{transform:translateY(-4px)}
+.wc-lcard[data-l="messi"]:hover,.wc-lcard[data-l="messi"].active{border-color:rgba(96,165,250,.5);box-shadow:0 0 20px rgba(96,165,250,.2)}
+.wc-lcard[data-l="ronaldo"]:hover,.wc-lcard[data-l="ronaldo"].active{border-color:rgba(248,113,113,.5);box-shadow:0 0 20px rgba(248,113,113,.2)}
+.wc-lcard[data-l="neymar"]:hover,.wc-lcard[data-l="neymar"].active{border-color:rgba(74,222,128,.5);box-shadow:0 0 20px rgba(74,222,128,.2)}
+.wc-lcard[data-l="modric"]:hover,.wc-lcard[data-l="modric"].active{border-color:rgba(252,211,77,.5);box-shadow:0 0 20px rgba(252,211,77,.2)}
+.wc-lf{font-size:1.8rem;display:block;margin-bottom:4px}
+.wc-ln{font-size:.88rem;font-weight:800;color:#fff}
+.wc-lnat{font-size:.68rem;color:var(--wc-muted)}
+.wc-lg{font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:8px;margin-top:5px;display:inline-block}
+.wc-lcard[data-l="messi"] .wc-lg{background:rgba(96,165,250,.15);color:var(--wc-messi);border:1px solid rgba(96,165,250,.3)}
+.wc-lcard[data-l="ronaldo"] .wc-lg{background:rgba(248,113,113,.15);color:var(--wc-ronaldo);border:1px solid rgba(248,113,113,.3)}
+.wc-lcard[data-l="neymar"] .wc-lg{background:rgba(74,222,128,.15);color:var(--wc-neymar);border:1px solid rgba(74,222,128,.3)}
+.wc-lcard[data-l="modric"] .wc-lg{background:rgba(252,211,77,.15);color:var(--wc-modric);border:1px solid rgba(252,211,77,.3)}
+/* Inner content area */
+#wc-body{max-width:1160px;margin:0 auto;padding:20px 20px 60px}
+/* Filter bar */
+.wc-filter{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px;padding:14px 16px;background:rgba(56,189,248,.04);border:1px solid var(--wc-border);border-radius:12px}
+.wc-search{flex:1;min-width:160px;background:rgba(255,255,255,.04);border:1px solid var(--wc-border);border-radius:8px;padding:7px 12px;color:#fff;font-size:.85rem;font-family:inherit;outline:none;transition:border-color .2s}
+.wc-search:focus{border-color:var(--wc-cyan)}
+.wc-search::placeholder{color:var(--wc-muted)}
+.wc-fbtn{padding:6px 14px;border-radius:20px;font-size:.76rem;font-weight:600;cursor:pointer;border:1px solid var(--wc-border);background:transparent;color:var(--wc-muted);transition:all .2s;white-space:nowrap}
+.wc-fbtn:hover{color:#fff;border-color:var(--wc-cyan)}
+.wc-fbtn.on{color:#000 !important;border-color:transparent !important}
+.wc-fbtn[data-wf="all"].on{background:var(--wc-amber)}
+.wc-fbtn[data-wf="messi"].on{background:var(--wc-messi)}
+.wc-fbtn[data-wf="ronaldo"].on{background:var(--wc-ronaldo)}
+.wc-fbtn[data-wf="neymar"].on{background:var(--wc-neymar)}
+.wc-fbtn[data-wf="modric"].on{background:var(--wc-modric)}
+.wc-count{font-size:.75rem;color:var(--wc-muted);margin-left:auto;white-space:nowrap}
+/* Phase divider */
+.wc-phase{display:flex;align-items:center;gap:10px;margin:20px 0 12px}
+.wc-phase-line{flex:1;height:1px;background:var(--wc-border)}
+.wc-phase-lbl{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--wc-muted);padding:3px 10px;border:1px solid var(--wc-border);border-radius:10px;white-space:nowrap}
+/* Match cards */
+.wc-list{display:flex;flex-direction:column;gap:7px}
+.wc-card{background:var(--wc-card);border:1px solid var(--wc-border);border-radius:12px;padding:12px 16px;display:grid;grid-template-columns:68px 1fr auto auto auto;gap:10px;align-items:center;transition:all .22s;position:relative;overflow:hidden}
+.wc-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px}
+.wc-card[data-wl="messi"]::before{background:var(--wc-messi)}
+.wc-card[data-wl="ronaldo"]::before{background:var(--wc-ronaldo)}
+.wc-card[data-wl="neymar"]::before{background:var(--wc-neymar)}
+.wc-card[data-wl="modric"]::before{background:var(--wc-modric)}
+.wc-card[data-wl=""]::before{background:#1e3050}
+.wc-card:hover{border-color:rgba(56,189,248,.35);transform:translateX(2px)}
+.wc-card.wc-hidden{display:none}
+/* Time col */
+.wcc-time{text-align:center}
+.wct-date{font-size:.65rem;color:var(--wc-muted);letter-spacing:.04em}
+.wct-hr{font-size:1rem;font-weight:800;color:var(--wc-amber);line-height:1.1}
+.wct-tz{font-size:.55rem;color:var(--wc-muted)}
+/* Teams col */
+.wcc-teams{display:flex;align-items:center;justify-content:center;gap:8px}
+.wcc-flag{font-size:1.3rem;line-height:1;flex-shrink:0}
+.wcc-name{font-size:.88rem;font-weight:700;color:#fff;white-space:nowrap}
+.wcc-vs{font-size:.7rem;color:var(--wc-muted);padding:0 2px}
+/* Group / legend col */
+.wcc-meta{text-align:center;min-width:54px}
+.wcc-grp{font-size:.62rem;color:var(--wc-muted)}
+.wcc-star{font-size:.68rem;font-weight:700;margin-top:1px}
+.wc-card[data-wl="messi"] .wcc-star{color:var(--wc-messi)}
+.wc-card[data-wl="ronaldo"] .wcc-star{color:var(--wc-ronaldo)}
+.wc-card[data-wl="neymar"] .wcc-star{color:var(--wc-neymar)}
+.wc-card[data-wl="modric"] .wcc-star{color:var(--wc-modric)}
+/* Platform col */
+.wcc-plt{text-align:center;min-width:80px;display:flex;flex-direction:column;gap:2px;align-items:center}
+.wcpt{display:inline-block;padding:1px 7px;border-radius:6px;font-size:.62rem;font-weight:600;white-space:nowrap}
+.wcpt-e{background:rgba(0,130,220,.15);border:1px solid rgba(0,130,220,.35);color:#60b8ff}
+.wcpt-c{background:rgba(200,30,30,.15);border:1px solid rgba(200,30,30,.35);color:#fca5a5}
+.wcpt-h{background:rgba(0,180,140,.12);border:1px solid rgba(0,180,140,.32);color:#2dd4b8}
+/* Odds col */
+.wcc-odds{display:flex;gap:5px;align-items:center;flex-shrink:0}
+.wco-box{text-align:center;min-width:38px}
+.wco-lbl{font-size:.55rem;color:var(--wc-muted);text-transform:uppercase}
+.wco-val{font-size:.85rem;font-weight:800;line-height:1.2;transition:color .3s}
+.wco-win{color:#4ade80}
+.wco-drw{color:var(--wc-amber)}
+.wco-los{color:var(--wc-red)}
+.wco-div{width:1px;height:26px;background:var(--wc-border)}
+/* Bet button */
+.wc-bet-btn{padding:4px 10px;border-radius:8px;font-size:.65rem;font-weight:700;background:rgba(220,50,50,.18);border:1px solid rgba(220,50,50,.4);color:#fca5a5;text-decoration:none;white-space:nowrap;transition:.2s;flex-shrink:0}
+.wc-bet-btn:hover{background:rgba(220,50,50,.4);color:#fff}
+/* Odds panel */
+.wc-odds-panel{background:rgba(56,189,248,.03);border:1px solid var(--wc-border);border-radius:14px;padding:18px;margin-top:24px}
+.wc-op-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.wc-op-title{font-size:.95rem;font-weight:700;color:#fff}
+.wc-op-status{display:flex;align-items:center;gap:7px;font-size:.72rem;color:var(--wc-muted)}
+.wc-pulse{width:7px;height:7px;border-radius:50%;background:var(--wc-green);animation:wcPulse 2s ease infinite}
+@keyframes wcPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.5)}50%{opacity:.7;box-shadow:0 0 0 5px rgba(74,222,128,0)}}
+.wc-op-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.wc-oc{background:var(--wc-card);border:1px solid var(--wc-border);border-radius:10px;padding:14px}
+.wc-oc-title{font-size:.82rem;font-weight:600;color:#fff;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.wc-oc-ts{font-size:.6rem;color:var(--wc-muted)}
+.wc-oc-bar{display:flex;height:7px;border-radius:5px;overflow:hidden;margin-bottom:8px}
+.wc-ocb-w{background:#4ade80;transition:width .6s}
+.wc-ocb-d{background:var(--wc-amber);transition:width .6s}
+.wc-ocb-l{background:var(--wc-red);transition:width .6s}
+.wc-oc-vals{display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center}
+.wc-ov-lbl{font-size:.62rem;color:var(--wc-muted)}
+.wc-ov-val{font-size:1rem;font-weight:800}
+.wc-ov-w .wc-ov-val{color:#4ade80}
+.wc-ov-d .wc-ov-val{color:var(--wc-amber)}
+.wc-ov-l .wc-ov-val{color:var(--wc-red)}
+.wc-oc-src{font-size:.6rem;color:var(--wc-muted);margin-top:7px;text-align:right}
+/* Info bar */
+.wc-info-bar{background:rgba(56,189,248,.04);border:1px solid var(--wc-border);border-radius:12px;padding:14px 16px;margin-top:16px;font-size:.76rem;color:var(--wc-muted);line-height:1.8}
+.wc-info-bar strong{color:var(--wc-sky)}
+.wc-info-bar a{color:var(--wc-cyan);text-decoration:none}
+.wc-info-bar a:hover{text-decoration:underline}
+/* Responsive */
+@media(max-width:760px){
+  .wc-card{grid-template-columns:58px 1fr auto auto;gap:7px}
+  .wcc-plt{display:none}
+  .wcc-name{font-size:.78rem}
+  .wco-box{min-width:32px}
+  .wco-val{font-size:.76rem}
+  .wc-bet-btn{padding:3px 7px;font-size:.6rem}
+}
+@media(max-width:520px){
+  .wc-card{grid-template-columns:52px 1fr auto}
+  .wcc-meta{display:none}
+  .wcc-odds{display:none}
+}
 /* ── WARROOM PAGE ── */
 #page-warroom{padding:0;margin-top:56px;min-height:calc(100vh - 56px)}
 #page-warroom.active{display:flex;flex-direction:column}
@@ -177,6 +339,7 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
       <button class="tab-btn" onclick="showTab('life')">⑥ 生活儀表板</button>
       <button class="tab-btn" onclick="showTab('team')">⑦ 團隊</button>
       <button class="tab-btn" onclick="showTab('warroom')">⑧ 戰情室</button>
+      <button class="tab-btn" onclick="showTab('worldcup')">⑨ ⚽ 世足賽</button>
     </div>
   </div>
 </nav>
@@ -542,6 +705,98 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
   <iframe src="warroom.html" id="warroom-iframe" title="戰情室報馬仔"></iframe>
 </div>
 
+<!-- ⑨ 世足賽 -->
+<div id="page-worldcup" class="page">
+  <!-- Hero -->
+  <div id="wc-hero">
+    <div class="wc-eyebrow">⚽ FIFA World Cup 2026 · USA / Canada / Mexico · 6/11 – 7/19</div>
+    <h1 class="wc-h1">傳奇 <span class="wg">最後之舞</span></h1>
+    <p class="wc-sub">梅西 · C羅 · 內馬爾 · 魔笛 同台謝幕 &nbsp;｜&nbsp; <strong style="color:var(--wc-sky)">台灣時間 UTC+8 · 已剔除 🇰🇷韓國 &amp; 🇳🇱荷蘭 場次</strong></p>
+    <div class="wc-cd">
+      <div class="wcd-box"><div class="wcd-n" id="wcd-d">19</div><div class="wcd-l">天</div></div>
+      <div class="wcd-c">:</div>
+      <div class="wcd-box"><div class="wcd-n" id="wcd-h">00</div><div class="wcd-l">時</div></div>
+      <div class="wcd-c">:</div>
+      <div class="wcd-box"><div class="wcd-n" id="wcd-m">00</div><div class="wcd-l">分</div></div>
+      <div class="wcd-c">:</div>
+      <div class="wcd-box"><div class="wcd-n" id="wcd-s">00</div><div class="wcd-l">秒</div></div>
+    </div>
+    <div class="wc-stream-bar">
+      <a class="wcs-btn wcs-elta" href="https://eltaott.tv/sports/play/1/2084" target="_blank" rel="noopener">📺 愛爾達 ELTA TV（全104場）</a>
+      <a class="wcs-btn wcs-hami" href="https://hamivideo.hinet.net/" target="_blank" rel="noopener">📱 Hami Video（中華電信）</a>
+      <a class="wcs-btn wcs-lottery" href="https://www.sportslottery.com.tw/" target="_blank" rel="noopener">🎰 台灣運彩 立即下注</a>
+    </div>
+    <div class="wc-legend-grid">
+      <div class="wc-lcard" data-l="messi" onclick="wcFilter('messi')">
+        <span class="wc-lf">🇦🇷</span>
+        <div class="wc-ln">梅西 Messi</div>
+        <div class="wc-lnat">阿根廷 · 衛冕冠軍</div>
+        <span class="wc-lg">J 組 · 3場</span>
+      </div>
+      <div class="wc-lcard" data-l="ronaldo" onclick="wcFilter('ronaldo')">
+        <span class="wc-lf">🇵🇹</span>
+        <div class="wc-ln">C羅 Ronaldo</div>
+        <div class="wc-lnat">葡萄牙 · 最後征途</div>
+        <span class="wc-lg">K 組 · 3場</span>
+      </div>
+      <div class="wc-lcard" data-l="neymar" onclick="wcFilter('neymar')">
+        <span class="wc-lf">🇧🇷</span>
+        <div class="wc-ln">內馬爾 Neymar</div>
+        <div class="wc-lnat">巴西 · 復仇之旅</div>
+        <span class="wc-lg">C 組 · 3場</span>
+      </div>
+      <div class="wc-lcard" data-l="modric" onclick="wcFilter('modric')">
+        <span class="wc-lf">🇭🇷</span>
+        <div class="wc-ln">魔笛 Modrić</div>
+        <div class="wc-lnat">克羅埃西亞 · 銀色大將</div>
+        <span class="wc-lg">L 組 · 3場</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div id="wc-body">
+    <!-- Filter -->
+    <div class="wc-filter">
+      <input class="wc-search" id="wc-search" type="text" placeholder="🔍 搜尋國家（中文）" oninput="wcSearch(this.value)">
+      <button class="wc-fbtn on" data-wf="all"  onclick="wcFilter('all')">全部</button>
+      <button class="wc-fbtn" data-wf="messi"   onclick="wcFilter('messi')">🔵 梅西</button>
+      <button class="wc-fbtn" data-wf="ronaldo"  onclick="wcFilter('ronaldo')">🔴 C羅</button>
+      <button class="wc-fbtn" data-wf="neymar"  onclick="wcFilter('neymar')">🟢 內馬爾</button>
+      <button class="wc-fbtn" data-wf="modric"  onclick="wcFilter('modric')">🟡 魔笛</button>
+      <span class="wc-count" id="wc-count"></span>
+    </div>
+
+    <!-- Match list rendered by JS -->
+    <div class="wc-list" id="wc-list"></div>
+
+    <!-- Odds panel -->
+    <div class="wc-odds-panel">
+      <div class="wc-op-head">
+        <div class="wc-op-title">🎰 台灣運彩 焦點賠率即時看板</div>
+        <div class="wc-op-status">
+          <div class="wc-pulse"></div>
+          <span id="wc-odds-ts">每 30 秒模擬更新</span>
+          <a href="https://www.sportslottery.com.tw/" target="_blank" rel="noopener" style="color:var(--wc-cyan);font-size:.72rem;text-decoration:none;margin-left:8px">→ 官網下注</a>
+        </div>
+      </div>
+      <div class="wc-op-grid" id="wc-op-grid"></div>
+    </div>
+
+    <!-- Info bar -->
+    <div class="wc-info-bar">
+      <strong>📺 轉播平台</strong>：
+      <a href="https://eltaott.tv/sports/play/1/2084" target="_blank" rel="noopener">愛爾達 ELTA TV</a>（全104場 OTT，月費 NT$199 / 賽季 NT$499）・
+      <a href="https://hamivideo.hinet.net/" target="_blank" rel="noopener">Hami Video</a>（中華電信用戶免費，非用戶需加購）・
+      <strong>華視12台</strong>（開幕、半決賽、決賽免費播出）<br>
+      <strong>🎰 台灣運彩</strong>：
+      <a href="https://www.sportslottery.com.tw/" target="_blank" rel="noopener">sportslottery.com.tw</a>
+      ※ 賠率每30秒模擬波動示意，<strong>實際賠率以官網為準</strong>，賭博有風險量力而為<br>
+      <strong>⏰ 時間說明</strong>：所有時間為 <strong>台灣時間（UTC+8）</strong>，依據 Sky Sports 公佈之英國夏令時間（BST = UTC+1）換算 ⛔ 已過濾 🇰🇷韓國 3場 + 🇳🇱荷蘭 3場
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="footer-logo">Magic<span>Lab</span></div>
   <div class="footer-team">
@@ -577,7 +832,7 @@ function showTab(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-  const idx={blueprint:0,monthly:1,compound:2,wealth:3,work:4,life:5,team:6,warroom:7};
+  const idx={blueprint:0,monthly:1,compound:2,wealth:3,work:4,life:5,team:6,warroom:7,worldcup:8};
   document.querySelectorAll('.tab-btn')[idx[name]].classList.add('active');
   window.location.hash=name;
   if(name==='wealth')setTimeout(()=>{drawWChart();drawRadar();initDiscipline()},50);
@@ -819,6 +1074,284 @@ function runKid(){const age=+document.getElementById('kid-age').value;const edu=
 // 初始化
 renderExp();renderSport();
 (function(){const h=window.location.hash.slice(1);if(h&&document.getElementById('page-'+h)){showTab(h);}else{showTab('blueprint');}})();
+
+// ══════════════════════════════════════════
+//  ⑨ 世足賽 WORLDCUP — 完整賽程 + 賠率模擬
+// ══════════════════════════════════════════
+
+// 格式：[台灣日期, 台灣時間, 主隊, 主隊旗, 客隊, 客隊旗, 組別, 傳奇, 平台, 主勝賠, 和賠, 客勝賠]
+// 傳奇：''|'messi'|'ronaldo'|'neymar'|'modric'
+// 平台：'ec'(愛爾達+華視) | 'eh'(愛爾達+Hami) | 'e'(愛爾達)
+// 已過濾：韓國(Group A 3場) + 荷蘭(Group F 3場) = 6場不列入
+// 時間依據：Sky Sports BST（UTC+1）各場次時間 +7小時 = 台灣時間
+
+const WC_MATCHES=[
+  // ── 第一輪 6/12–6/18 ──
+  ['6/12','03:00','墨西哥','🇲🇽','南非','🇿🇦','A','','ec',1.85,3.40,4.20],
+  ['6/13','03:00','加拿大','🇨🇦','波士尼亞','🇧🇦','B','','e',2.10,3.20,3.60],
+  ['6/13','09:00','美國','🇺🇸','巴拉圭','🇵🇾','D','','e',1.65,3.70,5.20],
+  ['6/14','03:00','卡達','🇶🇦','瑞士','🇨🇭','B','','e',4.50,3.20,1.80],
+  ['6/14','06:00','巴西','🇧🇷','摩洛哥','🇲🇦','C','neymar','ec',1.50,3.80,7.00],
+  ['6/14','09:00','海地','🇭🇹','蘇格蘭','🏴󠁧󠁢󠁳󠁣󠁴󠁿','C','','e',5.50,3.60,1.55],
+  ['6/14','12:00','澳洲','🇦🇺','土耳其','🇹🇷','D','','e',2.80,3.20,2.60],
+  ['6/15','01:00','德國','🇩🇪','庫拉索','🇨🇼','E','','e',1.10,9.00,22.00],
+  ['6/15','07:00','象牙海岸','🇨🇮','厄瓜多','🇪🇨','E','','e',2.40,3.20,3.10],
+  ['6/15','10:00','瑞典','🇸🇪','突尼西亞','🇹🇳','F','','e',1.90,3.30,4.20],
+  ['6/16','00:00','西班牙','🇪🇸','佛得角','🇨🇻','H','','e',1.18,7.00,15.00],
+  ['6/16','03:00','比利時','🇧🇪','埃及','🇪🇬','G','','e',1.55,3.80,5.50],
+  ['6/16','06:00','沙烏地阿拉伯','🇸🇦','烏拉圭','🇺🇾','H','','e',4.20,3.20,1.90],
+  ['6/16','09:00','伊朗','🇮🇷','紐西蘭','🇳🇿','G','','e',1.80,3.30,4.50],
+  ['6/17','03:00','法國','🇫🇷','塞內加爾','🇸🇳','I','','ec',1.45,4.00,7.50],
+  ['6/17','06:00','伊拉克','🇮🇶','挪威','🇳🇴','I','','e',4.80,3.40,1.75],
+  ['6/17','09:00','阿根廷','🇦🇷','阿爾及利亞','🇩🇿','J','messi','ec',1.35,4.50,9.00],
+  ['6/17','12:00','奧地利','🇦🇹','約旦','🇯🇴','J','','e',1.65,3.50,5.50],
+  ['6/18','01:00','葡萄牙','🇵🇹','剛果','🇨🇩','K','ronaldo','ec',1.30,5.20,10.00],
+  ['6/18','04:00','英格蘭','🏴󠁧󠁢󠁥󠁮󠁧󠁿','克羅埃西亞','🇭🇷','L','modric','ec',1.90,3.60,4.20],
+  ['6/18','07:00','迦納','🇬🇭','巴拿馬','🇵🇦','L','','e',2.00,3.30,4.00],
+  ['6/18','10:00','烏茲別克','🇺🇿','哥倫比亞','🇨🇴','K','','e',3.60,3.20,2.10],
+  // ── 第二輪 6/19–6/25 ──
+  ['6/19','00:00','捷克','🇨🇿','南非','🇿🇦','A','','e',1.65,3.40,5.50],
+  ['6/19','03:00','瑞士','🇨🇭','波士尼亞','🇧🇦','B','','e',1.70,3.40,5.20],
+  ['6/19','06:00','加拿大','🇨🇦','卡達','🇶🇦','B','','e',1.40,4.20,8.00],
+  ['6/20','03:00','美國','🇺🇸','澳洲','🇦🇺','D','','e',1.60,3.60,5.80],
+  ['6/20','06:00','蘇格蘭','🏴󠁧󠁢󠁳󠁣󠁴󠁿','摩洛哥','🇲🇦','C','','e',2.40,3.10,3.20],
+  ['6/20','08:30','巴西','🇧🇷','海地','🇭🇹','C','neymar','eh',1.04,14.00,30.00],
+  ['6/20','11:00','土耳其','🇹🇷','巴拉圭','🇵🇾','D','','e',1.85,3.30,4.30],
+  ['6/21','04:00','德國','🇩🇪','象牙海岸','🇨🇮','E','','eh',1.55,3.70,5.80],
+  ['6/21','08:00','厄瓜多','🇪🇨','庫拉索','🇨🇼','E','','e',1.18,6.50,14.00],
+  ['6/21','12:00','突尼西亞','🇹🇳','日本','🇯🇵','F','','e',3.80,3.20,2.10],
+  ['6/22','00:00','西班牙','🇪🇸','沙烏地阿拉伯','🇸🇦','H','','eh',1.22,5.80,12.00],
+  ['6/22','03:00','比利時','🇧🇪','伊朗','🇮🇷','G','','e',1.45,4.00,7.50],
+  ['6/22','06:00','烏拉圭','🇺🇾','佛得角','🇨🇻','H','','e',1.35,4.50,9.00],
+  ['6/22','09:00','紐西蘭','🇳🇿','埃及','🇪🇬','G','','e',2.20,3.20,3.50],
+  ['6/23','01:00','阿根廷','🇦🇷','奧地利','🇦🇹','J','messi','ec',1.45,4.00,7.00],
+  ['6/23','05:00','法國','🇫🇷','伊拉克','🇮🇶','I','','eh',1.25,5.50,11.00],
+  ['6/23','08:00','挪威','🇳🇴','塞內加爾','🇸🇳','I','','e',2.20,3.20,3.60],
+  ['6/23','11:00','約旦','🇯🇴','阿爾及利亞','🇩🇿','J','','e',3.20,3.10,2.30],
+  ['6/24','01:00','葡萄牙','🇵🇹','烏茲別克','🇺🇿','K','ronaldo','eh',1.18,6.50,14.00],
+  ['6/24','04:00','英格蘭','🏴󠁧󠁢󠁥󠁮󠁧󠁿','迦納','🇬🇭','L','','eh',1.55,3.70,6.00],
+  ['6/24','07:00','巴拿馬','🇵🇦','克羅埃西亞','🇭🇷','L','modric','eh',5.50,3.60,1.55],
+  ['6/24','10:00','哥倫比亞','🇨🇴','剛果','🇨🇩','K','','e',1.55,3.70,6.00],
+  ['6/25','03:00','瑞士','🇨🇭','加拿大','🇨🇦','B','','e',1.90,3.30,4.20],
+  ['6/25','03:00','波士尼亞','🇧🇦','卡達','🇶🇦','B','','e',1.65,3.40,5.50],
+  ['6/25','06:00','摩洛哥','🇲🇦','海地','🇭🇹','C','','e',1.22,6.00,13.00],
+  ['6/25','06:00','蘇格蘭','🏴󠁧󠁢󠁳󠁣󠁴󠁿','巴西','🇧🇷','C','neymar','ec',13.00,6.00,1.22],
+  ['6/25','09:00','捷克','🇨🇿','墨西哥','🇲🇽','A','','e',3.60,3.10,2.10],
+  // ── 第三輪 6/26–6/28（命運之戰）──
+  ['6/26','04:00','庫拉索','🇨🇼','象牙海岸','🇨🇮','E','','e',6.50,3.80,1.40],
+  ['6/26','04:00','厄瓜多','🇪🇨','德國','🇩🇪','E','','eh',7.50,4.00,1.35],
+  ['6/26','07:00','日本','🇯🇵','瑞典','🇸🇪','F','','e',2.20,3.20,3.50],
+  ['6/26','10:00','土耳其','🇹🇷','美國','🇺🇸','D','','eh',3.20,3.10,2.40],
+  ['6/26','10:00','巴拉圭','🇵🇾','澳洲','🇦🇺','D','','e',2.30,3.20,3.30],
+  ['6/27','03:00','挪威','🇳🇴','法國','🇫🇷','I','','eh',7.50,4.00,1.40],
+  ['6/27','03:00','塞內加爾','🇸🇳','伊拉克','🇮🇶','I','','e',1.55,3.70,5.80],
+  ['6/27','08:00','佛得角','🇨🇻','沙烏地阿拉伯','🇸🇦','H','','e',3.50,3.20,2.10],
+  ['6/27','08:00','烏拉圭','🇺🇾','西班牙','🇪🇸','H','','eh',6.50,4.00,1.40],
+  ['6/27','11:00','紐西蘭','🇳🇿','比利時','🇧🇪','G','','e',6.00,3.80,1.45],
+  ['6/27','11:00','埃及','🇪🇬','伊朗','🇮🇷','G','','e',2.40,3.20,3.10],
+  ['6/28','05:00','巴拿馬','🇵🇦','英格蘭','🏴󠁧󠁢󠁥󠁮󠁧󠁿','L','','eh',8.00,4.50,1.28],
+  ['6/28','05:00','克羅埃西亞','🇭🇷','迦納','🇬🇭','L','modric','eh',1.75,3.50,4.80],
+  ['6/28','07:30','哥倫比亞','🇨🇴','葡萄牙','🇵🇹','K','ronaldo','ec',5.50,3.80,1.55],
+  ['6/28','07:30','剛果','🇨🇩','烏茲別克','🇺🇿','K','','e',2.60,3.20,2.80],
+  ['6/28','10:00','阿爾及利亞','🇩🇿','奧地利','🇦🇹','J','','e',3.80,3.30,2.00],
+  ['6/28','10:00','約旦','🇯🇴','阿根廷','🇦🇷','J','messi','ec',30.00,14.00,1.04],
+];
+
+const WC_LEGEND_LABEL={'messi':'★ 梅西','ronaldo':'★ C羅','neymar':'★ 內馬爾','modric':'⚡ 魔笛',''  :''};
+const WC_PLT_HTML={
+  'ec':'<span class="wcpt wcpt-e">愛爾達</span><span class="wcpt wcpt-c">華視12</span>',
+  'eh':'<span class="wcpt wcpt-e">愛爾達</span><span class="wcpt wcpt-h">Hami</span>',
+  'e' :'<span class="wcpt wcpt-e">愛爾達</span>'
+};
+// 賠率動態快取（key = 比賽index，value = 當前賠率）
+const WC_ODDS_LIVE = WC_MATCHES.map(m=>({w:m[9],d:m[10],l:m[11]}));
+
+function wcRender(){
+  const list=document.getElementById('wc-list');
+  if(!list)return;
+  const phases=[
+    {label:'第一輪 6/12 – 6/18',dates:['6/12','6/13','6/14','6/15','6/16','6/17','6/18']},
+    {label:'第二輪 6/19 – 6/25',dates:['6/19','6/20','6/21','6/22','6/23','6/24','6/25']},
+    {label:'第三輪 6/26 – 6/28 · 命運之戰',dates:['6/26','6/27','6/28']}
+  ];
+  let html='';
+  phases.forEach(ph=>{
+    html+=`<div class="wc-phase wc-pdiv" data-dates="${ph.dates.join(',')}"><div class="wc-phase-line"></div><div class="wc-phase-lbl">${ph.label}</div><div class="wc-phase-line"></div></div>`;
+    WC_MATCHES.forEach((m,i)=>{
+      if(!ph.dates.includes(m[0]))return;
+      const [date,time,tA,fA,tB,fB,grp,leg,plt]=m;
+      const star=WC_LEGEND_LABEL[leg]||'';
+      const pltHtml=WC_PLT_HTML[plt]||WC_PLT_HTML['e'];
+      const ow=WC_ODDS_LIVE[i].w.toFixed(2),od=WC_ODDS_LIVE[i].d.toFixed(2),ol=WC_ODDS_LIVE[i].l.toFixed(2);
+      html+=`<div class="wc-card" data-wl="${leg}" data-ta="${tA}" data-tb="${tB}" data-i="${i}">
+        <div class="wcc-time"><div class="wct-date">${date}</div><div class="wct-hr">${time}</div><div class="wct-tz">台灣時間</div></div>
+        <div class="wcc-teams">
+          <span class="wcc-flag">${fA}</span><span class="wcc-name">${tA}</span>
+          <span class="wcc-vs">VS</span>
+          <span class="wcc-name">${tB}</span><span class="wcc-flag">${fB}</span>
+        </div>
+        <div class="wcc-meta"><div class="wcc-grp">${grp} 組</div><div class="wcc-star">${star}</div></div>
+        <div class="wcc-plt">${pltHtml}</div>
+        <div class="wcc-odds">
+          <div class="wco-box"><div class="wco-lbl">主勝</div><div class="wco-val wco-win" id="wo-w-${i}">${ow}</div></div>
+          <div class="wco-div"></div>
+          <div class="wco-box"><div class="wco-lbl">和局</div><div class="wco-val wco-drw" id="wo-d-${i}">${od}</div></div>
+          <div class="wco-div"></div>
+          <div class="wco-box"><div class="wco-lbl">客勝</div><div class="wco-val wco-los" id="wo-l-${i}">${ol}</div></div>
+        </div>
+        <a class="wc-bet-btn" href="https://www.sportslottery.com.tw/" target="_blank" rel="noopener">下注</a>
+      </div>`;
+    });
+  });
+  list.innerHTML=html;
+  wcUpdateCount();
+}
+
+// 焦點賠率看板（前4場傳奇場次）
+const WC_FOCUS_IDX=[16,18,4,19]; // messi1, ronaldo1, neymar1, modric1
+function wcRenderOddsPanel(){
+  const grid=document.getElementById('wc-op-grid');
+  if(!grid)return;
+  const fmtTs=()=>{const n=new Date();return n.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'})};
+  let html='';
+  WC_FOCUS_IDX.forEach(i=>{
+    const m=WC_MATCHES[i];const o=WC_ODDS_LIVE[i];
+    const pw=1/o.w,pd=1/o.d,pl=1/o.l,pt=pw+pd+pl;
+    const wb=(pw/pt*100).toFixed(1),db=(pd/pt*100).toFixed(1),lb=(pl/pt*100).toFixed(1);
+    const leg=WC_LEGEND_LABEL[m[7]]||'';
+    html+=`<div class="wc-oc">
+      <div class="wc-oc-title">${m[3]}${m[2]} vs ${m[5]}${m[4]} <span class="wc-oc-ts" id="wc-oc-ts-${i}">—</span></div>
+      <div class="wc-oc-bar"><div class="wc-ocb-w" id="wc-ocb-w-${i}" style="width:${wb}%"></div><div class="wc-ocb-d" id="wc-ocb-d-${i}" style="width:${db}%"></div><div class="wc-ocb-l" id="wc-ocb-l-${i}" style="width:${lb}%"></div></div>
+      <div class="wc-oc-vals">
+        <div class="wc-ov-w"><div class="wc-ov-lbl">主隊勝</div><div class="wc-ov-val" id="wc-ov-w-${i}">${o.w.toFixed(2)}</div></div>
+        <div class="wc-ov-d"><div class="wc-ov-lbl">和局</div><div class="wc-ov-val" id="wc-ov-d-${i}">${o.d.toFixed(2)}</div></div>
+        <div class="wc-ov-l"><div class="wc-ov-lbl">客隊勝</div><div class="wc-ov-val" id="wc-ov-l-${i}">${o.l.toFixed(2)}</div></div>
+      </div>
+      <div class="wc-oc-src">${m[0]} ${m[1]} · ${leg} · 來源：台灣運彩（模擬示意）</div>
+    </div>`;
+  });
+  grid.innerHTML=html;
+}
+
+// 賠率模擬更新（每30秒微幅波動）
+function wcRefreshOdds(){
+  const ts=new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  WC_MATCHES.forEach((_,i)=>{
+    const base=WC_MATCHES[i];
+    WC_ODDS_LIVE[i].w=Math.max(1.01,base[9]+(Math.random()-.5)*base[9]*0.04);
+    WC_ODDS_LIVE[i].d=Math.max(1.01,base[10]+(Math.random()-.5)*base[10]*0.03);
+    WC_ODDS_LIVE[i].l=Math.max(1.01,base[11]+(Math.random()-.5)*base[11]*0.04);
+    // update list cards
+    const we=document.getElementById('wo-w-'+i);
+    const de=document.getElementById('wo-d-'+i);
+    const le=document.getElementById('wo-l-'+i);
+    if(we)we.textContent=WC_ODDS_LIVE[i].w.toFixed(2);
+    if(de)de.textContent=WC_ODDS_LIVE[i].d.toFixed(2);
+    if(le)le.textContent=WC_ODDS_LIVE[i].l.toFixed(2);
+  });
+  // update focus panel
+  WC_FOCUS_IDX.forEach(i=>{
+    const o=WC_ODDS_LIVE[i];
+    const pw=1/o.w,pd=1/o.d,pl=1/o.l,pt=pw+pd+pl;
+    const we=document.getElementById('wc-ov-w-'+i),de=document.getElementById('wc-ov-d-'+i),le=document.getElementById('wc-ov-l-'+i);
+    const bw=document.getElementById('wc-ocb-w-'+i),bd=document.getElementById('wc-ocb-d-'+i),bl=document.getElementById('wc-ocb-l-'+i);
+    const tse=document.getElementById('wc-oc-ts-'+i);
+    if(we)we.textContent=o.w.toFixed(2);
+    if(de)de.textContent=o.d.toFixed(2);
+    if(le)le.textContent=o.l.toFixed(2);
+    if(bw)bw.style.width=(pw/pt*100).toFixed(1)+'%';
+    if(bd)bd.style.width=(pd/pt*100).toFixed(1)+'%';
+    if(bl)bl.style.width=(pl/pt*100).toFixed(1)+'%';
+    if(tse)tse.textContent=ts;
+  });
+  const tsEl=document.getElementById('wc-odds-ts');
+  if(tsEl)tsEl.textContent='更新：'+ts;
+}
+
+// 篩選（傳奇 or 全部）
+let wcActiveFilter='all';let wcSearchVal='';
+function wcFilter(f){
+  wcActiveFilter=f;
+  document.querySelectorAll('.wc-fbtn').forEach(b=>b.classList.toggle('on',b.dataset.wf===f));
+  document.querySelectorAll('.wc-lcard').forEach(c=>c.classList.toggle('active',c.dataset.l===f));
+  document.getElementById('wc-search').value='';wcSearchVal='';
+  wcApply();
+}
+function wcSearch(v){
+  wcSearchVal=v.trim();
+  if(wcSearchVal){
+    wcActiveFilter='all';
+    document.querySelectorAll('.wc-fbtn').forEach(b=>b.classList.toggle('on',b.dataset.wf==='all'));
+    document.querySelectorAll('.wc-lcard').forEach(c=>c.classList.remove('active'));
+  }
+  wcApply();
+}
+function wcApply(){
+  let vis=0;
+  document.querySelectorAll('.wc-card').forEach(c=>{
+    const leg=c.dataset.wl,ta=c.dataset.ta,tb=c.dataset.tb;
+    const matchLeg=wcActiveFilter==='all'||leg===wcActiveFilter;
+    const matchSrc=!wcSearchVal||(ta.includes(wcSearchVal)||tb.includes(wcSearchVal));
+    const show=matchLeg&&matchSrc;
+    c.classList.toggle('wc-hidden',!show);
+    if(show)vis++;
+  });
+  // phase dividers visibility
+  document.querySelectorAll('.wc-pdiv').forEach(d=>{
+    const dates=d.dataset.dates.split(',');
+    let has=false;
+    document.querySelectorAll('.wc-card:not(.wc-hidden)').forEach(c=>{
+      if(dates.includes(c.querySelector('.wct-date')?.textContent))has=true;
+    });
+    d.style.display=has?'':'none';
+  });
+  wcUpdateCount();
+}
+function wcUpdateCount(){
+  const el=document.getElementById('wc-count');
+  const total=document.querySelectorAll('.wc-card').length;
+  const vis=document.querySelectorAll('.wc-card:not(.wc-hidden)').length;
+  if(el)el.textContent=vis===total?`共 ${total} 場（已過濾韓國/荷蘭 6場）`:`顯示 ${vis} / ${total} 場`;
+}
+window.wcFilter=wcFilter;window.wcSearch=wcSearch;
+
+// 倒數計時（世足開幕：2026/6/12 03:00 台灣時間）
+function wcCountdown(){
+  const target=new Date('2026-06-12T03:00:00+08:00');
+  const diff=target-new Date();
+  if(diff<=0){
+    ['wcd-d','wcd-h','wcd-m','wcd-s'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='00'});
+    const e=document.getElementById('wcd-d');if(e)e.textContent='開幕';
+    return;
+  }
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  const s2=v=>String(v).padStart(2,'0');
+  ['wcd-d','wcd-h','wcd-m','wcd-s'].forEach((id,i)=>{const e=document.getElementById(id);if(e)e.textContent=s2([d,h,m,s][i]);});
+}
+
+// Tab 切換時初始化
+const _origShowTab=window.showTab;
+window.showTab=function(name){
+  _origShowTab(name);
+  if(name==='worldcup'){
+    if(!document.querySelector('.wc-card')){wcRender();wcRenderOddsPanel();}
+    wcCountdown();
+  }
+};
+// 持續更新倒數 + 賠率
+setInterval(()=>{
+  if(document.getElementById('page-worldcup')?.classList.contains('active')){
+    wcCountdown();
+  }
+},1000);
+setInterval(()=>{
+  if(document.getElementById('page-worldcup')?.classList.contains('active')){
+    wcRefreshOdds();
+  }
+},30000);
 </script>
 </body>
 </html>

@@ -758,12 +758,35 @@ function renderWarroom(d) {
   appendAnalyst('grace','G','Grace','題材分析師','今日熱門題材分布，科技類為主力。重點佈局方向：',
     Object.entries(tm).sort((a,b)=>b[1]-a[1]).slice(0,4).map(x=>'<span class="chip good">'+x[0]+' ×'+x[1]+'</span>').join(''));
 
-  const bB=buyStocks.filter(s=>s.bull_align).length;
-  const rH=allStocks.filter(s=>s.rsi14>=70).length;
-  const bN=allStocks.filter(s=>s.ma5_breakout_day&&s.ma5_breakout_day<=3).length;
+  // Joe — 技術分析師（完整版）
+  const bB = buyStocks.filter(s => s.bull_align).length;
+  const rsiOB  = buyStocks.filter(s => (s.rsi14||0) >= 75).length;          // 超買熱區
+  const rsiStr = buyStocks.filter(s => (s.rsi14||0) >= 60 && (s.rsi14||0) < 75).length; // 強勢健康
+  const bkFresh = allStocks.filter(s => s.ma5_breakout_day === 1).length;   // 剛突破 ≤1日
+  const bkConf  = allStocks.filter(s => s.ma5_breakout_day >= 2 && s.ma5_breakout_day <= 3).length; // 確認 2-3日
+  const bkExt   = allStocks.filter(s => s.ma5_breakout_day >= 4 && s.ma5_breakout_day <= 5).length; // 延續 4-5日
+  const buyWithSpace = buyStocks.filter(s => s.target_price && s.close && s.target_price > s.close);
+  const avgSpace = buyWithSpace.length
+    ? Math.round(buyWithSpace.reduce((a,s) => a + (s.target_price - s.close) / s.close * 100, 0) / buyWithSpace.length)
+    : 0;
+  const bullRatio = buyStocks.length ? Math.round(bB / buyStocks.length * 100) : 0;
+  const joeVerdict =
+    bullRatio >= 70 && rsiOB < Math.round(buyStocks.length * 0.2)
+      ? '均線結構高度一致，進攻訊號明確，技術面具備良好上攻條件。'
+      : rsiOB > Math.round(buyStocks.length * 0.2)
+      ? '短線超買標的偏多，建議分批佈局，避免追高風險。'
+      : bkFresh >= 3
+      ? '今日新鮮突破標的活躍，MA5 剛突破機會值得優先追蹤。'
+      : '多頭排列比例正常，技術面處於均衡狀態，精選個股為主。';
   appendAnalyst('joe','J','Joe','技術分析師',
-    '今日技術面：買入且多頭排列 <strong>'+bB+'</strong> 檔，均線結構健康。新鮮突破（3日內）標的：',
-    '<span class="chip">多頭排列買入 '+bB+' 檔</span><span class="chip warn">RSI≥70 強勢 '+rH+' 檔</span><span class="chip good">新突破≤3日 '+bN+' 檔</span>');
+    '今日技術面：買入且多頭排列 <strong>'+bB+'</strong> 檔（佔買入 '+bullRatio+'%）。'+joeVerdict,
+    '<span class="chip">多頭排列 '+bB+' 檔</span>'+
+    '<span class="chip '+(rsiOB>0?'hot':'')+'">RSI超買≥75 '+rsiOB+' 檔</span>'+
+    '<span class="chip good">RSI強健60-74 '+rsiStr+' 檔</span>'+
+    '<span class="chip warn">剛突破(≤1日) '+bkFresh+' 檔</span>'+
+    '<span class="chip">突破確認(2-3日) '+bkConf+' 檔</span>'+
+    '<span class="chip">突破延續(4-5日) '+bkExt+' 檔</span>'+
+    '<span class="chip '+(avgSpace>=15?'hot':avgSpace>=8?'good':'')+'">技術空間均值 '+avgSpace+'%</span>');
 
   const ps=stats.pool_buy_stats||{};
   const ph=Object.entries(ps).map(x=>({name:x[0],pct:x[1].total>0?Math.round(x[1].buy/x[1].total*100):0,buy:x[1].buy,total:x[1].total}));

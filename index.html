@@ -310,10 +310,6 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
   .wcc-meta{display:none}
   .wcc-odds{display:none}
 }
-/* ── WARROOM PAGE ── */
-#page-warroom{padding:0;margin-top:56px;min-height:calc(100vh - 56px)}
-#page-warroom.active{display:flex;flex-direction:column}
-#warroom-iframe{flex:1;width:100%;border:none;min-height:calc(100vh - 56px)}
 
 @media(max-width:600px){
   .nav-inner{padding:0 16px}
@@ -338,8 +334,7 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
       <button class="tab-btn" onclick="showTab('work')">⑤ 工作自由</button>
       <button class="tab-btn" onclick="showTab('life')">⑥ 生活儀表板</button>
       <button class="tab-btn" onclick="showTab('team')">⑦ 團隊</button>
-      <button class="tab-btn" onclick="showTab('warroom')">⑧ 戰情室</button>
-      <button class="tab-btn" onclick="showTab('worldcup')">⑨ ⚽ 世足賽</button>
+<button class="tab-btn" onclick="showTab('worldcup')">⑨ ⚽ 世足賽</button>
     </div>
   </div>
 </nav>
@@ -700,11 +695,6 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
   </div>
 </div>
 
-<!-- ⑧ 戰情室報馬仔 -->
-<div id="page-warroom" class="page">
-  <iframe src="warroom.html" id="warroom-iframe" title="戰情室報馬仔"></iframe>
-</div>
-
 <!-- ⑨ 世足賽 -->
 <div id="page-worldcup" class="page">
   <!-- Hero -->
@@ -832,7 +822,7 @@ function showTab(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-  const idx={blueprint:0,monthly:1,compound:2,wealth:3,work:4,life:5,team:6,warroom:7,worldcup:8};
+  const idx={blueprint:0,monthly:1,compound:2,wealth:3,work:4,life:5,team:6,worldcup:7};
   document.querySelectorAll('.tab-btn')[idx[name]].classList.add('active');
   window.location.hash=name;
   if(name==='wealth')setTimeout(()=>{drawWChart();drawRadar();initDiscipline()},50);

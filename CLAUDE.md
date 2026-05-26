@@ -59,4 +59,14 @@ Magic Lab 是 AIworkplace 旗下的**獨立創新實驗室**，專責探索、�
 
 ---
 
+## 🔌 已安裝 Skills（2026-05-25 新增）
+
+| Skill 名稱 | 路徑 | 適用成員 | 核心功能 |
+|---|---|---|---|
+| `pulse` | `skills/pulse/SKILL.md` | Terry、Wayne | 多平台即時情報掃描（Reddit+HN+Web+X） |
+| `senior-pm` | `skills/senior-pm/SKILL.md` | Miles | 專案健康儀表板、WSJF/RICE 優先排序、風險矩陣 |
+| `chaos-engineering` | `skills/chaos-engineering/SKILL.md` | Wesley | 系統韌性測試、爆炸半徑計算、事後分析 |
+
+---
+
 *此檔案由 Terry 與 Claude 共同維護。*

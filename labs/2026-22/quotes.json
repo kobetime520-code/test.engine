@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-05-31 11:11 UTC",
+  "as_of": "2026-05-31 11:17 UTC",
   "quotes": [
     {
       "t": "RKLB",
@@ -100,6 +100,26 @@
       "price": 315.71,
       "chg": 1.53,
       "pct": 0.49
+    },
+    {
+      "t": "NVTS",
+      "name": "Navitas Semi",
+      "member": "Wayne",
+      "grp": "infra",
+      "risk": false,
+      "price": 26.6,
+      "chg": -1.91,
+      "pct": -6.7
+    },
+    {
+      "t": "FLNC",
+      "name": "Fluence Energy",
+      "member": "Wayne",
+      "grp": "infra",
+      "risk": false,
+      "price": 18.88,
+      "chg": -2.48,
+      "pct": -11.61
     },
     {
       "t": "MSFT",

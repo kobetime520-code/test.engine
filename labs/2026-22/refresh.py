@@ -19,6 +19,8 @@ WATCHLIST = [
     ("TSM",  "Taiwan Semi",       "Wayne",  "infra",  False),
     ("MU",   "Micron",            "Wayne",  "infra",  False),
     ("VRT",  "Vertiv",            "Wayne",  "infra",  False),
+    ("NVTS", "Navitas Semi",      "Wayne",  "infra",  False),
+    ("FLNC", "Fluence Energy",    "Wayne",  "infra",  False),
     ("MSFT", "Microsoft",         "Miles",  "soft",   False),
     ("GOOGL","Alphabet",          "Miles",  "soft",   False),
     ("NOW",  "ServiceNow",        "Miles",  "soft",   False),
@@ -70,7 +72,8 @@ def build_rows():
 def render(rows, stamp):
     data_js = json.dumps(rows, ensure_ascii=False)
     groups_js = json.dumps(GROUPS, ensure_ascii=False)
-    return TEMPLATE.replace("__DATA__", data_js).replace("__GROUPS__", groups_js).replace("__STAMP__", html.escape(stamp))
+    return (TEMPLATE.replace("__DATA__", data_js).replace("__GROUPS__", groups_js)
+            .replace("__STAMP__", html.escape(stamp)).replace("__COUNT__", str(len(rows))))
 
 TEMPLATE = r"""<!DOCTYPE html>
 <html lang="zh-Hant">
@@ -160,7 +163,7 @@ tr.alert td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
   <header>
     <div>
       <div class="brand"><span class="dot"></span><h1>Magic Lab <span>· 美股觀察</span></h1></div>
-      <div class="sub">P0 MVP · us-stock-watch · 20 檔 · 4 產業群</div>
+      <div class="sub">P0 MVP · us-stock-watch · __COUNT__ 檔 · 4 產業群</div>
     </div>
     <div class="stamp"><div>資料時點 <b>__STAMP__</b></div><div>來源 Yahoo Finance · 收盤/延遲</div></div>
   </header>

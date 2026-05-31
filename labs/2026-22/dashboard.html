@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Magic Lab · 美股觀察 MVP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e14; --surface:#121823; --surface2:#0f141d; --line:rgba(255,255,255,.08);
+  --txt:#e6e9ef; --muted:#8b93a7; --faint:#5b6478;
+  --up:#3ddc97; --down:#ff5c72; --accent:#57e0d8;
+  --space:#9d7bff; --infra:#4dd0e1; --soft:#ffb454; --pearl:#ff7eb6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--txt);
+  font-family:"IBM Plex Sans",system-ui,sans-serif;
+  background-image:linear-gradient(rgba(87,224,216,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(87,224,216,.025) 1px,transparent 1px);
+  background-size:44px 44px; min-height:100vh; padding:28px 20px 60px;
+}
+.wrap{max-width:1180px;margin:0 auto}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:6px}
+.brand{display:flex;align-items:center;gap:14px}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.45}}
+h1{font-family:"Sora",sans-serif;font-weight:700;font-size:24px;letter-spacing:-.4px}
+h1 span{color:var(--accent)}
+.sub{color:var(--muted);font-size:13px;margin-top:3px;font-family:"IBM Plex Mono",monospace}
+.stamp{text-align:right;color:var(--faint);font-size:12px;font-family:"IBM Plex Mono",monospace;line-height:1.7}
+.stamp b{color:var(--muted);font-weight:500}
+
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:22px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stat .k{color:var(--faint);font-size:11px;letter-spacing:.5px;text-transform:uppercase;font-family:"IBM Plex Mono",monospace}
+.stat .v{font-family:"Sora",sans-serif;font-weight:600;font-size:26px;margin-top:6px;font-feature-settings:"tnum"}
+.stat .v.up{color:var(--up)} .stat .v.down{color:var(--down)} .stat .v.alert{color:var(--accent)}
+
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:18px}
+.pills{display:flex;flex-wrap:wrap;gap:7px}
+.pill{background:var(--surface);border:1px solid var(--line);color:var(--muted);border-radius:999px;
+  padding:7px 14px;font-size:13px;cursor:pointer;font-family:"IBM Plex Mono",monospace;transition:.18s;user-select:none}
+.pill:hover{color:var(--txt);border-color:rgba(255,255,255,.2)}
+.pill.on{background:var(--accent);color:#04231f;border-color:var(--accent);font-weight:600}
+.spacer{flex:1 1 auto}
+.thr{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);
+  border-radius:999px;padding:7px 16px;font-size:13px;color:var(--muted);font-family:"IBM Plex Mono",monospace}
+.thr input{accent-color:var(--accent);width:120px}
+.thr b{color:var(--accent);min-width:42px;text-align:right}
+.sortsel{background:var(--surface);border:1px solid var(--line);color:var(--muted);border-radius:999px;
+  padding:7px 14px;font-size:13px;font-family:"IBM Plex Mono",monospace;cursor:pointer}
+
+table{width:100%;border-collapse:collapse}
+thead th{color:var(--faint);font-size:11px;letter-spacing:.6px;text-transform:uppercase;text-align:right;
+  padding:0 16px 11px;font-family:"IBM Plex Mono",monospace;font-weight:500}
+thead th.l{text-align:left}
+tbody tr{background:var(--surface);border:1px solid var(--line);transition:.16s;animation:rise .5s both}
+tbody tr:hover{background:#161e2b}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+td{padding:13px 16px;text-align:right;font-family:"IBM Plex Mono",monospace;font-size:14px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-feature-settings:"tnum"}
+td:first-child{border-left:1px solid var(--line);border-radius:10px 0 0 10px;text-align:left}
+td:last-child{border-right:1px solid var(--line);border-radius:0 10px 10px 0}
+tr.alert td{border-color:rgba(87,224,216,.5)}
+tr.alert td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.tk{font-weight:600;font-size:15px;color:var(--txt)}
+.nm{color:var(--muted);font-family:"IBM Plex Sans",sans-serif;font-size:12.5px;margin-top:2px}
+.tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:6px;font-family:"IBM Plex Mono",monospace;font-weight:500}
+.tag.space{background:rgba(157,123,255,.16);color:var(--space)}
+.tag.infra{background:rgba(77,208,225,.16);color:var(--infra)}
+.tag.soft{background:rgba(255,180,84,.16);color:var(--soft)}
+.tag.pearl{background:rgba(255,126,182,.16);color:var(--pearl)}
+.risk{color:var(--pearl);font-size:11px;margin-left:6px}
+.up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--muted)}
+.na{color:var(--faint)}
+.flag{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px var(--accent)}
+.foot{margin-top:22px;color:var(--faint);font-size:12px;line-height:1.8;font-family:"IBM Plex Mono",monospace}
+.rowgroup{padding:18px 4px 7px;color:var(--faint);font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-family:"IBM Plex Mono",monospace}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.nm,thead th.hide{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="brand"><span class="dot"></span><h1>Magic Lab <span>· 美股觀察</span></h1></div>
+      <div class="sub">P0 MVP · us-stock-watch · 20 檔 · 4 產業群</div>
+    </div>
+    <div class="stamp"><div>資料時點 <b>2026-05-31 02:37 UTC</b></div><div>來源 Yahoo Finance · 收盤/延遲</div></div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="controls">
+    <div class="pills" id="pills"></div>
+    <div class="spacer"></div>
+    <select class="sortsel" id="sort">
+      <option value="grp">依產業群</option>
+      <option value="pctd">漲幅 ↓</option>
+      <option value="pcta">跌幅 ↓</option>
+      <option value="tk">代號 A–Z</option>
+    </select>
+    <label class="thr">警示門檻 ±<b id="thrv">5%</b>
+      <input type="range" id="thr" min="0" max="20" step="0.5" value="5"></label>
+  </div>
+
+  <table>
+    <thead><tr>
+      <th class="l">代號 / 公司</th>
+      <th class="l hide">產業群 · 負責</th>
+      <th>價格</th><th class="hide">漲跌</th><th>漲跌幅</th><th>警示</th>
+    </tr></thead>
+    <tbody id="body"></tbody>
+  </table>
+
+  <div class="foot">
+    警示：|漲跌幅| ≥ 門檻即標記（青色邊框）。拖曳滑桿即時調整。<br>
+    珍珠股（◆）波動高、流動性低，僅供觀察與訓練，非投資建議。<br>
+    刷新數據：於本資料夾執行 <b>python refresh.py</b> 後重新整理頁面。
+  </div>
+</div>
+
+<script>
+const DATA = [{"t": "RKLB", "name": "Rocket Lab", "member": "Terry", "grp": "space", "risk": false, "price": 143.48, "chg": -4.55, "pct": -3.07}, {"t": "ASTS", "name": "AST SpaceMobile", "member": "Terry", "grp": "space", "risk": false, "price": 113.41, "chg": -19.68, "pct": -14.79}, {"t": "PLTR", "name": "Palantir", "member": "Terry", "grp": "space", "risk": false, "price": 156.54, "chg": 13.2, "pct": 9.21}, {"t": "RDW", "name": "Redwire", "member": "Terry", "grp": "space", "risk": false, "price": 24.57, "chg": -1.33, "pct": -5.14}, {"t": "BKSY", "name": "BlackSky", "member": "Terry", "grp": "space", "risk": false, "price": 48.47, "chg": -3.16, "pct": -6.12}, {"t": "NVDA", "name": "Nvidia", "member": "Wayne", "grp": "infra", "risk": false, "price": 211.14, "chg": -3.11, "pct": -1.45}, {"t": "AVGO", "name": "Broadcom", "member": "Wayne", "grp": "infra", "risk": false, "price": 446.77, "chg": 20.19, "pct": 4.73}, {"t": "TSM", "name": "Taiwan Semi", "member": "Wayne", "grp": "infra", "risk": false, "price": 418.45, "chg": -6.41, "pct": -1.51}, {"t": "MU", "name": "Micron", "member": "Wayne", "grp": "infra", "risk": false, "price": 971.0, "chg": 47.48, "pct": 5.14}, {"t": "VRT", "name": "Vertiv", "member": "Wayne", "grp": "infra", "risk": false, "price": 315.71, "chg": 1.53, "pct": 0.49}, {"t": "MSFT", "name": "Microsoft", "member": "Miles", "grp": "soft", "risk": false, "price": 450.24, "chg": 23.25, "pct": 5.45}, {"t": "GOOGL", "name": "Alphabet", "member": "Miles", "grp": "soft", "risk": false, "price": 380.34, "chg": -9.79, "pct": -2.51}, {"t": "NOW", "name": "ServiceNow", "member": "Miles", "grp": "soft", "risk": false, "price": 124.37, "chg": 15.64, "pct": 14.38}, {"t": "CRM", "name": "Salesforce", "member": "Miles", "grp": "soft", "risk": false, "price": 191.1, "chg": 14.93, "pct": 8.47}, {"t": "PATH", "name": "UiPath", "member": "Miles", "grp": "soft", "risk": false, "price": 11.72, "chg": 0.14, "pct": 1.21}, {"t": "AEVA", "name": "Aeva Technologies", "member": "Wesley", "grp": "pearl", "risk": true, "price": 28.18, "chg": 2.34, "pct": 9.06}, {"t": "DUOT", "name": "Duos Technologies", "member": "Wesley", "grp": "pearl", "risk": true, "price": 13.5, "chg": -1.14, "pct": -7.79}, {"t": "BBAI", "name": "BigBear.ai", "member": "Wesley", "grp": "pearl", "risk": true, "price": 5.04, "chg": 0.1, "pct": 2.02}, {"t": "AXTI", "name": "AXT Inc.", "member": "Wesley", "grp": "pearl", "risk": true, "price": 103.16, "chg": -12.54, "pct": -10.84}, {"t": "EVLV", "name": "Evolv Technologies", "member": "Wesley", "grp": "pearl", "risk": true, "price": 6.45, "chg": -0.06, "pct": -0.92}];
+const GROUPS = {"space": ["AI × 太空 × 未來", "Terry"], "infra": ["AI 基礎建設", "Wayne"], "soft": ["AI 應用軟體", "Miles"], "pearl": ["特殊 AI 珍珠股", "Wesley"]};
+let filter = "all", thr = 5, sort = "grp";
+
+const fmt = n => n==null ? "—" : n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const cls = p => p==null?"na":(p>0?"up":(p<0?"down":"flat"));
+const sign = p => p==null?"":(p>0?"+":"");
+
+function renderStats(){
+  const v = DATA.filter(d=>d.pct!=null);
+  const up = v.filter(d=>d.pct>0).length, down = v.filter(d=>d.pct<0).length;
+  const al = v.filter(d=>Math.abs(d.pct)>=thr).length;
+  const avg = v.length? v.reduce((s,d)=>s+d.pct,0)/v.length : 0;
+  document.getElementById("stats").innerHTML = [
+    ["觀察檔數", DATA.length, ""],
+    ["上漲", up, "up"],
+    ["下跌", down, "down"],
+    ["平均漲跌幅", sign(avg)+avg.toFixed(2)+"%", cls(avg)],
+    ["觸發警示", al, "alert"],
+  ].map(([k,val,c])=>`<div class="stat"><div class="k">${k}</div><div class="v ${c}">${val}</div></div>`).join("");
+}
+
+function renderPills(){
+  const opts = [["all","全部"]].concat(Object.entries(GROUPS).map(([k,v])=>[k,v[0]]));
+  document.getElementById("pills").innerHTML = opts.map(([k,label])=>
+    `<div class="pill ${k===filter?'on':''}" data-g="${k}">${label}</div>`).join("");
+  document.querySelectorAll(".pill").forEach(p=>p.onclick=()=>{filter=p.dataset.g;renderPills();renderBody();});
+}
+
+function rowHTML(d){
+  const grp = GROUPS[d.grp];
+  const alert = d.pct!=null && Math.abs(d.pct)>=thr;
+  return `<tr class="${alert?'alert':''}">
+    <td><span class="tk">${d.t}</span><div class="nm">${d.name}${d.risk?'<span class="risk">◆</span>':''}</div></td>
+    <td class="l hide"><span class="tag ${d.grp}">${grp[0]}</span> <span style="color:var(--faint)">${d.member}</span></td>
+    <td>${fmt(d.price)}</td>
+    <td class="hide ${cls(d.chg)}">${sign(d.chg)}${fmt(d.chg)}</td>
+    <td class="${cls(d.pct)}">${d.pct==null?'<span class=na>—</span>':sign(d.pct)+d.pct.toFixed(2)+'%'}</td>
+    <td>${alert?'<span class="flag"></span>':''}</td>
+  </tr>`;
+}
+
+function renderBody(){
+  let rows = DATA.filter(d=> filter==="all" || d.grp===filter);
+  const body = document.getElementById("body");
+  if(sort==="grp" && filter==="all"){
+    let html="";
+    for(const g of Object.keys(GROUPS)){
+      const sub = rows.filter(d=>d.grp===g);
+      if(!sub.length) continue;
+      html += `<tr><td colspan="6" style="border:none;background:none;padding:0"><div class="rowgroup">${GROUPS[g][0]} · ${GROUPS[g][1]}</div></td></tr>`;
+      html += sub.map(rowHTML).join("");
+    }
+    body.innerHTML = html;
+  } else {
+    if(sort==="pctd") rows=[...rows].sort((a,b)=>(b.pct??-1e9)-(a.pct??-1e9));
+    if(sort==="pcta") rows=[...rows].sort((a,b)=>(a.pct??1e9)-(b.pct??1e9));
+    if(sort==="tk")   rows=[...rows].sort((a,b)=>a.t.localeCompare(b.t));
+    body.innerHTML = rows.map(rowHTML).join("");
+  }
+  renderStats();
+}
+
+document.getElementById("thr").oninput = e=>{thr=parseFloat(e.target.value);document.getElementById("thrv").textContent=thr+"%";renderBody();};
+document.getElementById("sort").onchange = e=>{sort=e.target.value;renderBody();};
+renderPills(); renderBody();
+</script>
+</body>
+</html>

@@ -51,6 +51,10 @@ h1 span{color:var(--accent)}
 .thr b{color:var(--accent);min-width:42px;text-align:right}
 .sortsel{background:var(--surface);border:1px solid var(--line);color:var(--muted);border-radius:999px;
   padding:7px 14px;font-size:13px;font-family:"IBM Plex Mono",monospace;cursor:pointer}
+.search{background:var(--surface);border:1px solid var(--line);color:var(--txt);border-radius:999px;
+  padding:7px 15px;font-size:13px;font-family:"IBM Plex Mono",monospace;min-width:170px;outline:none;transition:.18s}
+.search::placeholder{color:var(--faint)}
+.search:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(87,224,216,.15)}
 
 table{width:100%;border-collapse:collapse}
 thead th{color:var(--faint);font-size:11px;letter-spacing:.6px;text-transform:uppercase;text-align:right;
@@ -86,9 +90,9 @@ tr.alert td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
   <header>
     <div>
       <div class="brand"><span class="dot"></span><h1>Magic Lab <span>· 美股觀察</span></h1></div>
-      <div class="sub">P0 MVP · us-stock-watch · 22 檔 · 4 產業群</div>
+      <div class="sub">P0 MVP · us-stock-watch · 27 檔 · 4 產業群</div>
     </div>
-    <div class="stamp"><div>資料時點 <b>2026-05-31 11:17 UTC</b></div><div>來源 Yahoo Finance · 收盤/延遲</div></div>
+    <div class="stamp"><div>資料時點 <b>2026-06-01 10:18 UTC</b></div><div>來源 Yahoo Finance · 收盤/延遲</div></div>
   </header>
 
   <div class="stats" id="stats"></div>
@@ -96,6 +100,7 @@ tr.alert td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
   <div class="controls">
     <div class="pills" id="pills"></div>
     <div class="spacer"></div>
+    <input class="search" id="q" type="search" placeholder="篩選代號 / 公司…" autocomplete="off">
     <select class="sortsel" id="sort">
       <option value="grp">依產業群</option>
       <option value="pctd">漲幅 ↓</option>
@@ -123,9 +128,9 @@ tr.alert td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
 </div>
 
 <script>
-const DATA = [{"t": "RKLB", "name": "Rocket Lab", "member": "Terry", "grp": "space", "risk": false, "price": 143.48, "chg": -4.55, "pct": -3.07}, {"t": "ASTS", "name": "AST SpaceMobile", "member": "Terry", "grp": "space", "risk": false, "price": 113.41, "chg": -19.68, "pct": -14.79}, {"t": "PLTR", "name": "Palantir", "member": "Terry", "grp": "space", "risk": false, "price": 156.54, "chg": 13.2, "pct": 9.21}, {"t": "RDW", "name": "Redwire", "member": "Terry", "grp": "space", "risk": false, "price": 24.57, "chg": -1.33, "pct": -5.14}, {"t": "BKSY", "name": "BlackSky", "member": "Terry", "grp": "space", "risk": false, "price": 48.47, "chg": -3.16, "pct": -6.12}, {"t": "NVDA", "name": "Nvidia", "member": "Wayne", "grp": "infra", "risk": false, "price": 211.14, "chg": -3.11, "pct": -1.45}, {"t": "AVGO", "name": "Broadcom", "member": "Wayne", "grp": "infra", "risk": false, "price": 446.77, "chg": 20.19, "pct": 4.73}, {"t": "TSM", "name": "Taiwan Semi", "member": "Wayne", "grp": "infra", "risk": false, "price": 418.45, "chg": -6.41, "pct": -1.51}, {"t": "MU", "name": "Micron", "member": "Wayne", "grp": "infra", "risk": false, "price": 971.0, "chg": 47.48, "pct": 5.14}, {"t": "VRT", "name": "Vertiv", "member": "Wayne", "grp": "infra", "risk": false, "price": 315.71, "chg": 1.53, "pct": 0.49}, {"t": "NVTS", "name": "Navitas Semi", "member": "Wayne", "grp": "infra", "risk": false, "price": 26.6, "chg": -1.91, "pct": -6.7}, {"t": "FLNC", "name": "Fluence Energy", "member": "Wayne", "grp": "infra", "risk": false, "price": 18.88, "chg": -2.48, "pct": -11.61}, {"t": "MSFT", "name": "Microsoft", "member": "Miles", "grp": "soft", "risk": false, "price": 450.24, "chg": 23.25, "pct": 5.45}, {"t": "GOOGL", "name": "Alphabet", "member": "Miles", "grp": "soft", "risk": false, "price": 380.34, "chg": -9.79, "pct": -2.51}, {"t": "NOW", "name": "ServiceNow", "member": "Miles", "grp": "soft", "risk": false, "price": 124.37, "chg": 15.64, "pct": 14.38}, {"t": "CRM", "name": "Salesforce", "member": "Miles", "grp": "soft", "risk": false, "price": 191.1, "chg": 14.93, "pct": 8.47}, {"t": "PATH", "name": "UiPath", "member": "Miles", "grp": "soft", "risk": false, "price": 11.72, "chg": 0.14, "pct": 1.21}, {"t": "AEVA", "name": "Aeva Technologies", "member": "Wesley", "grp": "pearl", "risk": true, "price": 28.18, "chg": 2.34, "pct": 9.06}, {"t": "DUOT", "name": "Duos Technologies", "member": "Wesley", "grp": "pearl", "risk": true, "price": 13.5, "chg": -1.14, "pct": -7.79}, {"t": "BBAI", "name": "BigBear.ai", "member": "Wesley", "grp": "pearl", "risk": true, "price": 5.04, "chg": 0.1, "pct": 2.02}, {"t": "AXTI", "name": "AXT Inc.", "member": "Wesley", "grp": "pearl", "risk": true, "price": 103.16, "chg": -12.54, "pct": -10.84}, {"t": "EVLV", "name": "Evolv Technologies", "member": "Wesley", "grp": "pearl", "risk": true, "price": 6.45, "chg": -0.06, "pct": -0.92}];
+const DATA = [{"t": "RKLB", "name": "Rocket Lab", "member": "Terry", "grp": "space", "risk": false, "price": 143.48, "chg": -4.55, "pct": -3.07}, {"t": "ASTS", "name": "AST SpaceMobile", "member": "Terry", "grp": "space", "risk": false, "price": 113.41, "chg": -19.68, "pct": -14.79}, {"t": "PLTR", "name": "Palantir", "member": "Terry", "grp": "space", "risk": false, "price": 156.54, "chg": 13.2, "pct": 9.21}, {"t": "RDW", "name": "Redwire", "member": "Terry", "grp": "space", "risk": false, "price": 24.57, "chg": -1.33, "pct": -5.14}, {"t": "BKSY", "name": "BlackSky", "member": "Terry", "grp": "space", "risk": false, "price": 48.47, "chg": -3.16, "pct": -6.12}, {"t": "MP", "name": "MP Materials", "member": "Terry", "grp": "space", "risk": false, "price": 64.7, "chg": -2.13, "pct": -3.19}, {"t": "NVDA", "name": "Nvidia", "member": "Wayne", "grp": "infra", "risk": false, "price": 211.14, "chg": -3.11, "pct": -1.45}, {"t": "AVGO", "name": "Broadcom", "member": "Wayne", "grp": "infra", "risk": false, "price": 446.77, "chg": 20.19, "pct": 4.73}, {"t": "TSM", "name": "Taiwan Semi", "member": "Wayne", "grp": "infra", "risk": false, "price": 418.45, "chg": -6.41, "pct": -1.51}, {"t": "MU", "name": "Micron", "member": "Wayne", "grp": "infra", "risk": false, "price": 971.0, "chg": 47.48, "pct": 5.14}, {"t": "VRT", "name": "Vertiv", "member": "Wayne", "grp": "infra", "risk": false, "price": 315.71, "chg": 1.53, "pct": 0.49}, {"t": "NVTS", "name": "Navitas Semi", "member": "Wayne", "grp": "infra", "risk": false, "price": 26.6, "chg": -1.91, "pct": -6.7}, {"t": "FLNC", "name": "Fluence Energy", "member": "Wayne", "grp": "infra", "risk": false, "price": 18.88, "chg": -2.48, "pct": -11.61}, {"t": "NBIS", "name": "Nebius", "member": "Wayne", "grp": "infra", "risk": false, "price": 231.09, "chg": 4.75, "pct": 2.1}, {"t": "CSCO", "name": "Cisco", "member": "Wayne", "grp": "infra", "risk": false, "price": 120.42, "chg": 1.78, "pct": 1.5}, {"t": "MSFT", "name": "Microsoft", "member": "Miles", "grp": "soft", "risk": false, "price": 450.24, "chg": 23.25, "pct": 5.45}, {"t": "GOOGL", "name": "Alphabet", "member": "Miles", "grp": "soft", "risk": false, "price": 380.34, "chg": -9.79, "pct": -2.51}, {"t": "NOW", "name": "ServiceNow", "member": "Miles", "grp": "soft", "risk": false, "price": 124.37, "chg": 15.64, "pct": 14.38}, {"t": "CRM", "name": "Salesforce", "member": "Miles", "grp": "soft", "risk": false, "price": 191.1, "chg": 14.93, "pct": 8.47}, {"t": "PATH", "name": "UiPath", "member": "Miles", "grp": "soft", "risk": false, "price": 11.72, "chg": 0.14, "pct": 1.21}, {"t": "IBM", "name": "IBM", "member": "Miles", "grp": "soft", "risk": false, "price": 297.8, "chg": 33.58, "pct": 12.71}, {"t": "S", "name": "SentinelOne", "member": "Miles", "grp": "soft", "risk": false, "price": 16.55, "chg": -1.47, "pct": -8.16}, {"t": "AEVA", "name": "Aeva Technologies", "member": "Wesley", "grp": "pearl", "risk": true, "price": 28.18, "chg": 2.34, "pct": 9.06}, {"t": "DUOT", "name": "Duos Technologies", "member": "Wesley", "grp": "pearl", "risk": true, "price": 13.5, "chg": -1.14, "pct": -7.79}, {"t": "BBAI", "name": "BigBear.ai", "member": "Wesley", "grp": "pearl", "risk": true, "price": 5.04, "chg": 0.1, "pct": 2.02}, {"t": "AXTI", "name": "AXT Inc.", "member": "Wesley", "grp": "pearl", "risk": true, "price": 103.16, "chg": -12.54, "pct": -10.84}, {"t": "EVLV", "name": "Evolv Technologies", "member": "Wesley", "grp": "pearl", "risk": true, "price": 6.45, "chg": -0.06, "pct": -0.92}];
 const GROUPS = {"space": ["AI × 太空 × 未來", "Terry"], "infra": ["AI 基礎建設", "Wayne"], "soft": ["AI 應用軟體", "Miles"], "pearl": ["特殊 AI 珍珠股", "Wesley"]};
-let filter = "all", thr = 5, sort = "grp";
+let filter = "all", thr = 5, sort = "grp", query = "";
 
 const fmt = n => n==null ? "—" : n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 const cls = p => p==null?"na":(p>0?"up":(p<0?"down":"flat"));
@@ -166,8 +171,14 @@ function rowHTML(d){
 }
 
 function renderBody(){
-  let rows = DATA.filter(d=> filter==="all" || d.grp===filter);
+  const q = query.trim().toLowerCase();
+  let rows = DATA.filter(d=> (filter==="all" || d.grp===filter)
+    && (!q || d.t.toLowerCase().includes(q) || d.name.toLowerCase().includes(q)));
   const body = document.getElementById("body");
+  if(!rows.length){
+    body.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--faint);padding:28px">查無符合「${query}」的股票</td></tr>`;
+    renderStats(); return;
+  }
   if(sort==="grp" && filter==="all"){
     let html="";
     for(const g of Object.keys(GROUPS)){
@@ -188,6 +199,7 @@ function renderBody(){
 
 document.getElementById("thr").oninput = e=>{thr=parseFloat(e.target.value);document.getElementById("thrv").textContent=thr+"%";renderBody();};
 document.getElementById("sort").onchange = e=>{sort=e.target.value;renderBody();};
+document.getElementById("q").oninput = e=>{query=e.target.value;renderBody();};
 renderPills(); renderBody();
 </script>
 </body>

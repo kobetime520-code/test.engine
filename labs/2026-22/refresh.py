@@ -14,6 +14,7 @@ WATCHLIST = [
     ("PLTR", "Palantir",          "Terry",  "space",  False),
     ("RDW",  "Redwire",           "Terry",  "space",  False),
     ("BKSY", "BlackSky",          "Terry",  "space",  False),
+    ("MP",   "MP Materials",      "Terry",  "space",  False),
     ("NVDA", "Nvidia",            "Wayne",  "infra",  False),
     ("AVGO", "Broadcom",          "Wayne",  "infra",  False),
     ("TSM",  "Taiwan Semi",       "Wayne",  "infra",  False),
@@ -21,11 +22,15 @@ WATCHLIST = [
     ("VRT",  "Vertiv",            "Wayne",  "infra",  False),
     ("NVTS", "Navitas Semi",      "Wayne",  "infra",  False),
     ("FLNC", "Fluence Energy",    "Wayne",  "infra",  False),
+    ("NBIS", "Nebius",            "Wayne",  "infra",  False),
+    ("CSCO", "Cisco",             "Wayne",  "infra",  False),
     ("MSFT", "Microsoft",         "Miles",  "soft",   False),
     ("GOOGL","Alphabet",          "Miles",  "soft",   False),
     ("NOW",  "ServiceNow",        "Miles",  "soft",   False),
     ("CRM",  "Salesforce",        "Miles",  "soft",   False),
     ("PATH", "UiPath",            "Miles",  "soft",   False),
+    ("IBM",  "IBM",               "Miles",  "soft",   False),
+    ("S",    "SentinelOne",       "Miles",  "soft",   False),
     ("AEVA", "Aeva Technologies", "Wesley", "pearl",  True),
     ("DUOT", "Duos Technologies", "Wesley", "pearl",  True),
     ("BBAI", "BigBear.ai",        "Wesley", "pearl",  True),
@@ -128,6 +133,10 @@ h1 span{color:var(--accent)}
 .thr b{color:var(--accent);min-width:42px;text-align:right}
 .sortsel{background:var(--surface);border:1px solid var(--line);color:var(--muted);border-radius:999px;
   padding:7px 14px;font-size:13px;font-family:"IBM Plex Mono",monospace;cursor:pointer}
+.search{background:var(--surface);border:1px solid var(--line);color:var(--txt);border-radius:999px;
+  padding:7px 15px;font-size:13px;font-family:"IBM Plex Mono",monospace;min-width:170px;outline:none;transition:.18s}
+.search::placeholder{color:var(--faint)}
+.search:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(87,224,216,.15)}
 
 table{width:100%;border-collapse:collapse}
 thead th{color:var(--faint);font-size:11px;letter-spacing:.6px;text-transform:uppercase;text-align:right;
@@ -173,6 +182,7 @@ tr.alert td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
   <div class="controls">
     <div class="pills" id="pills"></div>
     <div class="spacer"></div>
+    <input class="search" id="q" type="search" placeholder="篩選代號 / 公司…" autocomplete="off">
     <select class="sortsel" id="sort">
       <option value="grp">依產業群</option>
       <option value="pctd">漲幅 ↓</option>
@@ -202,7 +212,7 @@ tr.alert td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
 <script>
 const DATA = __DATA__;
 const GROUPS = __GROUPS__;
-let filter = "all", thr = 5, sort = "grp";
+let filter = "all", thr = 5, sort = "grp", query = "";
 
 const fmt = n => n==null ? "—" : n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 const cls = p => p==null?"na":(p>0?"up":(p<0?"down":"flat"));
@@ -243,8 +253,14 @@ function rowHTML(d){
 }
 
 function renderBody(){
-  let rows = DATA.filter(d=> filter==="all" || d.grp===filter);
+  const q = query.trim().toLowerCase();
+  let rows = DATA.filter(d=> (filter==="all" || d.grp===filter)
+    && (!q || d.t.toLowerCase().includes(q) || d.name.toLowerCase().includes(q)));
   const body = document.getElementById("body");
+  if(!rows.length){
+    body.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--faint);padding:28px">查無符合「${query}」的股票</td></tr>`;
+    renderStats(); return;
+  }
   if(sort==="grp" && filter==="all"){
     let html="";
     for(const g of Object.keys(GROUPS)){
@@ -265,6 +281,7 @@ function renderBody(){
 
 document.getElementById("thr").oninput = e=>{thr=parseFloat(e.target.value);document.getElementById("thrv").textContent=thr+"%";renderBody();};
 document.getElementById("sort").onchange = e=>{sort=e.target.value;renderBody();};
+document.getElementById("q").oninput = e=>{query=e.target.value;renderBody();};
 renderPills(); renderBody();
 </script>
 </body>

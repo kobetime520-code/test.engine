@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-05-31 11:17 UTC",
+  "as_of": "2026-06-01 10:18 UTC",
   "quotes": [
     {
       "t": "RKLB",
@@ -50,6 +50,16 @@
       "price": 48.47,
       "chg": -3.16,
       "pct": -6.12
+    },
+    {
+      "t": "MP",
+      "name": "MP Materials",
+      "member": "Terry",
+      "grp": "space",
+      "risk": false,
+      "price": 64.7,
+      "chg": -2.13,
+      "pct": -3.19
     },
     {
       "t": "NVDA",
@@ -122,6 +132,26 @@
       "pct": -11.61
     },
     {
+      "t": "NBIS",
+      "name": "Nebius",
+      "member": "Wayne",
+      "grp": "infra",
+      "risk": false,
+      "price": 231.09,
+      "chg": 4.75,
+      "pct": 2.1
+    },
+    {
+      "t": "CSCO",
+      "name": "Cisco",
+      "member": "Wayne",
+      "grp": "infra",
+      "risk": false,
+      "price": 120.42,
+      "chg": 1.78,
+      "pct": 1.5
+    },
+    {
       "t": "MSFT",
       "name": "Microsoft",
       "member": "Miles",
@@ -170,6 +200,26 @@
       "price": 11.72,
       "chg": 0.14,
       "pct": 1.21
+    },
+    {
+      "t": "IBM",
+      "name": "IBM",
+      "member": "Miles",
+      "grp": "soft",
+      "risk": false,
+      "price": 297.8,
+      "chg": 33.58,
+      "pct": 12.71
+    },
+    {
+      "t": "S",
+      "name": "SentinelOne",
+      "member": "Miles",
+      "grp": "soft",
+      "risk": false,
+      "price": 16.55,
+      "chg": -1.47,
+      "pct": -8.16
     },
     {
       "t": "AEVA",

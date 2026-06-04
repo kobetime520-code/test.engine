@@ -1,5 +1,5 @@
 ﻿# Magic Lab — 美股觀察 自動更新與推送
-# 流程：python refresh.py → git add → commit（無變更則略過） → push
+# 流程：python refresh.py → 比對報價數值（忽略時點戳記）→ 有變動才 commit + push
 # 手動執行：右鍵以 PowerShell 執行，或  powershell -ExecutionPolicy Bypass -File auto_update.ps1
 # 排程執行：見同資料夾 register_task.ps1
 
@@ -14,8 +14,22 @@ function Log($msg) {
     Write-Host $line
 }
 
+$quotesPath = Join-Path $lab "quotes.json"
+
+# 取報價數值的標準化字串（排除 as_of 時點，只看 quotes 陣列）
+function Get-QuoteFingerprint($path) {
+    if (-not (Test-Path $path)) { return "" }
+    try {
+        $obj = Get-Content -Raw -Encoding UTF8 $path | ConvertFrom-Json
+        return ($obj.quotes | ConvertTo-Json -Depth 10 -Compress)
+    } catch { return "" }
+}
+
 try {
     Log "=== 開始自動更新 ==="
+
+    # 0) 記錄刷新前的報價指紋
+    $before = Get-QuoteFingerprint $quotesPath
 
     # 1) 抓報價、重產 dashboard.html / quotes.json
     Push-Location $lab
@@ -23,11 +37,12 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "refresh.py 失敗 (exit $LASTEXITCODE)" }
     Pop-Location
 
-    # 2) 偵測是否有變更
+    # 2) 比對報價數值（忽略時點戳記）
+    $after = Get-QuoteFingerprint $quotesPath
     Push-Location $repo
-    $changes = git status --porcelain -- "labs/2026-22/dashboard.html" "labs/2026-22/quotes.json"
-    if ([string]::IsNullOrWhiteSpace($changes)) {
-        Log "無資料變更，略過 commit/push"
+    if ($before -eq $after) {
+        Log "報價數值未變動（僅時點戳記），還原檔案並略過 commit/push"
+        git checkout -- "labs/2026-22/dashboard.html" "labs/2026-22/quotes.json" 2>$null
         Pop-Location
         return
     }

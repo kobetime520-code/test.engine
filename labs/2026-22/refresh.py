@@ -31,6 +31,7 @@ WATCHLIST = [
     ("PATH", "UiPath",            "Miles",  "soft",   False),
     ("IBM",  "IBM",               "Miles",  "soft",   False),
     ("S",    "SentinelOne",       "Miles",  "soft",   False),
+    ("NFLX", "Netflix",           "Miles",  "soft",   False),
     ("AEVA", "Aeva Technologies", "Wesley", "pearl",  True),
     ("DUOT", "Duos Technologies", "Wesley", "pearl",  True),
     ("BBAI", "BigBear.ai",        "Wesley", "pearl",  True),

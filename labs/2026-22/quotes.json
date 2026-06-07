@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-05 22:00 UTC",
+  "as_of": "2026-06-07 22:00 UTC",
   "quotes": [
     {
       "t": "RKLB",
@@ -267,9 +267,9 @@
       "member": "Wesley",
       "grp": "pearl",
       "risk": true,
-      "price": 89.04,
-      "chg": -16.95,
-      "pct": -15.99
+      "price": 89.053,
+      "chg": -16.92,
+      "pct": -15.97
     },
     {
       "t": "EVLV",

@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-15 22:00 UTC",
+  "as_of": "2026-06-16 22:00 UTC",
   "quotes": [
     {
       "t": "RKLB",
@@ -7,9 +7,9 @@
       "member": "Terry",
       "grp": "space",
       "risk": false,
-      "price": 109.25,
-      "chg": 6.86,
-      "pct": 6.7
+      "price": 104.63,
+      "chg": -4.62,
+      "pct": -4.23
     },
     {
       "t": "ASTS",
@@ -17,9 +17,9 @@
       "member": "Terry",
       "grp": "space",
       "risk": false,
-      "price": 87.57,
-      "chg": 5.16,
-      "pct": 6.26
+      "price": 82.25,
+      "chg": -5.32,
+      "pct": -6.08
     },
     {
       "t": "PLTR",
@@ -27,9 +27,9 @@
       "member": "Terry",
       "grp": "space",
       "risk": false,
-      "price": 134.71,
-      "chg": 6.72,
-      "pct": 5.25
+      "price": 133.25,
+      "chg": -1.46,
+      "pct": -1.08
     },
     {
       "t": "RDW",
@@ -37,9 +37,9 @@
       "member": "Terry",
       "grp": "space",
       "risk": false,
-      "price": 14.83,
-      "chg": -0.29,
-      "pct": -1.92
+      "price": 13.5,
+      "chg": -1.33,
+      "pct": -8.97
     },
     {
       "t": "BKSY",
@@ -47,9 +47,9 @@
       "member": "Terry",
       "grp": "space",
       "risk": false,
-      "price": 31.19,
-      "chg": -1.23,
-      "pct": -3.79
+      "price": 28.77,
+      "chg": -2.42,
+      "pct": -7.76
     },
     {
       "t": "MP",
@@ -57,9 +57,9 @@
       "member": "Terry",
       "grp": "space",
       "risk": false,
-      "price": 58.26,
-      "chg": 0.71,
-      "pct": 1.23
+      "price": 57.05,
+      "chg": -1.21,
+      "pct": -2.08
     },
     {
       "t": "NVDA",
@@ -67,9 +67,9 @@
       "member": "Wayne",
       "grp": "infra",
       "risk": false,
-      "price": 212.45,
-      "chg": 7.26,
-      "pct": 3.54
+      "price": 207.41,
+      "chg": -5.04,
+      "pct": -2.37
     },
     {
       "t": "AVGO",
@@ -77,9 +77,9 @@
       "member": "Wayne",
       "grp": "infra",
       "risk": false,
-      "price": 393.94,
-      "chg": 11.87,
-      "pct": 3.11
+      "price": 376.71,
+      "chg": -17.23,
+      "pct": -4.37
     },
     {
       "t": "TSM",
@@ -87,9 +87,9 @@
       "member": "Wayne",
       "grp": "infra",
       "risk": false,
-      "price": 441.4,
-      "chg": 17.47,
-      "pct": 4.12
+      "price": 425.83,
+      "chg": -15.57,
+      "pct": -3.53
     },
     {
       "t": "MU",
@@ -97,9 +97,9 @@
       "member": "Wayne",
       "grp": "infra",
       "risk": false,
-      "price": 1087.99,
-      "chg": 106.38,
-      "pct": 10.84
+      "price": 1020.76,
+      "chg": -67.23,
+      "pct": -6.18
     },
     {
       "t": "VRT",
@@ -107,9 +107,9 @@
       "member": "Wayne",
       "grp": "infra",
       "risk": false,
-      "price": 311.93,
-      "chg": 9.12,
-      "pct": 3.01
+      "price": 299.6,
+      "chg": -12.33,
+      "pct": -3.95
     },
     {
       "t": "NVTS",
@@ -117,9 +117,9 @@
       "member": "Wayne",
       "grp": "infra",
       "risk": false,
-      "price": 23.73,
-      "chg": 0.34,
-      "pct": 1.45
+      "price": 22.09,
+      "chg": -1.64,
+      "pct": -6.91
     },
     {
       "t": "FLNC",
@@ -127,9 +127,9 @@
       "member": "Wayne",
       "grp": "infra",
       "risk": false,
-      "price": 24.18,
-      "chg": 0.47,
-      "pct": 1.98
+      "price": 23.92,
+      "chg": -0.26,
+      "pct": -1.08
     },
     {
       "t": "NBIS",
@@ -137,9 +137,9 @@
       "member": "Wayne",
       "grp": "infra",
       "risk": false,
-      "price": 260.07,
-      "chg": 27.71,
-      "pct": 11.93
+      "price": 265.1,
+      "chg": 5.03,
+      "pct": 1.93
     },
     {
       "t": "CSCO",
@@ -147,9 +147,9 @@
       "member": "Wayne",
       "grp": "infra",
       "risk": false,
-      "price": 120.17,
-      "chg": -0.93,
-      "pct": -0.77
+      "price": 119.57,
+      "chg": -0.6,
+      "pct": -0.5
     },
     {
       "t": "MSFT",
@@ -157,9 +157,9 @@
       "member": "Miles",
       "grp": "soft",
       "risk": false,
-      "price": 399.76,
-      "chg": 9.02,
-      "pct": 2.31
+      "price": 393.83,
+      "chg": -5.93,
+      "pct": -1.48
     },
     {
       "t": "GOOGL",
@@ -167,9 +167,9 @@
       "member": "Miles",
       "grp": "soft",
       "risk": false,
-      "price": 369.35,
-      "chg": 9.67,
-      "pct": 2.69
+      "price": 373.25,
+      "chg": 3.9,
+      "pct": 1.06
     },
     {
       "t": "NOW",
@@ -177,9 +177,9 @@
       "member": "Miles",
       "grp": "soft",
       "risk": false,
-      "price": 104.15,
-      "chg": 2.0,
-      "pct": 1.96
+      "price": 101.33,
+      "chg": -2.82,
+      "pct": -2.71
     },
     {
       "t": "CRM",
@@ -187,9 +187,9 @@
       "member": "Miles",
       "grp": "soft",
       "risk": false,
-      "price": 164.55,
-      "chg": -1.34,
-      "pct": -0.81
+      "price": 161.71,
+      "chg": -2.84,
+      "pct": -1.73
     },
     {
       "t": "PATH",
@@ -197,9 +197,9 @@
       "member": "Miles",
       "grp": "soft",
       "risk": false,
-      "price": 10.79,
-      "chg": 0.24,
-      "pct": 2.27
+      "price": 10.52,
+      "chg": -0.27,
+      "pct": -2.5
     },
     {
       "t": "IBM",
@@ -207,9 +207,9 @@
       "member": "Miles",
       "grp": "soft",
       "risk": false,
-      "price": 268.71,
-      "chg": -3.53,
-      "pct": -1.3
+      "price": 270.81,
+      "chg": 2.1,
+      "pct": 0.78
     },
     {
       "t": "S",
@@ -217,9 +217,9 @@
       "member": "Miles",
       "grp": "soft",
       "risk": false,
-      "price": 15.19,
-      "chg": 0.34,
-      "pct": 2.29
+      "price": 15.03,
+      "chg": -0.16,
+      "pct": -1.05
     },
     {
       "t": "NFLX",
@@ -227,9 +227,9 @@
       "member": "Miles",
       "grp": "soft",
       "risk": false,
-      "price": 81.67,
-      "chg": 1.33,
-      "pct": 1.66
+      "price": 78.72,
+      "chg": -2.95,
+      "pct": -3.61
     },
     {
       "t": "AEVA",
@@ -237,9 +237,9 @@
       "member": "Wesley",
       "grp": "pearl",
       "risk": true,
-      "price": 26.87,
-      "chg": 1.98,
-      "pct": 7.96
+      "price": 23.93,
+      "chg": -2.94,
+      "pct": -10.94
     },
     {
       "t": "DUOT",
@@ -247,9 +247,9 @@
       "member": "Wesley",
       "grp": "pearl",
       "risk": true,
-      "price": 12.23,
-      "chg": 0.55,
-      "pct": 4.71
+      "price": 11.32,
+      "chg": -0.91,
+      "pct": -7.44
     },
     {
       "t": "BBAI",
@@ -257,9 +257,9 @@
       "member": "Wesley",
       "grp": "pearl",
       "risk": true,
-      "price": 4.05,
-      "chg": 0.03,
-      "pct": 0.75
+      "price": 3.96,
+      "chg": -0.09,
+      "pct": -2.22
     },
     {
       "t": "AXTI",
@@ -267,9 +267,9 @@
       "member": "Wesley",
       "grp": "pearl",
       "risk": true,
-      "price": 110.74,
-      "chg": 13.56,
-      "pct": 13.95
+      "price": 93.04,
+      "chg": -17.7,
+      "pct": -15.98
     },
     {
       "t": "EVLV",
@@ -277,9 +277,9 @@
       "member": "Wesley",
       "grp": "pearl",
       "risk": true,
-      "price": 6.13,
-      "chg": 0.04,
-      "pct": 0.66
+      "price": 5.92,
+      "chg": -0.21,
+      "pct": -3.43
     }
   ]
 }

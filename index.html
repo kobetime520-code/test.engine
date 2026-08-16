@@ -336,6 +336,7 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
       <button class="tab-btn" onclick="showTab('life')">⑥ 生活儀表板</button>
       <button class="tab-btn" onclick="showTab('team')">⑦ 團隊</button>
       <button class="tab-btn" onclick="showTab('worldcup')">⑧ ⚽ 世足賽</button>
+      <button class="tab-btn" onclick="showTab('election')">⑨ 🗳️ 選情儀表板</button>
     </div>
   </div>
 </nav>
@@ -793,6 +794,12 @@ footer{position:relative;z-index:1;padding:32px 20px;text-align:center;border-to
   </div>
 </div>
 
+<!-- ⑨ 選情儀表板 -->
+<div id="page-election" class="page" style="padding:0;margin-top:56px;min-height:calc(100vh - 56px)">
+  <iframe src="election/index.html?theme=dark" title="2026 縣市長選情儀表板"
+    style="width:100%;height:calc(100vh - 56px);border:none;display:block;"></iframe>
+</div>
+
 <footer>
   <div class="footer-logo">Magic<span>Lab</span></div>
   <div class="footer-team">
@@ -827,9 +834,12 @@ function typewriter(){const p=phrases[pi];if(!del){tw.textContent=p.slice(0,++ci
 function showTab(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  const idx={blueprint:0,monthly:1,compound:2,wealth:3,work:4,life:5,team:6,worldcup:7};
-  document.querySelectorAll('.tab-btn')[idx[name]].classList.add('active');
+  const page=document.getElementById('page-'+name);
+  if(!page)return;
+  page.classList.add('active');
+  // 依按鈕自身的 onclick 比對，新增分頁不必再維護索引表
+  const btn=[...document.querySelectorAll('.tab-btn')].find(b=>(b.getAttribute('onclick')||'').includes("showTab('"+name+"')"));
+  if(btn)btn.classList.add('active');
   window.location.hash=name;
   if(name==='wealth')setTimeout(()=>{drawWChart();drawRadar();initDiscipline()},50);
 }

@@ -1,0 +1,589 @@
+<title>V10 發行藍圖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#EEF3F6;
+    --surface:#FFFFFF;
+    --surface-2:#F5F8FA;
+    --ink:#0E1C2B;
+    --ink-soft:#3A4B5C;
+    --ink-faint:#6B7C8C;
+    --line:#D3DEE5;
+    --line-soft:#E3EAEF;
+    --structure:#14506B;
+    --gold:#C67E10;
+    --gold-bright:#E0952A;
+    --cyan:#2C8FA8;
+    --good:#1F8A5B;
+    --warn:#C7891B;
+    --crit:#C8492A;
+    --shadow:0 1px 2px rgba(14,28,43,.06),0 8px 24px -12px rgba(14,28,43,.18);
+    --grid:rgba(20,80,107,.06);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#0A141E;
+      --surface:#101F2C;
+      --surface-2:#152634;
+      --ink:#E7EEF2;
+      --ink-soft:#A9BBC7;
+      --ink-faint:#6E8494;
+      --line:#22384A;
+      --line-soft:#1A2C3B;
+      --structure:#4F9DBE;
+      --gold:#E0952A;
+      --gold-bright:#F0AF4A;
+      --cyan:#4FB5CE;
+      --good:#3FB27E;
+      --warn:#E0A73A;
+      --crit:#E86B4B;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -14px rgba(0,0,0,.6);
+      --grid:rgba(79,157,190,.08);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0A141E;
+    --surface:#101F2C;
+    --surface-2:#152634;
+    --ink:#E7EEF2;
+    --ink-soft:#A9BBC7;
+    --ink-faint:#6E8494;
+    --line:#22384A;
+    --line-soft:#1A2C3B;
+    --structure:#4F9DBE;
+    --gold:#E0952A;
+    --gold-bright:#F0AF4A;
+    --cyan:#4FB5CE;
+    --good:#3FB27E;
+    --warn:#E0A73A;
+    --crit:#E86B4B;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -14px rgba(0,0,0,.6);
+    --grid:rgba(79,157,190,.08);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid) 1px,transparent 1px) 0 0/28px 28px,
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/28px 28px,
+      var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans TC",system-ui,sans-serif;
+    line-height:1.7;
+    font-size:16px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  section{padding:56px 0;border-top:1px solid var(--line-soft)}
+  h1,h2,h3{font-family:"Noto Serif TC",serif;text-wrap:balance;letter-spacing:.01em}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);
+    display:flex;align-items:center;gap:10px;margin:0 0 14px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--cyan);flex:none}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;overflow:hidden;
+    border-top:none;padding:0;
+    background:
+      radial-gradient(120% 100% at 82% -10%,rgba(224,149,42,.16),transparent 55%),
+      radial-gradient(90% 90% at 0% 110%,rgba(44,143,168,.14),transparent 55%),
+      var(--ink);
+    color:#EDF2F5;
+  }
+  .hero .wrap{padding-top:64px;padding-bottom:64px}
+  .hero .grid-ov{position:absolute;inset:0;
+    background:
+      linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/34px 34px,
+      linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/34px 34px;
+    -webkit-mask-image:radial-gradient(120% 90% at 70% 20%,#000,transparent 80%);
+            mask-image:radial-gradient(120% 90% at 70% 20%,#000,transparent 80%);
+    pointer-events:none}
+  .hero-top{position:relative;display:flex;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;font-family:"IBM Plex Mono",monospace;
+    font-size:.72rem;letter-spacing:.16em;color:#9FB6C4;text-transform:uppercase}
+  .hero-top b{color:var(--gold-bright);font-weight:600}
+  .stamp{position:relative;display:flex;align-items:baseline;gap:20px;margin:30px 0 6px;flex-wrap:wrap}
+  .stamp .v{
+    font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(4.2rem,15vw,9rem);
+    line-height:.82;letter-spacing:-.02em;
+    background:linear-gradient(180deg,#fff,#C9D8E1);-webkit-background-clip:text;
+    background-clip:text;color:transparent;
+  }
+  .stamp .tag{
+    font-family:"IBM Plex Mono",monospace;font-size:.8rem;letter-spacing:.12em;
+    color:var(--ink);background:var(--gold-bright);padding:6px 12px;border-radius:2px;
+    transform:translateY(-14px);font-weight:600;white-space:nowrap;
+  }
+  .hero h1{position:relative;font-size:clamp(1.9rem,4.6vw,3rem);font-weight:700;
+    margin:.1em 0 .35em;color:#fff;max-width:20ch}
+  .hero p.lede{position:relative;font-size:1.12rem;color:#C4D3DD;max-width:62ch;margin:0 0 30px}
+  .hero-meta{position:relative;display:flex;gap:0;flex-wrap:wrap;
+    border:1px solid rgba(255,255,255,.14);border-radius:6px;overflow:hidden;width:fit-content;max-width:100%}
+  .hero-meta div{padding:14px 22px;border-right:1px solid rgba(255,255,255,.14)}
+  .hero-meta div:last-child{border-right:none}
+  .hero-meta .k{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.16em;
+    text-transform:uppercase;color:#8EA6B4;margin-bottom:3px}
+  .hero-meta .val{font-family:"Noto Serif TC",serif;font-size:1.4rem;font-weight:700;color:#fff}
+  .hero-meta .val small{font-size:.8rem;color:var(--gold-bright);font-family:"IBM Plex Mono",monospace;font-weight:500}
+
+  /* ---------- generic ---------- */
+  .lead-h{font-size:clamp(1.5rem,3vw,2.05rem);font-weight:700;margin:0 0 .5em;line-height:1.25}
+  .section-intro{color:var(--ink-soft);max-width:64ch;font-size:1.02rem;margin:0 0 34px}
+
+  /* ---------- GATE ---------- */
+  .gate{background:var(--structure);color:#EAF3F6;border-radius:14px;overflow:hidden;
+    box-shadow:var(--shadow);position:relative}
+  .gate::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(90deg,transparent,rgba(224,149,42,.14));pointer-events:none}
+  .gate-inner{position:relative;display:grid;grid-template-columns:1.4fr 1fr;gap:0}
+  .gate-l{padding:38px 40px}
+  .gate-l .eyebrow{color:var(--gold-bright)}
+  .gate-l .eyebrow::before{background:var(--gold-bright)}
+  .gate-l h2{color:#fff;font-size:1.75rem;margin:0 0 .4em}
+  .gate-l p{color:#C6DCE4;margin:0 0 1em;max-width:46ch}
+  .gate-r{padding:38px 40px;background:rgba(0,0,0,.16);border-left:1px solid rgba(255,255,255,.12);
+    display:flex;flex-direction:column;justify-content:center;gap:18px}
+  .countpair{display:flex;align-items:baseline;gap:12px}
+  .countpair .big{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:2.6rem;
+    color:var(--gold-bright);line-height:1}
+  .countpair .lbl{font-size:.9rem;color:#B7CDD6}
+  .bar{height:8px;border-radius:20px;background:rgba(255,255,255,.16);overflow:hidden}
+  .bar span{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--gold-bright));border-radius:20px}
+  .gate-note{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.05em;color:#9FBBC6}
+
+  /* ---------- LINES (axes) ---------- */
+  .lines{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .line{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
+  .line-head{padding:22px 22px 18px;border-bottom:1px solid var(--line-soft);position:relative}
+  .line-head::before{content:"";position:absolute;top:0;left:0;right:0;height:3px}
+  .line.a .line-head::before{background:var(--structure)}
+  .line.b .line-head::before{background:var(--cyan)}
+  .line.c .line-head::before{background:var(--gold)}
+  .line-code{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;
+    letter-spacing:.14em;color:var(--ink-faint)}
+  .line.a .line-code{color:var(--structure)}
+  .line.b .line-code{color:var(--cyan)}
+  .line.c .line-code{color:var(--gold)}
+  .line-head h3{font-size:1.24rem;margin:.25em 0 .15em}
+  .line-head .sub{font-size:.85rem;color:var(--ink-faint);margin:0}
+  .line-body{padding:8px 22px 22px;flex:1}
+  .task{padding:15px 0;border-bottom:1px dashed var(--line-soft);display:flex;flex-direction:column;gap:7px}
+  .task:last-child{border-bottom:none}
+  .task .t-top{display:flex;align-items:center;gap:8px;justify-content:space-between}
+  .task .t-id{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--ink-faint);font-weight:600}
+  .task .t-name{font-weight:500;font-size:.98rem;line-height:1.4}
+  .task .t-out{font-family:"IBM Plex Mono",monospace;font-size:.76rem;color:var(--structure);
+    background:var(--surface-2);border:1px solid var(--line-soft);padding:2px 7px;border-radius:4px;
+    display:inline-block;word-break:break-all}
+  .task .t-owner{font-size:.78rem;color:var(--ink-faint)}
+  .task .t-owner b{color:var(--ink-soft);font-weight:600}
+
+  .pill{font-family:"IBM Plex Mono",monospace;font-size:.66rem;font-weight:600;letter-spacing:.08em;
+    padding:3px 9px;border-radius:20px;white-space:nowrap;border:1px solid transparent}
+  .p-plan{color:var(--ink-faint);background:var(--surface-2);border-color:var(--line)}
+  .p-mvp{color:var(--cyan);background:color-mix(in srgb,var(--cyan) 12%,transparent);border-color:color-mix(in srgb,var(--cyan) 30%,transparent)}
+  .p-ready{color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent);border-color:color-mix(in srgb,var(--good) 30%,transparent)}
+  .p-gate{color:var(--gold);background:color-mix(in srgb,var(--gold) 14%,transparent);border-color:color-mix(in srgb,var(--gold) 32%,transparent)}
+
+  /* ---------- SEQUENCE ---------- */
+  .seq{display:flex;flex-direction:column;gap:0;counter-reset:step}
+  .step{display:grid;grid-template-columns:64px 1fr auto;gap:20px;align-items:center;
+    padding:18px 0;border-bottom:1px solid var(--line-soft)}
+  .step:last-child{border-bottom:none}
+  .step .num{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:1.4rem;color:var(--gold);
+    display:flex;align-items:center;gap:0}
+  .step .num::before{counter-increment:step;content:counter(step,decimal-leading-zero)}
+  .step .body h4{margin:0 0 2px;font-family:"Noto Sans TC";font-weight:700;font-size:1.02rem}
+  .step .body p{margin:0;font-size:.88rem;color:var(--ink-faint)}
+  .step .body p .mono{color:var(--structure);font-size:.82rem}
+  .wsjf{display:flex;align-items:center;gap:10px;justify-self:end}
+  .stars{color:var(--gold-bright);letter-spacing:1px;font-size:.85rem}
+  .stars .off{color:var(--line)}
+  .wsjf .who{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--ink-faint);
+    border:1px solid var(--line);border-radius:20px;padding:2px 8px}
+
+  /* ---------- POOLS ---------- */
+  .pools{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+  .pool{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;
+    box-shadow:var(--shadow)}
+  .pool .pname{font-family:"Noto Serif TC";font-weight:700;font-size:1.02rem;margin-bottom:10px;
+    display:flex;align-items:center;gap:7px}
+  .pool .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .pool .pn{font-family:"IBM Plex Mono",monospace;font-size:2rem;font-weight:600;line-height:1;color:var(--ink)}
+  .pool .pn small{font-size:.8rem;color:var(--ink-faint);font-weight:400}
+  .pool .pmeta{font-size:.8rem;color:var(--ink-faint);margin-top:6px}
+
+  /* ---------- RISK ---------- */
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+  table{border-collapse:collapse;width:100%;min-width:640px;background:var(--surface)}
+  th,td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--line-soft);font-size:.92rem;vertical-align:top}
+  thead th{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;background:var(--surface-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td .risk-name{font-weight:600;color:var(--ink)}
+  .lvl{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:4px;white-space:nowrap}
+  .lvl.h{color:var(--crit);background:color-mix(in srgb,var(--crit) 12%,transparent)}
+  .lvl.m{color:var(--warn);background:color-mix(in srgb,var(--warn) 14%,transparent)}
+  .lvl.l{color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent)}
+  .lvl.sure{color:#fff;background:var(--crit)}
+
+  /* ---------- GATES / decisions ---------- */
+  .decisions{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .dec{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:0 10px 10px 0;padding:20px 22px;box-shadow:var(--shadow)}
+  .dec .q{font-family:"IBM Plex Mono",monospace;font-size:.74rem;font-weight:600;color:var(--gold);letter-spacing:.1em}
+  .dec h4{margin:.4em 0 .4em;font-family:"Noto Sans TC";font-weight:700;font-size:1.02rem;line-height:1.45}
+  .dec p{margin:0;font-size:.86rem;color:var(--ink-faint)}
+  .dec .urg{margin-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:.74rem;
+    font-family:"IBM Plex Mono",monospace;color:var(--ink-soft)}
+  .dec .urg::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--crit)}
+  .dec.mid .urg::before{background:var(--warn)}
+
+  /* ---------- footer ---------- */
+  footer{padding:40px 0 60px;color:var(--ink-faint);font-size:.84rem;text-align:center;border-top:1px solid var(--line-soft)}
+  footer .fl{font-family:"IBM Plex Mono",monospace;letter-spacing:.06em}
+  footer b{color:var(--ink-soft)}
+
+  @media (max-width:860px){
+    .lines{grid-template-columns:1fr}
+    .pools{grid-template-columns:repeat(2,1fr)}
+    .decisions{grid-template-columns:1fr}
+    .gate-inner{grid-template-columns:1fr}
+    .gate-r{border-left:none;border-top:1px solid rgba(255,255,255,.12)}
+  }
+  @media (max-width:520px){
+    .pools{grid-template-columns:1fr}
+    .step{grid-template-columns:44px 1fr;gap:14px}
+    .wsjf{grid-column:1/-1;justify-self:start;padding-left:58px}
+    .hero-meta{width:100%}
+    .hero-meta div{flex:1 1 40%}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .bar span{animation:grow 1.1s cubic-bezier(.2,.7,.2,1) both}
+    @keyframes grow{from{width:0 !important}}
+  }
+</style>
+
+<header class="hero">
+  <div class="grid-ov"></div>
+  <div class="wrap">
+    <div class="hero-top">
+      <span>MAGIC LAB · 獨立創新研發單位</span>
+      <span>發行窗口 · <b>2026 年 9 月</b></span>
+    </div>
+
+    <div class="stamp">
+      <div class="v">V10</div>
+      <div class="tag">FINAL FACTORY PROTOTYPE</div>
+    </div>
+
+    <h1>從藍圖到可驗證的發行版</h1>
+    <p class="lede">Phase 4 的三大主軸首次收斂成單一發行版。9 月是臨界點——2026-05-12 起算的四大魚池訊號正好滿 126 個交易日，量化引擎首次能吐出真實報酬。V10 的任務：讓「假設」變成「數字」。</p>
+
+    <div class="hero-meta">
+      <div><div class="k">Release</div><div class="val">V10 <small>／ 大作</small></div></div>
+      <div><div class="k">主軸整合</div><div class="val">A · B · C</div></div>
+      <div><div class="k">魚池訊號</div><div class="val">201 <small>檔</small></div></div>
+      <div><div class="k">解鎖里程</div><div class="val">126D</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="gate">
+  <div class="wrap">
+    <p class="eyebrow">臨界點 · The 126-Day Gate</p>
+    <h2 class="lead-h">為什麼是 9 月：等待了 126 天的第一個真實數字</h2>
+    <p class="section-intro">四大魚池的訊號集中在 2026-05-12～13 建立。Phase 4 規劃時就已註記：<b>126 天報酬需等到 9 月才能回算</b>。持有期不夠長，任何績效都不算數。9 月，這道閘門終於打開——這正是 V10 選在此刻發行的核心理由。</p>
+
+    <div class="gate">
+      <div class="gate-inner">
+        <div class="gate-l">
+          <p class="eyebrow">MILESTONE UNLOCK</p>
+          <h2>126 個交易日 · 就緒</h2>
+          <p>5d／30d 短期績效早已可算；真正決定魚池邏輯是否成立的 126d（近半年）超額報酬，要到現在才有足夠樣本。V10 把這個「首次可驗證」的時刻，包裝成正式發行版。</p>
+          <p class="gate-note">SIGNAL_DATE 2026-05-12 → +126 交易日 ≈ 2026-09 · vs. TWII 基準</p>
+        </div>
+        <div class="gate-r">
+          <div>
+            <div class="countpair"><span class="big mono">126D</span><span class="lbl">持有期達標<br>報酬可回算</span></div>
+          </div>
+          <div>
+            <div class="bar"><span style="width:100%"></span></div>
+            <div class="gate-note" style="margin-top:8px">5d ✓ · 30d ✓ · 126d ✓ 全數解鎖</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lines">
+  <div class="wrap">
+    <p class="eyebrow">產線 · Three Production Lines</p>
+    <h2 class="lead-h">三大主軸，並列成發行生產線</h2>
+    <p class="section-intro">V10 不是新造輪子，而是把 Phase 4 的三條主軸拉齊、逼近可交付。每一項標註真實狀態：多數仍在規劃／MVP 前，這正是 9 月要突破的地方。</p>
+
+    <div class="lines">
+      <!-- AXIS A -->
+      <div class="line a">
+        <div class="line-head">
+          <div class="line-code">AXIS A</div>
+          <h3>全台股覆蓋</h3>
+          <p class="sub">從 201 檔手選，擴到全市場 1,800+ 檔掃描</p>
+        </div>
+        <div class="line-body">
+          <div class="task">
+            <div class="t-top"><span class="t-id">A1</span><span class="pill p-gate">待選型</span></div>
+            <div class="t-name">台股日線 API 選型與驗證（FinMind／TWSE）</div>
+            <span class="t-out">api_test.py</span>
+            <span class="t-owner">負責 · <b>Wesley</b></span>
+          </div>
+          <div class="task">
+            <div class="t-top"><span class="t-id">A2</span><span class="pill p-gate">待 Terry 決策</span></div>
+            <div class="t-name">魚池篩選條件文件化（進場規則）</div>
+            <span class="t-out">pools_logic.md</span>
+            <span class="t-owner">負責 · <b>Terry</b></span>
+          </div>
+          <div class="task">
+            <div class="t-top"><span class="t-id">A3</span><span class="pill p-plan">規劃中</span></div>
+            <div class="t-name">台股掃描 Lab MVP</div>
+            <span class="t-out">labs/2026-tw-scan/</span>
+            <span class="t-owner">負責 · <b>Wayne</b></span>
+          </div>
+          <div class="task">
+            <div class="t-top"><span class="t-id">A4</span><span class="pill p-plan">規劃中</span></div>
+            <div class="t-name">全市場日掃描排程（Task Scheduler）</div>
+            <span class="t-out">register_tw_scan.ps1</span>
+            <span class="t-owner">負責 · <b>Wesley</b></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AXIS B -->
+      <div class="line b">
+        <div class="line-head">
+          <div class="line-code">AXIS B</div>
+          <h3>深度研究整合</h3>
+          <p class="sub">pulse 框架接上台股輿情，輸出每日快報</p>
+        </div>
+        <div class="line-body">
+          <div class="task">
+            <div class="t-top"><span class="t-id">B1</span><span class="pill p-plan">調研中</span></div>
+            <div class="t-name">台股輿情數據源調研（PTT／Cmoney／鉅亨）</div>
+            <span class="t-out">intel/tw_sources.md</span>
+            <span class="t-owner">負責 · <b>Wayne</b></span>
+          </div>
+          <div class="task">
+            <div class="t-top"><span class="t-id">B2</span><span class="pill p-gate">待 Terry 初始化</span></div>
+            <div class="t-name">題材標籤表（15–20 個標籤）</div>
+            <span class="t-out">intel/theme_tags.json</span>
+            <span class="t-owner">負責 · <b>Terry</b></span>
+          </div>
+          <div class="task">
+            <div class="t-top"><span class="t-id">B3</span><span class="pill p-plan">規劃中</span></div>
+            <div class="t-name">輿情抓取腳本 MVP</div>
+            <span class="t-out">labs/2026-research/crawl.py</span>
+            <span class="t-owner">負責 · <b>Miles</b></span>
+          </div>
+          <div class="task">
+            <div class="t-top"><span class="t-id">B4</span><span class="pill p-plan">規劃中</span></div>
+            <div class="t-name">Claude API 自動摘要串接</div>
+            <span class="t-out">summarize.py</span>
+            <span class="t-owner">負責 · <b>Terry</b></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AXIS C -->
+      <div class="line c">
+        <div class="line-head">
+          <div class="line-code">AXIS C · 起手</div>
+          <h3>量化模型強化</h3>
+          <p class="sub">回填真實報酬，是 V10 發行的骨幹</p>
+        </div>
+        <div class="line-body">
+          <div class="task">
+            <div class="t-top"><span class="t-id">C1</span><span class="pill p-ready">可立即啟動</span></div>
+            <div class="t-name">回測報酬填充（讀訊號 → 取歷史價 → 算報酬）</div>
+            <span class="t-out">backtest/fill_returns.py</span>
+            <span class="t-owner">負責 · <b>Wesley</b></span>
+          </div>
+          <div class="task">
+            <div class="t-top"><span class="t-id">C2</span><span class="pill p-plan">規劃中</span></div>
+            <div class="t-name">TWII 基準數據抓取</div>
+            <span class="t-out">backtest/fetch_twii.py</span>
+            <span class="t-owner">負責 · <b>Wayne</b></span>
+          </div>
+          <div class="task">
+            <div class="t-top"><span class="t-id">C3</span><span class="pill p-plan">規劃中</span></div>
+            <div class="t-name">魚池績效報告（勝率／超額報酬）</div>
+            <span class="t-out">pool_performance.md</span>
+            <span class="t-owner">負責 · <b>Miles</b></span>
+          </div>
+          <div class="task">
+            <div class="t-top"><span class="t-id">C4</span><span class="pill p-plan">規劃中</span></div>
+            <div class="t-name">四維評分部分自動化（成長／基本面）</div>
+            <span class="t-out">compound_model_v2.py</span>
+            <span class="t-owner">負責 · <b>Wayne＋Miles</b></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pools">
+  <div class="wrap">
+    <p class="eyebrow">待驗證 · The Four Pools</p>
+    <h2 class="lead-h">四大魚池：這次要拿出真實戰績</h2>
+    <p class="section-intro">201 檔訊號分布在四個魚池，格式完整、報酬全 null。9 月 126D 解鎖後，每一池的勝率與對 TWII 的超額報酬都將首次可算——這是 V10 對外交付的核心資產。</p>
+
+    <div class="pools">
+      <div class="pool">
+        <div class="pname"><span class="dot" style="background:var(--gold)"></span>姊夫爆發小魚池</div>
+        <div class="pn mono">5 <small>檔</small></div>
+        <div class="pmeta">融資風控閘門 · 高波動</div>
+      </div>
+      <div class="pool">
+        <div class="pname"><span class="dot" style="background:var(--structure)"></span>楓大永動魚池</div>
+        <div class="pn mono">6 <small>檔</small></div>
+        <div class="pmeta">基本面健檢 · 長線持有</div>
+      </div>
+      <div class="pool">
+        <div class="pname"><span class="dot" style="background:var(--cyan)"></span>彼神黃金魚池</div>
+        <div class="pn mono">6 <small>檔</small></div>
+        <div class="pmeta">四維評分核心池</div>
+      </div>
+      <div class="pool">
+        <div class="pname"><span class="dot" style="background:var(--good)"></span>測試員觀察水域</div>
+        <div class="pn mono">6 <small>檔</small></div>
+        <div class="pmeta">實驗訊號 · 觀察組</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sequence">
+  <div class="wrap">
+    <p class="eyebrow">發行順序 · WSJF Sequence</p>
+    <h2 class="lead-h">9 月衝刺順序</h2>
+    <p class="section-intro">依 WSJF（商業價值 ÷ 工作量，權衡時間緊迫與風險）排序。起手不需要任何開放決策即可啟動，先讓孵化區 <span class="mono">projects/</span> 不再空白。</p>
+
+    <div class="seq">
+      <div class="step">
+        <div class="num"></div>
+        <div class="body"><h4>C1 · 回測報酬填充</h4><p>訊號已就位，只差取歷史價。完成即見第一個真實績效數字。<span class="mono">fill_returns.py</span></p></div>
+        <div class="wsjf"><span class="stars">★★★★★</span><span class="who">Wesley</span></div>
+      </div>
+      <div class="step">
+        <div class="num"></div>
+        <div class="body"><h4>A1 · 台股 API 整合</h4><p>主軸 A 與 C 的共同依賴，FinMind 免費版先驗證。<span class="mono">api_test.py</span></p></div>
+        <div class="wsjf"><span class="stars">★★★★<span class="off">★</span></span><span class="who">Wesley</span></div>
+      </div>
+      <div class="step">
+        <div class="num"></div>
+        <div class="body"><h4>A3 ＋ A2 · 掃描 Lab／魚池條件</h4><p>API 確認後並行；A2 需 Terry 確認規則。<span class="mono">labs/2026-tw-scan/</span></p></div>
+        <div class="wsjf"><span class="stars">★★★★<span class="off">★</span></span><span class="who">Wayne · Terry</span></div>
+      </div>
+      <div class="step">
+        <div class="num"></div>
+        <div class="body"><h4>B1 ＋ B2 · 輿情源／題材標籤</h4><p>研究整合起步，可與主軸 A 並行推進。<span class="mono">intel/</span></p></div>
+        <div class="wsjf"><span class="stars">★★★<span class="off">★★</span></span><span class="who">Wayne · Terry</span></div>
+      </div>
+      <div class="step">
+        <div class="num"></div>
+        <div class="body"><h4>C3 · 魚池績效報告</h4><p>V10 對外交付的門面：勝率、超額報酬 vs. TWII。<span class="mono">pool_performance.md</span></p></div>
+        <div class="wsjf"><span class="stars">★★★<span class="off">★★</span></span><span class="who">Miles</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="risks">
+  <div class="wrap">
+    <p class="eyebrow">風險登錄 · Risk Register</p>
+    <h2 class="lead-h">發行前的已知風險</h2>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>風險</th><th>發生可能</th><th>衝擊</th><th>緩解策略</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="risk-name">FinMind 免費版速率不足</span><br><span style="color:var(--ink-faint);font-size:.86rem">全市場掃描受限</span></td>
+            <td><span class="lvl h">高</span></td><td><span class="lvl m">中</span></td>
+            <td>先用 ETL 批次（非即時），必要時升級付費版（約 $600 NTD/月）</td>
+          </tr>
+          <tr>
+            <td><span class="risk-name">訊號持有期偏短</span><br><span style="color:var(--ink-faint);font-size:.86rem">126d 樣本剛達標</span></td>
+            <td><span class="lvl sure">確定</span></td><td><span class="lvl m">中</span></td>
+            <td>先跑 5d／30d，9 月自動補算 126d；發行版標註樣本期間</td>
+          </tr>
+          <tr>
+            <td><span class="risk-name">PTT 爬蟲被 ban</span></td>
+            <td><span class="lvl m">中</span></td><td><span class="lvl l">低</span></td>
+            <td>備用：Cmoney RSS ＋ 鉅亨 API</td>
+          </tr>
+          <tr>
+            <td><span class="risk-name">Claude API 成本超支</span></td>
+            <td><span class="lvl l">低</span></td><td><span class="lvl m">中</span></td>
+            <td>批次模式，限定每日摘要數量</td>
+          </tr>
+          <tr>
+            <td><span class="risk-name">魚池篩選條件難程式化</span><br><span style="color:var(--ink-faint);font-size:.86rem">規則模糊</span></td>
+            <td><span class="lvl m">中</span></td><td><span class="lvl h">高</span></td>
+            <td>Terry 決策：先用啟發式規則，後期以 ML 學習</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="gates">
+  <div class="wrap">
+    <p class="eyebrow">決策閘門 · Terry's Gates</p>
+    <h2 class="lead-h">發行前，需要 Terry 拍板</h2>
+    <p class="section-intro">以下開放問題卡住多條產線。優先解 Q1、Q2——它們是主軸 A／C 能否啟動的前提。</p>
+
+    <div class="decisions">
+      <div class="dec">
+        <span class="q">Q1</span>
+        <h4>台股數據源預算：FinMind 付費 or 維持免費限速？</h4>
+        <p>影響主軸 A、C 全部。</p>
+        <span class="urg">高緊迫 · 卡住 A1／C1</span>
+      </div>
+      <div class="dec">
+        <span class="q">Q2</span>
+        <h4>四大魚池的進場條件是什麼？</h4>
+        <p>需文件化才能程式化，影響 A2、A3。</p>
+        <span class="urg">高緊迫 · 卡住掃描 Lab</span>
+      </div>
+      <div class="dec mid">
+        <span class="q">Q3</span>
+        <h4>深度研究快報的目標受眾？</h4>
+        <p>Terry 個人使用 or 未來對外輸出？決定主軸 B 規模。</p>
+        <span class="urg">中緊迫 · 影響 B 設計</span>
+      </div>
+      <div class="dec mid">
+        <span class="q">Q4</span>
+        <h4>Phase 5 Pilot Run 預計何時啟動？</h4>
+        <p>決定 V10 之後的整體排序與交棒節奏。</p>
+        <span class="urg">中緊迫 · 影響排序</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="fl">MAGIC LAB · V10 FINAL FACTORY PROTOTYPE · 發行窗口 2026-09</p>
+    <p>基準：<b>Terry/phase4-plan.md</b>（Phase 4 規劃）· 現況更新 <b>2026-08-29</b> · 執行長 Terry 審閱</p>
+    <p style="margin-top:14px;color:var(--ink-faint)">永動實驗室，每日新希望。通過驗證的實驗晉升至 <span class="mono">projects/</span>。</p>
+  </div>
+</footer>

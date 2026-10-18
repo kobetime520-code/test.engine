@@ -22,7 +22,7 @@ Phase 4 的三大主軸（A 全台股覆蓋、B 深度研究整合、C 量化模
 | 資產 | 路徑 | 狀態 | Phase 4 可重用性 |
 |---|---|---|---|
 | 台股訊號快照 | `backtest/backtest_report.json` | 201 檔訊號，**報酬欄全 null** | 高 — 框架已有，缺填充腳本 |
-| 四維選股引擎 | `compound_model.py` | 手動打分，5 支股票示範 | 高 — 核心邏輯可擴充 |
+| 四維選股引擎 | `wesley/compound_model.py` | 手動打分，5 支股票示範 | 高 — 核心邏輯可擴充 |
 | 美股觀察 MVP | `labs/2026-22/` | 28 檔、Task Scheduler 自動化 | 中 — 可作為台股版範本 |
 | 情報掃描 Skill | `skills/pulse/` | 多平台掃描框架 | 中 — 需接台股輿情源 |
 | CI 測試 | `test_radar.py` | 環境 + 複利模型測試 | 低 — 擴充測試覆蓋率 |
@@ -65,7 +65,7 @@ Phase 4 的三大主軸（A 全台股覆蓋、B 深度研究整合、C 量化模
 | 情報掃描 | skills/pulse 框架完整（Reddit/HN/Web/X） | 未接台股特定來源（PTT 股板、Cmoney、鉅亨） |
 | 題材分類 | 藍圖描述為已啟動，無對應程式 | 題材標籤邏輯缺失 |
 | 自動化報告 | 無 | 掃描→結構化 Markdown 報告管線缺席 |
-| 輿情與選股整合 | 無 | pulse 輸出未接入 compound_model.py |
+| 輿情與選股整合 | 無 | pulse 輸出未接入 wesley/compound_model.py |
 
 **可行第一步：**
 1. 建立台股輿情抓取模組：PTT 股版 + Cmoney 新聞 RSS
@@ -168,7 +168,7 @@ Phase 4 規劃時即註記「126d 需等到 9 月才能計算」——這不是�
 | C1 | fill_returns.py（回測報酬填充）| backtest/fill_returns.py | Wesley | **可立即啟動** |
 | C2 | TWII 基準數據抓取 | backtest/fetch_twii.py | Wayne | 規劃中 |
 | C3 | 魚池績效報告（勝率/超額報酬）| backtest/pool_performance.md | Miles | 規劃中 |
-| C4 | 四維評分部分自動化（Wayne 成長/Miles 基本面）| compound_model_v2.py | Wayne+Miles | 規劃中 |
+| C4 | 四維評分部分自動化（Wayne 成長/Miles 基本面）| wesley/compound_model_v2.py | Wayne+Miles | 規劃中 |
 | C5 | 回測結果視覺化（整合進 index.html）| blueprint 更新 | Terry | 規劃中 |
 
 ---

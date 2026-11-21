@@ -5,13 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700;900&display=swap">
 <style>
-/* 選戰蝴蝶效應：沿用「全球-蝴蝶效應」的電影感深色版面（先白話、再細節）。
+/* 選戰蝴蝶效應：海洋版（陽光海面開場、由淺入深的海水底色、浪花分隔；先白話、再細節）。
    開場 → 三步看懂 → 開票總結（11/28 23:00 後才有內容）→ 縣市地圖 → 劇情線 → 全景時間軸 → 預測成績單 → 進階紀錄。
    本頁不含任何民調數據，也不預測勝負。 */
 :root{
-  --bg:#03090f; --bg-2:#061019; --surface:#0a1a26; --surface-2:#102838; --line:#1b3a4f; --black:#000;
-  --fg:#e3f1f6; --muted:#86a3b3; --idle:#3f5c6e;
-  --accent:#58e0ee; --on-accent:#03222a;
+  /* 海洋版：海水只做低彩度底色；互動主色改陽光黃、裝飾用浪花白，避開政黨的綠／藍／青／洋紅色相 */
+  --bg:#042a40; --bg-2:#05243a; --surface:#083048; --surface-2:#0c3a57; --line:#1f5a7a; --black:#021a2a;
+  --fg:#effbff; --muted:#a3c8d8; --idle:#5a8aa2;
+  --accent:#ffec5c; --on-accent:#0a2a3d;
+  --foam:#e6fffb; --sea-hi:#5cc8d9; --sea-mid:#1f8cb6; --sea-deep:#0d5882;
   --wing:#f4ad4a; --hit:#63dba1; --miss:#f27f70;
   /* 政黨色：沿用選情儀表板以 dataviz validator 校過的深色組 */
   --p-dpp:#2E9E3F; --p-kmt:#4C7DF0; --p-tpp:#1FA3B4; --p-nonp:#C0B6A8; --p-other:#D4508F;
@@ -21,9 +23,10 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.65}
-body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.08;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+body{margin:0;color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.65;background-color:var(--bg);
+  background-image:radial-gradient(70% 900px at 88% 0,color-mix(in srgb,var(--sea-hi) 18%,transparent),transparent 75%),
+    radial-gradient(60% 1200px at 4% 42%,color-mix(in srgb,var(--sea-hi) 9%,transparent),transparent 75%),
+    linear-gradient(180deg,var(--bg) 0,var(--bg-2) 55%,var(--black) 100%)}
 h1,h2,h3,h4,p,ol,ul{margin:0}
 ol,ul{padding:0;list-style:none}
 .mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
@@ -33,33 +36,43 @@ button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{
 .gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
 /* ── 開場 ── */
-.hero{position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:520px;
-  background:radial-gradient(55% 75% at 72% 50%,color-mix(in srgb,var(--accent) 13%,transparent),transparent 70%),linear-gradient(180deg,var(--black),var(--bg) 85%)}
+.hero{position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:540px;
+  background:radial-gradient(34% 48% at 82% -8%,color-mix(in srgb,var(--accent) 46%,transparent),transparent 72%),
+    radial-gradient(60% 70% at 74% 34%,color-mix(in srgb,var(--foam) 12%,transparent),transparent 70%),
+    linear-gradient(180deg,var(--sea-hi) 0%,var(--sea-mid) 32%,var(--sea-deep) 66%,var(--bg) 100%)}
 #lorenz{position:absolute;inset:0;width:100%;height:100%;display:block}
 .hero-scrim{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 70%,transparent) 34%,transparent 62%),radial-gradient(120% 90% at 50% 50%,transparent 55%,var(--black) 100%)}
-.lbx{position:relative;z-index:2;background:var(--black);padding-block:11px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 18px;font-size:12px;color:var(--muted)}
-.lbx .en{font-family:var(--f-mono);letter-spacing:.38em;text-transform:uppercase;font-size:11px}
+  background:linear-gradient(90deg,color-mix(in srgb,var(--bg) 80%,transparent) 0%,color-mix(in srgb,var(--bg) 55%,transparent) 36%,transparent 62%)}
+.lbx{position:relative;z-index:2;background:color-mix(in srgb,var(--black) 62%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding-block:11px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 18px;font-size:12px;color:var(--muted)}
+.lbx .en{font-family:var(--f-mono);letter-spacing:.38em;text-transform:uppercase;font-size:11px;color:var(--foam)}
 .lbx b{color:var(--fg);font-weight:500}
-.badge{border:1px solid var(--wing);color:var(--wing);border-radius:999px;padding:1px 10px;white-space:nowrap}
+.badge{border:1px solid var(--wing);color:var(--wing);background:color-mix(in srgb,var(--black) 40%,transparent);border-radius:999px;padding:1px 10px;white-space:nowrap}
 .hero-in{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;gap:18px;padding-block:44px;max-width:1240px;width:100%;margin:0 auto}
 .hero-in > *{max-width:620px}
 .hero-in > h1{max-width:none}
 h1{font-family:var(--f-display);font-weight:900;font-size:clamp(34px,9vw,72px);line-height:1.1;letter-spacing:.06em;white-space:nowrap;
-  text-shadow:0 0 34px color-mix(in srgb,var(--accent) 45%,transparent)}
+  text-shadow:0 3px 18px color-mix(in srgb,var(--black) 60%,transparent),0 0 44px color-mix(in srgb,var(--accent) 32%,transparent)}
 h1 .bfly{display:inline-block;width:.8em;height:.6em;margin-right:.22em;color:var(--wing);vertical-align:.02em;filter:drop-shadow(0 0 10px var(--wing))}
-.kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.3em;color:var(--muted)}
-.tagline{font-family:var(--f-display);font-weight:600;font-size:clamp(19px,2.6vw,27px);line-height:1.4;color:var(--accent)}
-.lede{color:var(--fg);opacity:.86;font-size:16px}
+.kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.3em;color:var(--foam)}
+.tagline{font-family:var(--f-display);font-weight:600;font-size:clamp(19px,2.6vw,27px);line-height:1.4;color:var(--accent);text-shadow:0 2px 14px color-mix(in srgb,var(--black) 55%,transparent)}
+.lede{color:var(--fg);opacity:.94;font-size:16px}
 .stats{display:flex;flex-wrap:wrap;gap:14px 34px;padding-top:6px}
 .stat{display:flex;flex-direction:column;gap:2px}
 .stat b{font-family:var(--f-mono);font-weight:500;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
 .stat b i{font-style:normal;font-size:18px;color:var(--muted)}
 .stat span{font-size:13px;color:var(--muted)}
+/* 浪花分隔帶：開場與內文之間兩層浪線，緩緩橫移 */
+.tide{position:relative;height:30px;margin-top:-1px;overflow:hidden;pointer-events:none;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--black) 62%,transparent),transparent)}
+.tide::before,.tide::after{content:"";position:absolute;left:0;right:-160px;background-repeat:repeat-x}
+.tide::before{top:3px;height:16px;opacity:.7;background-size:160px 16px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='16'%3E%3Cpath d='M0 8 C20 1 40 1 60 8 S100 15 120 8 S150 2 160 8' fill='none' stroke='%23e6fffb' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")}
+.tide::after{top:12px;height:14px;opacity:.55;background-size:120px 14px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='14'%3E%3Cpath d='M0 7 C15 1 30 1 45 7 S75 13 90 7 S110 2 120 7' fill='none' stroke='%233fb4cc' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")}
 @media (max-width:820px){
   .hero{min-height:0}
-  #lorenz{opacity:.5}
-  .hero-scrim{background:radial-gradient(120% 90% at 50% 50%,transparent 40%,var(--black) 100%)}
+  #lorenz{opacity:.62}
+  .hero-scrim{background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 30%,transparent),color-mix(in srgb,var(--bg) 58%,transparent) 45%,color-mix(in srgb,var(--bg) 40%,transparent))}
   .lbx .en{letter-spacing:.2em}
 }
 
@@ -67,7 +80,7 @@ h1 .bfly{display:inline-block;width:.8em;height:.6em;margin-right:.22em;color:va
 .sec{display:flex;flex-direction:column;gap:22px;min-width:0}
 .sec-head{display:flex;flex-direction:column;gap:8px}
 .slate{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:14px}
-.slate::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.slate::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--foam) 40%,transparent),transparent)}
 h2{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,3.4vw,34px);line-height:1.25;letter-spacing:.03em;text-wrap:balance}
 .sec-head p{color:var(--muted);max-width:68ch}
 h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
@@ -76,18 +89,19 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 36px}
 @media (max-width:760px){.steps{grid-template-columns:minmax(0,1fr)}}
 .step{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:start;border-top:1px solid var(--line);padding-top:18px}
-.step .no{grid-row:span 2;font-family:var(--f-mono);font-size:40px;line-height:1;color:var(--accent);text-shadow:0 0 18px color-mix(in srgb,var(--accent) 60%,transparent)}
+.step .no{grid-row:span 2;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;font-family:var(--f-mono);font-size:24px;font-weight:500;line-height:1;color:var(--on-accent);
+  background:radial-gradient(circle at 34% 30%,color-mix(in srgb,var(--accent) 35%,white),var(--accent) 62%);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 20%,transparent),0 10px 22px -10px var(--black)}
 .step p{color:var(--muted);font-size:14.5px}
 .step p b{color:var(--fg);font-weight:500}
-.rule{border:1px solid var(--line);border-left:3px solid var(--wing);background:var(--surface);padding:12px 16px;font-size:14px;color:var(--muted);border-radius:2px}
+.rule{border:1px solid var(--line);border-left:3px solid var(--wing);background:var(--surface);padding:12px 16px;font-size:14px;color:var(--muted);border-radius:12px}
 .rule b{color:var(--fg);font-weight:500}
 
 /* ── 按鈕、標籤、量條 ── */
-.btn{border:1px solid var(--line);background:var(--surface);border-radius:3px;padding:6px 14px;cursor:pointer}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 16px;cursor:pointer}
 .btn:hover{border-color:var(--accent)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:500;box-shadow:0 0 22px color-mix(in srgb,var(--accent) 40%,transparent)}
 .btn.sm{padding:3px 12px;font-size:13px}
-.btn.ghost{background:transparent;color:var(--fg)}
+.btn.ghost{background:transparent;color:var(--fg);border-color:color-mix(in srgb,var(--foam) 45%,transparent)}
 .chip{display:inline-block;font-size:12px;border-radius:999px;padding:1px 10px;border:1px solid var(--line);white-space:nowrap}
 .chip.hit{border-color:var(--hit);color:var(--hit)}
 .chip.pend{border-color:var(--wing);color:var(--wing)}
@@ -98,12 +112,12 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .meter i{display:block;height:100%;background:linear-gradient(90deg,color-mix(in srgb,var(--wing) 55%,transparent),var(--wing))}
 
 /* ── 開票總結 ── */
-.final-wait{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 28px;border:1px dashed var(--line);border-radius:2px;padding:20px 22px;background:var(--bg-2)}
+.final-wait{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 28px;border:1px dashed var(--line);border-radius:14px;padding:20px 22px;background:var(--bg-2)}
 .final-wait p{color:var(--muted);max-width:62ch}
 .final-wait .cd{font-family:var(--f-mono);font-size:26px;color:var(--wing);white-space:nowrap}
 .summary{font-size:16.5px;line-height:1.8;max-width:75ch;border-left:2px solid var(--accent);padding-left:18px}
 .tally{display:flex;flex-wrap:wrap;gap:12px}
-.tl{flex:1 1 150px;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:2px;padding:12px 16px;border-top:3px solid var(--pc)}
+.tl{flex:1 1 150px;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 16px;border-top:3px solid var(--pc)}
 .tl b{display:block;font-family:var(--f-mono);font-weight:500;font-size:34px;line-height:1.1}
 .tl span{font-size:13px;color:var(--muted)}
 .tl em{font-style:normal;color:var(--fg)}
@@ -115,8 +129,11 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .tw{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:28px 48px;align-items:start}
 @media (max-width:880px){.tw{grid-template-columns:minmax(0,1fr)}}
 .map-box{position:relative;width:100%;max-width:440px;margin:0 auto}
+.map-box::before{content:"";position:absolute;inset:-14px;z-index:0;border-radius:22px;pointer-events:none;
+  background:radial-gradient(70% 60% at 62% 45%,color-mix(in srgb,var(--sea-hi) 22%,transparent),transparent 75%),color-mix(in srgb,var(--bg-2) 60%,transparent);
+  border:1px solid color-mix(in srgb,var(--foam) 10%,transparent)}
 .map{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
-.tile{position:relative;z-index:2;aspect-ratio:1;min-width:0;border:1px solid var(--line);border-radius:3px;cursor:pointer;padding:4px 2px 7px;
+.tile{position:relative;z-index:2;aspect-ratio:1;min-width:0;border:1px solid var(--line);border-radius:7px;cursor:pointer;padding:4px 2px 7px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1.2;
   background:linear-gradient(rgba(244,173,74,var(--h,0)),rgba(244,173,74,var(--h,0))),var(--surface)}
 .tile.tall{aspect-ratio:auto}
@@ -137,7 +154,7 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .g-now .where{font-size:12px;letter-spacing:.1em;color:var(--accent)}
 .g-now .what{font-family:var(--f-display);font-size:26px;font-weight:700;line-height:1.3}
 .g-now .muted{font-size:13px}
-.cands{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:2px;background:var(--surface)}
+.cands{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
 .cands li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:10px;padding:7px 12px;border-top:1px solid var(--line);font-size:14px}
 .cands li:first-child{border-top:0}
 .cands .no{font-family:var(--f-mono);color:var(--muted);text-align:center}
@@ -164,10 +181,10 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .reel{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px 0;perspective:1100px}
 .scene-li{flex:1 1 190px;min-width:0;display:flex}
 .scene{flex:1;min-width:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:9px;padding:14px 16px 15px;
-  background:linear-gradient(160deg,var(--surface-2),var(--surface) 60%);border:1px solid var(--line);border-radius:2px;transform-style:preserve-3d;
-  box-shadow:inset 0 0 0 3px var(--bg),inset 0 0 0 4px color-mix(in srgb,var(--line) 60%,transparent),0 14px 26px -18px var(--black)}
+  background:linear-gradient(160deg,var(--surface-2),var(--surface) 60%);border:1px solid var(--line);border-radius:14px;transform-style:preserve-3d;
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--foam) 12%,transparent),0 14px 26px -18px var(--black)}
 .scene:hover,.scene.sel{border-color:var(--accent)}
-.scene.sel{box-shadow:inset 0 0 0 3px var(--bg),inset 0 0 0 4px var(--accent),0 0 26px color-mix(in srgb,var(--accent) 22%,transparent)}
+.scene.sel{box-shadow:0 0 0 1px var(--accent),0 0 26px color-mix(in srgb,var(--accent) 22%,transparent)}
 .scene .tc{font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .scene .tc em{font-style:normal;color:var(--accent)}
 .sc-title{font-size:14.5px;line-height:1.5;font-weight:500;flex:1;overflow-wrap:anywhere}
@@ -188,7 +205,7 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .loc{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:12px;color:var(--muted)}
 .loc b{font-weight:500;color:var(--fg)}
 .loc b::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;vertical-align:.1em;background:var(--accent);box-shadow:0 0 8px var(--accent)}
-.empty{border:1px dashed var(--line);border-radius:2px;padding:18px 20px;color:var(--muted);font-size:14px;background:var(--bg-2)}
+.empty{border:1px dashed var(--line);border-radius:12px;padding:18px 20px;color:var(--muted);font-size:14px;background:var(--bg-2)}
 
 /* ── 全景時間軸 ── */
 .controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
@@ -197,7 +214,7 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .stage{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:20px;align-items:start;scroll-margin-top:16px}
 @media (max-width:980px){.stage{grid-template-columns:minmax(0,1fr)}}
 .lat-col{display:flex;flex-direction:column;gap:12px;min-width:0}
-.lat-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:2px;background:var(--surface)}
+.lat-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
 .lat-wrap{position:relative;min-width:780px}
 .lat{display:grid;grid-template-columns:62px repeat(8,minmax(0,1fr))}
 .corner,.rowh{position:sticky;left:0;z-index:3;background:var(--surface)}
@@ -223,7 +240,7 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .ev-miss .lb{color:var(--muted);text-decoration:line-through}
 .ev .tag{font-size:10.5px;color:var(--wing);background:var(--cellbg);padding:0 3px;line-height:1.2}
 .ev-miss .tag{color:var(--miss)}
-.ev.sel .dot{outline:2px solid var(--accent);outline-offset:3px}
+.ev.sel .dot{outline:2px solid var(--foam);outline-offset:3px}
 .ev.sel .lb{color:var(--accent);font-weight:500}
 .ev.dim{opacity:.3}
 .ev:hover .lb{text-decoration:underline}
@@ -249,14 +266,14 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .lg.c{border:2px dashed var(--wing)} .lg.d{border:2px dashed var(--miss)}
 .lg-b{width:18px;height:13px;color:var(--wing);display:inline-block;flex:none}
 
-.detail{border:1px solid var(--line);border-radius:2px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0;background:linear-gradient(170deg,var(--surface-2),var(--surface) 45%);scroll-margin-top:16px}
+.detail{border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0;background:linear-gradient(170deg,var(--surface-2),var(--surface) 45%);scroll-margin-top:16px}
 @media (min-width:981px){.detail{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto}}
 .detail::before{content:"選中的事件";font-family:var(--f-mono);font-size:11px;letter-spacing:.3em;color:var(--accent)}
 .d-meta{font-size:13px;color:var(--muted)}
 .kv{display:flex;justify-content:space-between;gap:12px;font-size:13px}
 .d-sec{display:flex;flex-direction:column;gap:6px}
 .d-sec h4{font-size:12.5px;font-weight:500;color:var(--muted)}
-.rel{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:1px solid var(--line);background:var(--bg-2);border-radius:2px;padding:7px 10px;cursor:pointer;font-size:13.5px}
+.rel{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:1px solid var(--line);background:var(--bg-2);border-radius:10px;padding:7px 10px;cursor:pointer;font-size:13.5px}
 .rel:hover{border-color:var(--accent)}
 .rel small{color:var(--muted);font-size:12px}
 .rel > span:first-child{min-width:0}
@@ -275,7 +292,7 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .ps b{font-size:40px;font-weight:500;line-height:1}
 .ps.hit b{color:var(--hit)} .ps.miss b{color:var(--miss)} .ps.pend b{color:var(--wing)}
 .preds{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
-.pred{text-align:left;cursor:pointer;min-width:0;display:flex;flex-direction:column;gap:6px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:2px}
+.pred{text-align:left;cursor:pointer;min-width:0;display:flex;flex-direction:column;gap:6px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
 .pred:hover{border-color:var(--accent)}
 .pred-top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px}
 .pred-from{font-size:12.5px;color:var(--muted)}
@@ -292,14 +309,14 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .adv .sec{gap:14px}
 .adv .sec-head p{font-size:13.5px}
 .ledger{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:10px}
-.blk{border:1px solid var(--line);background:var(--surface);border-radius:2px;padding:10px 12px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.blk{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:3px;min-width:0}
 .blk .bn{font-size:13px;font-weight:700;display:flex;justify-content:space-between;gap:6px}
 .blk .hs{font-family:var(--f-mono);font-size:12px;overflow-wrap:anywhere}
 .blk .hs em{font-style:normal;color:var(--muted)}
 .blk .st{font-size:12px;color:var(--hit)}
 .blk.unsealed{background:transparent;border-style:dashed;color:var(--muted)}
 .blk.unsealed .st{color:var(--muted)}
-.tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:2px;background:var(--surface)}
+.tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
 .tbl{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}
 .tbl th,.tbl td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
 .tbl th{font-weight:500;color:var(--muted);white-space:nowrap}
@@ -309,7 +326,7 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 .foot{font-size:12.5px;color:var(--muted);max-width:80ch;display:flex;flex-direction:column;gap:6px}
 
 /* ── 實境感 ── */
-.vf{position:absolute;inset:54px max(12px,env(safe-area-inset-right,0px)) 54px max(12px,env(safe-area-inset-left,0px));pointer-events:none;z-index:1}
+.vf{display:none;position:absolute;inset:54px max(12px,env(safe-area-inset-right,0px)) 54px max(12px,env(safe-area-inset-left,0px));pointer-events:none;z-index:1}
 .vf i{position:absolute;width:26px;height:26px;border:solid color-mix(in srgb,var(--accent) 70%,transparent);border-width:0}
 .vf i:nth-child(1){top:0;left:0;border-top-width:1.5px;border-left-width:1.5px}
 .vf i:nth-child(2){top:0;right:0;border-top-width:1.5px;border-right-width:1.5px}
@@ -323,7 +340,11 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
   .rec.live i{animation:blink 1.2s steps(2,start) infinite}
   @keyframes blink{to{visibility:hidden}}
   .scene{transition:transform .28s ease,box-shadow .28s ease}
-  .scene:hover{transform:translateY(-4px) translateZ(26px) rotateX(3deg);box-shadow:inset 0 0 0 3px var(--bg),inset 0 0 0 4px var(--accent),0 26px 34px -20px var(--black),0 0 30px color-mix(in srgb,var(--accent) 18%,transparent)}
+  .scene:hover{transform:translateY(-4px) translateZ(26px) rotateX(3deg);box-shadow:0 0 0 1px var(--accent),0 26px 34px -20px var(--black),0 0 30px color-mix(in srgb,var(--accent) 18%,transparent)}
+  .tide::before{animation:tide 9s linear infinite}
+  .tide::after{animation:tide2 6s linear infinite}
+  @keyframes tide{to{transform:translateX(-160px)}}
+  @keyframes tide2{to{transform:translateX(-120px)}}
   .ev.wave .dot::after{content:"";position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--wing);opacity:0;pointer-events:none;animation:ripple 2.8s ease-out infinite;animation-delay:calc(var(--i)*.3s)}
   .ev.origin.wave .bfly,h1 .bfly{animation:flap 1.2s ease-in-out infinite}
   h1 .bfly{animation-duration:2.4s}
@@ -354,6 +375,7 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
   </div>
   <div class="lbx gut"><span>右邊兩條線的起點只差 0.001，現在已經相距 <b class="mono" id="lz-gap">0.001</b>。這就是蝴蝶效應。</span><button class="btn sm ghost" id="lz-flap" type="button">再拍一次翅膀</button></div>
 </header>
+<div class="tide" aria-hidden="true"></div>
 
 <div class="wrap gut">
   <section class="sec">
@@ -463,7 +485,7 @@ h3{font-size:17px;font-weight:700;line-height:1.4;text-wrap:balance}
 </div>
 
 <script>
-const DATA={"meta":{"start":"2026-11-20T22:00:00+08:00","rounds":8,"total_sealed":0,"built_at":"2026-11-21T09:48+08:00","cand_source":"https://zh.wikipedia.org/wiki/2026%E5%B9%B4%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E7%9B%B4%E8%BD%84%E5%B8%82%E9%95%B7%E5%8F%8A%E7%B8%A3%E5%B8%82%E9%95%B7%E9%81%B8%E8%88%89","cand_fetched":"2026-11-21T09:35+08:00"},"counties":{"台北市":[{"no":1,"name":"郭璽","party":"OTHER","incumbent":false,"label":"台灣麻將最大黨"},{"no":2,"name":"林志成","party":"NONP","incumbent":false},{"no":3,"name":"沈伯洋","party":"DPP","incumbent":false},{"no":4,"name":"蕭文乾","party":"OTHER","incumbent":false,"label":"臺灣SoR無法黨"},{"no":5,"name":"蔣萬安","party":"KMT","incumbent":true},{"no":6,"name":"唐新民","party":"OTHER","incumbent":false,"label":"三勢團結促進聯盟"}],"新北市":[{"no":1,"name":"蘇巧慧","party":"DPP","incumbent":false},{"no":2,"name":"蘇輝湟","party":"NONP","incumbent":false},{"no":3,"name":"李四川","party":"KMT","incumbent":false}],"桃園市":[{"no":1,"name":"黃世杰","party":"DPP","incumbent":false},{"no":2,"name":"張善政","party":"KMT","incumbent":true}],"台中市":[{"no":1,"name":"何欣純","party":"DPP","incumbent":false},{"no":2,"name":"洪麗華","party":"OTHER","incumbent":false,"label":"司法正義黨"},{"no":3,"name":"江啟臣","party":"KMT","incumbent":false}],"台南市":[{"no":1,"name":"蕭燐洪","party":"OTHER","incumbent":false,"label":"臺灣SoR無法黨"},{"no":2,"name":"謝龍介","party":"KMT","incumbent":false},{"no":3,"name":"陳亭妃","party":"DPP","incumbent":false},{"no":4,"name":"葉人文","party":"NONP","incumbent":false}],"高雄市":[{"no":1,"name":"張靜","party":"OTHER","incumbent":false,"label":"司法改革黨"},{"no":2,"name":"王肇民","party":"NONP","incumbent":false},{"no":3,"name":"柯志恩","party":"KMT","incumbent":false},{"no":4,"name":"洪方隆","party":"NONP","incumbent":false},{"no":5,"name":"賴瑞隆","party":"DPP","incumbent":false}],"基隆市":[{"no":1,"name":"童子瑋","party":"DPP","incumbent":false},{"no":2,"name":"魏造文","party":"NONP","incumbent":false},{"no":3,"name":"謝國樑","party":"KMT","incumbent":true}],"新竹市":[{"no":1,"name":"高虹安","party":"NONP","incumbent":true},{"no":2,"name":"何志勇","party":"NONP","incumbent":false},{"no":3,"name":"莊競程","party":"DPP","incumbent":false}],"新竹縣":[{"no":1,"name":"鄭朝方","party":"DPP","incumbent":false},{"no":2,"name":"徐欣瑩","party":"KMT","incumbent":false},{"no":3,"name":"朱定瑀","party":"NONP","incumbent":false}],"苗栗縣":[{"no":1,"name":"陳品安","party":"DPP","incumbent":false},{"no":2,"name":"鍾東錦","party":"KMT","incumbent":true}],"彰化縣":[{"no":1,"name":"陳素月","party":"DPP","incumbent":false},{"no":2,"name":"魏平政","party":"KMT","incumbent":false},{"no":3,"name":"邱建富","party":"NONP","incumbent":false},{"no":4,"name":"陳重嘉","party":"NONP","incumbent":false}],"南投縣":[{"no":1,"name":"許淑華","party":"KMT","incumbent":true},{"no":2,"name":"温世政","party":"DPP","incumbent":false}],"雲林縣":[{"no":1,"name":"吳炳輝","party":"NONP","incumbent":false},{"no":2,"name":"張嘉郡","party":"KMT","incumbent":false},{"no":3,"name":"劉建國","party":"DPP","incumbent":false},{"no":4,"name":"林佳瑜","party":"NONP","incumbent":false}],"嘉義縣":[{"no":1,"name":"吳品叡","party":"NONP","incumbent":false},{"no":2,"name":"蔡易餘","party":"DPP","incumbent":false}],"嘉義市":[{"no":1,"name":"王義成","party":"NONP","incumbent":false},{"no":2,"name":"陳愷璜","party":"NONP","incumbent":false},{"no":3,"name":"張啓楷","party":"TPP","incumbent":false},{"no":4,"name":"王美惠","party":"DPP","incumbent":false},{"no":5,"name":"黃宏成台灣阿成世界偉人財神總統","party":"NONP","incumbent":false}],"屏東縣":[{"no":1,"name":"蘇清泉","party":"KMT","incumbent":false},{"no":2,"name":"周春米","party":"DPP","incumbent":true}],"宜蘭縣":[{"no":1,"name":"林國漳","party":"DPP","incumbent":false},{"no":2,"name":"陳宏毅","party":"NONP","incumbent":false},{"no":3,"name":"吳宗憲","party":"KMT","incumbent":false},{"no":4,"name":"劉燦輝","party":"NONP","incumbent":false},{"no":5,"name":"楊鉯婷","party":"NONP","incumbent":false}],"花蓮縣":[{"no":1,"name":"魏嘉賢","party":"NONP","incumbent":false},{"no":2,"name":"張峻","party":"NONP","incumbent":false},{"no":3,"name":"游淑貞","party":"KMT","incumbent":false},{"no":4,"name":"羅佩秦","party":"NONP","incumbent":false}],"台東縣":[{"no":1,"name":"李吳穎智","party":"NONP","incumbent":false},{"no":2,"name":"陳瑩","party":"DPP","incumbent":false},{"no":3,"name":"王志偉","party":"NONP","incumbent":false},{"no":4,"name":"吳秀華","party":"KMT","incumbent":false}],"澎湖縣":[{"no":1,"name":"許智富","party":"NONP","incumbent":false},{"no":2,"name":"周倪安","party":"NONP","incumbent":false},{"no":3,"name":"葉竹林","party":"NONP","incumbent":false},{"no":4,"name":"吳淑瑾","party":"DPP","incumbent":false},{"no":5,"name":"陳振中","party":"KMT","incumbent":false},{"no":6,"name":"陳盡川","party":"NONP","incumbent":false}],"金門縣":[{"no":1,"name":"張國威","party":"NONP","incumbent":false},{"no":2,"name":"李文良","party":"NONP","incumbent":false},{"no":3,"name":"洪和成","party":"NONP","incumbent":false},{"no":4,"name":"張火木","party":"NONP","incumbent":false},{"no":5,"name":"陳玉珍","party":"KMT","incumbent":false},{"no":6,"name":"梁文韜","party":"NONP","incumbent":false},{"no":7,"name":"黃世團","party":"NONP","incumbent":false}],"連江縣":[{"no":1,"name":"王忠銘","party":"KMT","incumbent":true},{"no":2,"name":"曹爾元","party":"NONP","incumbent":false}]},"incumbent":{"台北市":"KMT","新北市":"KMT","桃園市":"KMT","台中市":"KMT","台南市":"DPP","高雄市":"DPP","基隆市":"KMT","新竹市":"TPP","新竹縣":"KMT","苗栗縣":"KMT","彰化縣":"KMT","南投縣":"KMT","雲林縣":"KMT","嘉義縣":"DPP","嘉義市":"KMT","屏東縣":"DPP","宜蘭縣":"KMT","花蓮縣":"KMT","台東縣":"KMT","澎湖縣":"DPP","金門縣":"KMT","連江縣":"KMT"},"blocks":[]};
+const DATA={"meta":{"start":"2026-11-20T22:00:00+08:00","rounds":8,"total_sealed":0,"built_at":"2026-11-21T10:33+08:00","cand_source":"https://zh.wikipedia.org/wiki/2026%E5%B9%B4%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E7%9B%B4%E8%BD%84%E5%B8%82%E9%95%B7%E5%8F%8A%E7%B8%A3%E5%B8%82%E9%95%B7%E9%81%B8%E8%88%89","cand_fetched":"2026-11-21T09:35+08:00"},"counties":{"台北市":[{"no":1,"name":"郭璽","party":"OTHER","incumbent":false,"label":"台灣麻將最大黨"},{"no":2,"name":"林志成","party":"NONP","incumbent":false},{"no":3,"name":"沈伯洋","party":"DPP","incumbent":false},{"no":4,"name":"蕭文乾","party":"OTHER","incumbent":false,"label":"臺灣SoR無法黨"},{"no":5,"name":"蔣萬安","party":"KMT","incumbent":true},{"no":6,"name":"唐新民","party":"OTHER","incumbent":false,"label":"三勢團結促進聯盟"}],"新北市":[{"no":1,"name":"蘇巧慧","party":"DPP","incumbent":false},{"no":2,"name":"蘇輝湟","party":"NONP","incumbent":false},{"no":3,"name":"李四川","party":"KMT","incumbent":false}],"桃園市":[{"no":1,"name":"黃世杰","party":"DPP","incumbent":false},{"no":2,"name":"張善政","party":"KMT","incumbent":true}],"台中市":[{"no":1,"name":"何欣純","party":"DPP","incumbent":false},{"no":2,"name":"洪麗華","party":"OTHER","incumbent":false,"label":"司法正義黨"},{"no":3,"name":"江啟臣","party":"KMT","incumbent":false}],"台南市":[{"no":1,"name":"蕭燐洪","party":"OTHER","incumbent":false,"label":"臺灣SoR無法黨"},{"no":2,"name":"謝龍介","party":"KMT","incumbent":false},{"no":3,"name":"陳亭妃","party":"DPP","incumbent":false},{"no":4,"name":"葉人文","party":"NONP","incumbent":false}],"高雄市":[{"no":1,"name":"張靜","party":"OTHER","incumbent":false,"label":"司法改革黨"},{"no":2,"name":"王肇民","party":"NONP","incumbent":false},{"no":3,"name":"柯志恩","party":"KMT","incumbent":false},{"no":4,"name":"洪方隆","party":"NONP","incumbent":false},{"no":5,"name":"賴瑞隆","party":"DPP","incumbent":false}],"基隆市":[{"no":1,"name":"童子瑋","party":"DPP","incumbent":false},{"no":2,"name":"魏造文","party":"NONP","incumbent":false},{"no":3,"name":"謝國樑","party":"KMT","incumbent":true}],"新竹市":[{"no":1,"name":"高虹安","party":"NONP","incumbent":true},{"no":2,"name":"何志勇","party":"NONP","incumbent":false},{"no":3,"name":"莊競程","party":"DPP","incumbent":false}],"新竹縣":[{"no":1,"name":"鄭朝方","party":"DPP","incumbent":false},{"no":2,"name":"徐欣瑩","party":"KMT","incumbent":false},{"no":3,"name":"朱定瑀","party":"NONP","incumbent":false}],"苗栗縣":[{"no":1,"name":"陳品安","party":"DPP","incumbent":false},{"no":2,"name":"鍾東錦","party":"KMT","incumbent":true}],"彰化縣":[{"no":1,"name":"陳素月","party":"DPP","incumbent":false},{"no":2,"name":"魏平政","party":"KMT","incumbent":false},{"no":3,"name":"邱建富","party":"NONP","incumbent":false},{"no":4,"name":"陳重嘉","party":"NONP","incumbent":false}],"南投縣":[{"no":1,"name":"許淑華","party":"KMT","incumbent":true},{"no":2,"name":"温世政","party":"DPP","incumbent":false}],"雲林縣":[{"no":1,"name":"吳炳輝","party":"NONP","incumbent":false},{"no":2,"name":"張嘉郡","party":"KMT","incumbent":false},{"no":3,"name":"劉建國","party":"DPP","incumbent":false},{"no":4,"name":"林佳瑜","party":"NONP","incumbent":false}],"嘉義縣":[{"no":1,"name":"吳品叡","party":"NONP","incumbent":false},{"no":2,"name":"蔡易餘","party":"DPP","incumbent":false}],"嘉義市":[{"no":1,"name":"王義成","party":"NONP","incumbent":false},{"no":2,"name":"陳愷璜","party":"NONP","incumbent":false},{"no":3,"name":"張啓楷","party":"TPP","incumbent":false},{"no":4,"name":"王美惠","party":"DPP","incumbent":false},{"no":5,"name":"黃宏成台灣阿成世界偉人財神總統","party":"NONP","incumbent":false}],"屏東縣":[{"no":1,"name":"蘇清泉","party":"KMT","incumbent":false},{"no":2,"name":"周春米","party":"DPP","incumbent":true}],"宜蘭縣":[{"no":1,"name":"林國漳","party":"DPP","incumbent":false},{"no":2,"name":"陳宏毅","party":"NONP","incumbent":false},{"no":3,"name":"吳宗憲","party":"KMT","incumbent":false},{"no":4,"name":"劉燦輝","party":"NONP","incumbent":false},{"no":5,"name":"楊鉯婷","party":"NONP","incumbent":false}],"花蓮縣":[{"no":1,"name":"魏嘉賢","party":"NONP","incumbent":false},{"no":2,"name":"張峻","party":"NONP","incumbent":false},{"no":3,"name":"游淑貞","party":"KMT","incumbent":false},{"no":4,"name":"羅佩秦","party":"NONP","incumbent":false}],"台東縣":[{"no":1,"name":"李吳穎智","party":"NONP","incumbent":false},{"no":2,"name":"陳瑩","party":"DPP","incumbent":false},{"no":3,"name":"王志偉","party":"NONP","incumbent":false},{"no":4,"name":"吳秀華","party":"KMT","incumbent":false}],"澎湖縣":[{"no":1,"name":"許智富","party":"NONP","incumbent":false},{"no":2,"name":"周倪安","party":"NONP","incumbent":false},{"no":3,"name":"葉竹林","party":"NONP","incumbent":false},{"no":4,"name":"吳淑瑾","party":"DPP","incumbent":false},{"no":5,"name":"陳振中","party":"KMT","incumbent":false},{"no":6,"name":"陳盡川","party":"NONP","incumbent":false}],"金門縣":[{"no":1,"name":"張國威","party":"NONP","incumbent":false},{"no":2,"name":"李文良","party":"NONP","incumbent":false},{"no":3,"name":"洪和成","party":"NONP","incumbent":false},{"no":4,"name":"張火木","party":"NONP","incumbent":false},{"no":5,"name":"陳玉珍","party":"KMT","incumbent":false},{"no":6,"name":"梁文韜","party":"NONP","incumbent":false},{"no":7,"name":"黃世團","party":"NONP","incumbent":false}],"連江縣":[{"no":1,"name":"王忠銘","party":"KMT","incumbent":true},{"no":2,"name":"曹爾元","party":"NONP","incumbent":false}]},"incumbent":{"台北市":"KMT","新北市":"KMT","桃園市":"KMT","台中市":"KMT","台南市":"DPP","高雄市":"DPP","基隆市":"KMT","新竹市":"TPP","新竹縣":"KMT","苗栗縣":"KMT","彰化縣":"KMT","南投縣":"KMT","雲林縣":"KMT","嘉義縣":"DPP","嘉義市":"KMT","屏東縣":"DPP","宜蘭縣":"KMT","花蓮縣":"KMT","台東縣":"KMT","澎湖縣":"DPP","金門縣":"KMT","連江縣":"KMT"},"blocks":[]};
 const M=DATA.meta,TOTAL=M.rounds,BLOCKS=DATA.blocks,SEALED_N=BLOCKS.length,CANDS=DATA.counties,INC=DATA.incumbent;
 const START=new Date(M.start),DAY=864e5,VOTE_OPEN=new Date('2026-11-28T08:00:00+08:00'),VOTE_CLOSE=new Date('2026-11-28T16:00:00+08:00'),FINAL_AT=new Date('2026-11-28T23:00:00+08:00');
 const pad=n=>String(n).padStart(2,'0'),tpe=d=>new Date(+d+8*3600e3),WK='日一二三四五六';
@@ -855,23 +877,24 @@ renderSources();renderFinal();render();
 })();
 
 (function(){
-  // 開場主視覺：立體的勞倫茲吸子（兩條幾乎同起點的軌跡）＋有遠近的上升微粒，鏡頭會跟著游標微微轉動
+  // 開場主視覺：立體的勞倫茲吸子（兩條幾乎同起點的軌跡）漂在陽光海水裡：
+  // 斜射光束、水面波光、隨水流橫向漂移的粒子與上升氣泡，鏡頭會跟著游標微微轉動
   const cv=$('#lorenz'),ctx=cv.getContext('2d'),hero=cv.parentElement;
   const S=10,RHO=28,BETA=8/3,DT=0.005,TRAIL=1700,CYCLE=26,WARM=13;
   const still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   let a,b,ta=[],tb=[],t=0,W=0,H=0,vis=true,frame=0,cx=0,hw=1,motes=[],mx=0,my=0,tx=0,ty=0,cs=1,sn=0,oy=0;
-  const col={a:'#58e0ee',b:'#f4ad4a',m:'#86a3b3'},ghost=[];
+  const col={a:'#e6fffb',b:'#f4ad4a',m:'#e6fffb',s:'#ffec5c'},ghost=[];
   const step=p=>[p[0]+S*(p[1]-p[0])*DT,p[1]+(p[0]*(RHO-p[2])-p[1])*DT,p[2]+(p[0]*p[1]-BETA*p[2])*DT];
   function flap(){b=[a[0]+0.001,a[1],a[2]];tb=[];t=0;}
   function tick(){a=step(a);b=step(b);ta.push(a);tb.push(b);if(ta.length>TRAIL)ta.shift();if(tb.length>TRAIL)tb.shift();t+=DT;if(t>CYCLE)flap();}
   function warm(){for(let i=0;i<Math.round(WARM/DT);i++)tick();}
-  function colors(){const c=getComputedStyle(document.documentElement);col.a=c.getPropertyValue('--accent').trim()||col.a;col.b=c.getPropertyValue('--wing').trim()||col.b;col.m=c.getPropertyValue('--muted').trim()||col.m;}
+  function colors(){const c=getComputedStyle(document.documentElement);col.a=c.getPropertyValue('--foam').trim()||col.a;col.b=c.getPropertyValue('--wing').trim()||col.b;col.m=col.a;col.s=c.getPropertyValue('--accent').trim()||col.s;}
   function size(){
     const r=cv.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1);W=r.width;H=r.height;
     cv.width=Math.max(1,Math.round(W*d));cv.height=Math.max(1,Math.round(H*d));ctx.setTransform(d,0,0,d,0,0);
     const wide=W>820;cx=wide?W*0.73:W/2;hw=Math.min(wide?W*0.24:W*0.42,H*0.38);
     const n=Math.min(120,Math.round(W*H/6500));
-    motes=[...Array(n)].map(()=>({x:Math.random()*W,y:Math.random()*H,z:.35+Math.random()*1.5,r:.5+Math.random()*1.1,v:.08+Math.random()*.26,ph:Math.random()*6.3,w:Math.random()<.22}));
+    motes=[...Array(n)].map(()=>({x:Math.random()*W,y:Math.random()*H,z:.35+Math.random()*1.5,r:.5+Math.random()*1.1,v:.08+Math.random()*.26,ph:Math.random()*6.3,w:Math.random()<.12,bub:Math.random()<.3}));
   }
   function cam(){const th=(still?0.35:0.55*Math.sin(frame*0.0035))+mx*0.7;cs=Math.cos(th);sn=Math.sin(th);oy=my*18;}
   const pj=p=>{const x=p[0]*cs-p[1]*sn,s=1/(1-(p[0]*sn+p[1]*cs)/150);return [cx+x*hw/21*s,H/2+oy+(25-p[2])*hw/26*s,s];};
@@ -888,22 +911,58 @@ renderSources();renderFinal();render();
     ctx.globalAlpha=.6;ctx.fillStyle=g;ctx.fillRect(h[0]-L,h[1]-.7,L*2,1.4);ctx.globalAlpha=1;
   }
   function drawGhost(){
-    ctx.strokeStyle=col.m;ctx.globalAlpha=.13;ctx.lineWidth=.8;ctx.beginPath();
+    ctx.strokeStyle=col.m;ctx.globalAlpha=.16;ctx.lineWidth=.8;ctx.beginPath();
     for(let i=0;i<ghost.length;i+=2){const q=pj(ghost[i]);i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]);}
     ctx.stroke();ctx.globalAlpha=1;
   }
-  function drawMotes(){
-    motes.forEach(m=>{
-      if(!still){m.y-=m.v*m.z;m.x+=Math.sin(m.ph+frame*.011)*.14;if(m.y<-8){m.y=H+8;m.x=Math.random()*W;}}
-      const near=m.z>1.35,tw=.5+.5*Math.sin(m.ph+frame*.02);
-      ctx.globalAlpha=(near?.1:.2)+(near?.12:.42)*tw;ctx.fillStyle=m.w?col.b:col.a;
-      ctx.beginPath();ctx.arc(m.x-mx*m.z*46,m.y-my*m.z*26,m.r*m.z*(near?2.4:1),0,6.3);ctx.fill();
-    });
+  function drawSea(){
+    // 斜射的陽光光束（從右上角的太陽散開，緩慢擺動）
+    const sx=W*0.82,sy=-H*0.12,sw=still?0:Math.sin(frame*.004)*.05;
+    for(let k=0;k<7;k++){
+      const ang=1.95+k*.16+sw*(k%2?1:-1),len=H*1.5,wd=.035+.02*(k%3);
+      const g=ctx.createLinearGradient(sx,sy,sx+Math.cos(ang)*len,sy+Math.sin(ang)*len);
+      g.addColorStop(0,'rgba(255,248,214,.20)');g.addColorStop(.55,'rgba(230,255,251,.06)');g.addColorStop(1,'rgba(230,255,251,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(sx,sy);
+      ctx.lineTo(sx+Math.cos(ang-wd)*len,sy+Math.sin(ang-wd)*len);ctx.lineTo(sx+Math.cos(ang+wd)*len,sy+Math.sin(ang+wd)*len);ctx.closePath();ctx.fill();
+    }
+    // 水面波光：上方幾條蜿蜒的亮線
+    ctx.strokeStyle=col.a;ctx.lineWidth=1.2;
+    for(let j=0;j<5;j++){
+      const y0=H*(.1+j*.065),amp=4+j*1.5,ph=frame*(.012+j*.003)+j*1.7;
+      ctx.globalAlpha=.16-j*.022;ctx.beginPath();
+      for(let x=-10;x<=W+10;x+=14){const y=y0+Math.sin(x*.018+ph)*amp+Math.sin(x*.041-ph*1.3)*amp*.45;x<0?ctx.moveTo(x,y):ctx.lineTo(x,y);}
+      ctx.stroke();
+    }
     ctx.globalAlpha=1;
   }
+  function drawMotes(){
+    const ft=frame*.006;
+    motes.forEach(m=>{
+      if(!still){
+        if(m.bub){m.y-=m.v*m.z*1.6;m.x+=Math.sin(m.ph+frame*.03)*.25;}
+        else{const a=Math.sin(m.y*.006+ft)*.55+Math.cos(m.x*.004-ft*.7)*.35;m.x+=Math.cos(a)*m.v*m.z*2.2;m.y+=Math.sin(a)*m.v*m.z*.9;}
+        if(m.y<-10){m.y=H+10;m.x=Math.random()*W;}
+        if(m.y>H+10){m.y=-10;}
+        if(m.x>W+20){m.x=-20;m.y=Math.random()*H;}
+        if(m.x<-20){m.x=W+20;}
+      }
+      const near=m.z>1.35,tw=.5+.5*Math.sin(m.ph+frame*.02),px=m.x-mx*m.z*46,py=m.y-my*m.z*26;
+      if(m.bub){
+        const r=m.r*m.z*(near?3:1.8);
+        ctx.globalAlpha=(near?.18:.3)+.25*tw;ctx.strokeStyle=col.a;ctx.lineWidth=1;
+        ctx.beginPath();ctx.arc(px,py,r,0,6.3);ctx.stroke();
+        ctx.globalAlpha*=.9;ctx.fillStyle=col.a;ctx.beginPath();ctx.arc(px-r*.35,py-r*.35,Math.max(.6,r*.25),0,6.3);ctx.fill();
+      }else{
+        const a=Math.sin(m.y*.006+ft)*.55+Math.cos(m.x*.004-ft*.7)*.35,L=4+m.z*5;
+        ctx.globalAlpha=(near?.1:.18)+(near?.12:.34)*tw;ctx.strokeStyle=m.w?col.s:col.a;ctx.lineWidth=m.r*m.z*(near?1.6:1);ctx.lineCap='round';
+        ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px-Math.cos(a)*L,py-Math.sin(a)*L);ctx.stroke();
+      }
+    });
+    ctx.globalAlpha=1;ctx.lineCap='butt';
+  }
   function draw(){
-    if(!W||!H)return;ctx.clearRect(0,0,W,H);cam();drawGhost();
-    ctx.globalCompositeOperation='lighter';trail(ta,col.a);trail(tb,col.b);drawMotes();ctx.globalCompositeOperation='source-over';
+    if(!W||!H)return;ctx.clearRect(0,0,W,H);cam();drawSea();drawGhost();
+    drawMotes();trail(ta,col.a);trail(tb,col.b);
     const g=Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2]);$('#lz-gap').textContent=g<1?g.toFixed(3):g.toFixed(1);
   }
   function loop(){if(vis){if(frame++%60===0)colors();mx+=(tx-mx)*.05;my+=(ty-my)*.05;for(let i=0;i<4;i++)tick();draw();}requestAnimationFrame(loop);}
